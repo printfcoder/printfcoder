@@ -1,16 +1,14 @@
 ### Hi there 👋
 
-<!--
-**printfcoder/printfcoder** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+<img align="right" src="https://github-readme-stats.vercel.app/api?username=printfcoder&show_icons=true&theme=vue" alt="StackLabs's github stats" />
 
-Here are some ideas to get you started:
+### Hi there, I'm Shux🎉
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+- 🇨🇳 Chinese
+- 🌏 Open-source software developer
+- 🔭 I’m currently working on [StackRPC](https://github.com/stack-labs/stack-rpc)
+- 📫 How to reach me: i@shux.me
+- ⚡ Fun fact: Go, Java, JS
+
+<img src="https://github-profile-trophy.vercel.app/?username=printfcoder&theme=flat&column=7&margin-w=10" alt="logo" height="160" align="center" />
+
