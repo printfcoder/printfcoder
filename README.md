@@ -1,5 +1,3 @@
-### Hi there 👋
-
 <img align="right" src="https://github-readme-stats.vercel.app/api?username=printfcoder&show_icons=true&theme=vue" alt="StackLabs's github stats" />
 
 ### Hi there, I'm Shux🎉
