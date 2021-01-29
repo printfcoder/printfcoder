@@ -2,7 +2,6 @@
 
 ### Hi there, I'm Shux🎉
 
-- 🇨🇳 Chinese
 - 🌏 Open-source software developer
 - 🔭 I’m currently working on [StackRPC](https://github.com/stack-labs/stack-rpc)
 - 📫 How to reach me: i@shux.me
