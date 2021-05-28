@@ -47,8 +47,97 @@ Pipelining并不只是降低了因为网络延迟带来的性能损耗，它同�
 
 如果不使用Pipelining，从访问缓存的数据结构与包装响应来看，处理每个指令本身损耗很低，但是从socket IO的角度看，就很浪费。原因在于syscall，socket IO需要调用系统的read()和write()的方法，这里在操作系统中会有一个用户域到内核域的转换，上下文切换造成巨大的速度损耗。
 
+在Pipelining中，多个指令是复用一个read()，而多个响应也复用一个write()，随着指令数量增加，Pipelining带来的性能呈10x增长。
+
+### 示例
+
+我们使用代码来验证Pipelining在实际大批量查询中的效果与普通查询的对比。
+
+```golang
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"github.com/go-redis/redis/v8"
+)
+
+func main() {
+	withPipelining()
+	withoutPipelining()
+}
+
+func newClient() *redis.Client {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "127.0.0.1:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	return rdb
+}
+
+func withoutPipelining() {
+	cli := newClient()
+	defer cli.Close()
+
+	start := time.Now()
+
+	ctx := context.Background()
+	for i := 0; i < 10000; i++ {
+		cli.Get(ctx, "redis:pipelining:test")
+	}
+
+	elapsed := time.Since(start)
+	log.Printf("withoutPipelining took %s", elapsed)
+}
+
+func withPipelining() {
+	cli := newClient()
+	defer cli.Close()
+
+	start := time.Now()
+
+	p := cli.Pipeline()
+	ctx := context.Background()
+	for j := 0; j < 10; j++ {
+		for i := 0; i < 1000; i++ {
+			p.Get(ctx, "redis:pipelining:test")
+		}
+
+		p.Exec(ctx)
+	}
+	elapsed := time.Since(start)
+	log.Printf("withPipelining took %s", elapsed)
+}
+```
+
+测试机器的Redis在另一机房，Ping到该机房的延迟如下，约3.3ms
+
+```shell
+PING 10.x.x.x (10.x.x.x) 56(84) bytes of data.
+64 bytes from 10.x.x.x: icmp_seq=1 ttl=128 time=3.41 ms
+64 bytes from 10.x.x.x: icmp_seq=2 ttl=128 time=3.29 ms
+```
+
+我们请求10000次，可以估算出普通查询大概为10000*3.3=33000ms，约33s，我们看看实际运行效果
+
+```shell
+2021/05/26 09:30:14 withPipelining took 53.988457ms
+2021/05/26 09:30:46 withoutPipelining took 32.159512029s
+```
+
+在常规延迟下，10000条指令Pipelining是普通查询的约600倍。
+
+## 总结
+
+Pipelining适用于一次批量查询，在实时性要求不高的业务，或一次业务事务中有多个分散的keys要查询的可以组合在一起，使用Pipelining批量提交。使用时要切记key数不能过多，最好做一次压测，看业务数据结构在实际线上网络中可以批量的大小是多少，因为在Server端，Pipelining是基于队列方式查询的，一次提交太多指令可能会造成队列阻塞，造成延迟，同时也要考虑队列的容量对内存大小的影响。
+
 ## 扩展阅读
 
 1. [RTT](https://en.wikipedia.org/wiki/Round-trip_delay)
 2. [Redis是长连接还是短连接](./short-or-long-connection.md)
-3. [用户域与内核域](../os/userland-vs-kernal.md)
+3. [Redis Script VS Pipelining](./script-vs-pipelining.md)
+4. [用户域与内核域](../os/userland-vs-kernal.md)

@@ -9,13 +9,13 @@ import (
 )
 
 func main() {
-	withPipelining()
+    withPipelining()
 	withoutPipelining()
 }
 
 func newClient() *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "10.177.98.179:6379",
+		Addr:     "127.0.0.1:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
