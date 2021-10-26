@@ -12,7 +12,7 @@
 
 3. 简单介绍一下Redis RDB，RDB的优势、劣势。
 
-> 答：RDB是Redis Database File的缩写。
+> 答：RDB是Redis Database File的缩写，Redis通过RDB来备份、同步数据。RDB的优势是其是二进制文件，恢复起来比AOF日志快得多，压缩后同步传送，效率高。RDB快照生成需要一定时间，节点数据越多越慢，无法秒级实时备份，且因为Fork子进程来生成快照，成本高昂，不能频繁操作。
 
 4. 讲讲Redis 快照生成的几个方式。
 
