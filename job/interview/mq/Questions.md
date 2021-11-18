@@ -2,10 +2,8 @@
 
 1. 如何保证幂等、顺序、不丢失
 
-
 > Kafka 顺序性：<br />
   Kafka中并不能保证所有分区无状态消息的顺序性，但是可以保证一个分区中所有消息都是有顺序的，同时一个分区只会有一个消费者，所以可以利用这两个特性达到生产与消费的顺序一致性。比如用户的某些行为消息，我们要保证其前后顺序依次送达后端，那可以讲这些消息推送到一个分区；那如果要多个分区来保持高吞吐怎么办，这个时候就可以利用一些带状态的字段，比如用户id作为Kafka Msg的Key，Kafka的Broker会将这些声明了Key的消息按统一的规则散列到不同的分区，同一个Key只要散列规则没有变就会一直分发到同一个分区，所以只要生产者保证投送消息的顺序性，那消费端就能收到一样顺序的消息。
-
 
 2. Kafka与rocketMQ集群原理、对比
 
@@ -14,6 +12,14 @@
 4. Kafka Key与Partition的关系。
 > 答：消息在发送前会组装成K/V结构，消息通过其中的Partition或Key来确认Partition，当没有显式指名分区时，便会通过计算Key的Hash来分区。但是如果没有Key，也没有Partition，那就会先通过topic查询本地分区表（每隔*topic.metadata.refresh.interval.ms*刷新一次）找出分区，如果分区不存在，则会随机算出分区。
 
+5. 描述Kafka Controller
+> 答：Controller是Broker中选举出的控制器，它本身是一个Broker，不过它会负责Partition、副本状态管理，比如重分配Partition，其LeaderSelector会选择新Leader，并更新ISR到ZK，同时通过所有副本更新Leader与ISR。
 
-5. Kafka扩容后如何保证老数据仍然在老分区
+6. Kafka 的ISR有哪些地方维护
+> 答：Controller（被选举的Broker）与Leader。Controller见(KafkaController)[#5]，Leader中有线程检测ISR是否有follower脱离，有则将ISR列表返回ZK。
 
+7. Kafka扩容后如何保证数据仍然在老分区
+
+
+参考资料：<br />
+[Kafka Replica机制](https://www.cnblogs.com/caoweixiong/p/12049462.html)
