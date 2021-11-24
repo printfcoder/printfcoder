@@ -5,13 +5,16 @@ type ListNode struct {
 	next *ListNode
 }
 
-func addTwoNumbers(l1 *ListNode, l2 *ListNode) (output int) {
+// 给你两个非空的链表，表示两个非负的整数。它们每位数字都是按照逆序的方式存储的，并且每个节点只能存储一位数字。
+// 请你将两个数相加，并以相同形式返回一个表示和的链表。
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) (output *ListNode) {
 	// 忽略边界检查
 
 	// 进位，用于记录上个节点超过10的部分
 	carry := 0
 	// 记录最后一次余数
-	mod := 0
+	head := new(ListNode)
+	cur := head
 	// 链表不空则继续加，进位不空也加
 	for l1 != nil || l2 != nil || carry != 0 {
 		// 取两个链表的左边节点，取完值后需要游到下一节点
@@ -29,8 +32,10 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) (output int) {
 		// 记录当前进位
 		carry = num / 10
 		// 记录余数
-		mod = num % 10
+		cur.next = &ListNode{num % 10, nil}
+		// 计算下一个
+		cur = cur.next
 	}
 
-	// 	return mod + carry
+	return head
 }

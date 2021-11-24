@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -29,6 +30,12 @@ func TestTwoSumWithMap(t *testing.T) {
 			},
 		}
 		x := addTwoNumbers(l1, l2)
-		So(x, ShouldEqual, 1191)
+		v := ""
+		for x.next != nil {
+			v = v + fmt.Sprintf("%d", x.next.val)
+			x.next = x.next.next
+		}
+
+		So(v, ShouldEqual, "1911")
 	})
 }
