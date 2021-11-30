@@ -7,8 +7,8 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestTwoSumWithMap(t *testing.T) {
-	Convey("Testing two sum", t, func() {
+func TestAddTwoNums(t *testing.T) {
+	Convey("Testing two nums", t, func() {
 		l1 := &ListNode{
 			3,
 			&ListNode{
