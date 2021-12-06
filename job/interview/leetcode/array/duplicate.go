@@ -1,13 +1,5 @@
 package main
 
-import "fmt"
-
-func main() {
-	ar := []int{2, 1, 2, 4, 1}
-	fmt.Printf("dulicated num is %d \n", FindAnyDuplicatedItemFromZero2Nm1(ar))
-	FindAnyDuplicatedItemFromZero2Nm1WithDichotomy([]int{1})
-}
-
 // FindAnyDuplicatedItemFromZero2Nm1 找到指定数组[0,n-1]中任一重复的数字，假设元数都小于n
 // 不使用Map，避免O(n)的空间复杂度
 // 不使用排序，避免T(nLog(n))的时间复杂度
@@ -41,7 +33,6 @@ func FindAnyDuplicatedItemFromZero2Nm1WithDichotomy(ar []int) (output int) {
 	// 长度检测，忽略
 	// 负数检测，忽略
 	// 溢出检测，忽略
-
 
 	return 0
 }
