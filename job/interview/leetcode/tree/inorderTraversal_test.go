@@ -1,8 +1,10 @@
 package main
 
-import "testing"
+import (
+	"testing"
 
-import . "github.com/smartystreets/goconvey/convey"
+	. "github.com/smartystreets/goconvey/convey"
+)
 
 func TestInorderTraversalWithRecursion(t *testing.T) {
 	Convey("testing inorderTraversalWithRecursion", t, func() {

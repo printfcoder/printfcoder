@@ -48,7 +48,7 @@ package main
 // -100 <= Node.val <= 100
 
 // 递归，
-// O(n) 时间， O(n) 空间
+// O(n) time，O(n) space，空间为高度
 func inorderTraversalWithRecursion(root *Node) (res []int) {
 	var inorder func(node *Node)
 	inorder = func(node *Node) {
@@ -65,6 +65,7 @@ func inorderTraversalWithRecursion(root *Node) (res []int) {
 // 迭代
 // 从根节点开始把左节点放到栈中，然后把栈中每个节点的左值和顶值放到返回值中
 // 剩下的就是当前迭代的右子树，然后再把最顶右子树节点同样的方式遍历，把其顶当成根，直到所有节点都遍历到
+// O(n) time，O(n) space，空间为高度
 func inorderTraversalWithIteration(root *Node) (res []int) {
 	var stack []*Node
 	for root != nil || len(stack) > 0 {
