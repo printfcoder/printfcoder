@@ -12,6 +12,8 @@
 4. Kafka扩容后如何保证数据仍然在老分区
 
 5. 分区重平衡发生在什么时候
+> 答：重平衡的过程由Kafka Client/Coordinator完成，组件中的的部分完成，在Kafka组件部分完成，这
+
 
 6. 简述Cluster、Broker、Producer、Topic、Consumer、Partition、Replica的映射关系
 
