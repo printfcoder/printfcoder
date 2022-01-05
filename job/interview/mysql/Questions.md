@@ -13,3 +13,7 @@
 6. 最左匹配及其原理
 
 7. 索引联合优化
+
+## 参考资料
+
+[并发控制](https://draveness.me/database-concurrency-control/)
