@@ -6,4 +6,4 @@
 
 
 ## 参考资料
-[OPPO高可用](http://dc.idcquan.com/ywgl/71559.shtml)
+[OPPO高可用](https://www.sohu.com/a/458712964_411876)
