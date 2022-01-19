@@ -17,3 +17,24 @@
 ## 参考资料
 
 [并发控制](https://draveness.me/database-concurrency-control/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|级别|MySQL|标准SQL|
+|---|---|---|
+|RU|---|---|
+|RC|---|---|
+|RR|---|---|
+|S|---|---|
