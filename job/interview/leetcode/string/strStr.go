@@ -38,7 +38,7 @@ import "fmt"
 //输出：0
 // 使用KMP算法
 // O(n+m) time, O(m) space
-func strStr(haystack, needle string) int {
+func strStrKMP(haystack, needle string) int {
 	n, m := len(haystack), len(needle)
 	if m == 0 {
 		return 0
@@ -53,7 +53,7 @@ func strStr(haystack, needle string) int {
 		}
 		pi[i] = j
 	}
-	fmt.Printf("pi is %v /n",pi)
+	fmt.Printf("pi is %v /n", pi)
 
 	for i, j := 0, 0; i < n; i++ {
 		for j > 0 && haystack[i] != needle[j] {
@@ -67,4 +67,25 @@ func strStr(haystack, needle string) int {
 		}
 	}
 	return -1
+}
+
+// 采用滑窗，i作为外窗，j为内窗
+// 逐步滑动j到i的最后可达位：len(h)-i = j
+func strStr(haystack string, needle string) int {
+	for i := 0; ; i++ {
+		for j := 0; ; j++ {
+			// needle已经遍历完
+			if j == len(needle) {
+				return i
+			}
+			// haystack已经遍历完
+			if i+j == len(haystack) {
+				return -1
+			}
+			// 有一位不匹配就再进行下一次滑窗
+			if needle[j] != haystack[i+j] {
+				break
+			}
+		}
+	}
 }

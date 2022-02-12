@@ -6,7 +6,7 @@ import . "github.com/smartystreets/goconvey/convey"
 
 func TestStrStr(t *testing.T) {
 	Convey("testing strStr", t, func() {
-		v := strStr("abadifuiopd", "ifuiopd")
+		v := strStrKMP("abadifuiopd", "ifuiopd")
 		So(v, ShouldEqual, 4)
 	})
 }
