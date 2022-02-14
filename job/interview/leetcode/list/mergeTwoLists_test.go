@@ -30,10 +30,10 @@ func TestMergeTwoLists(t *testing.T) {
 			},
 		}
 		x := mergeTwoLists(l1, l2)
-		v := fmt.Sprintf("%d", x.val)
-		for x.next != nil {
-			v = v + fmt.Sprintf("%d", x.next.val)
-			x.next = x.next.next
+		v := fmt.Sprintf("%d", x.Val)
+		for x.Next != nil {
+			v = v + fmt.Sprintf("%d", x.Next.Val)
+			x.Next = x.Next.Next
 		}
 
 		So(v, ShouldEqual, "345678")

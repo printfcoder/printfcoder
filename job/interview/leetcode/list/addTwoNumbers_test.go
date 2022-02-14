@@ -31,9 +31,9 @@ func TestAddTwoNums(t *testing.T) {
 		}
 		x := addTwoNumbers(l1, l2)
 		v := ""
-		for x.next != nil {
-			v = v + fmt.Sprintf("%d", x.next.val)
-			x.next = x.next.next
+		for x.Next != nil {
+			v = v + fmt.Sprintf("%d", x.Next.Val)
+			x.Next = x.Next.Next
 		}
 
 		So(v, ShouldEqual, "1911")
