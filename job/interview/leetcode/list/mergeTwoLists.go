@@ -31,7 +31,7 @@ package main
 //
 //
 // 两个链表的节点数目范围是 [0, 50]
-// -100 <= Node.val <= 100
+// -100 <= Node.Val <= 100
 // l1 和 l2 均按 非递减顺序 排列
 //
 // Related Topics 递归 链表
@@ -40,11 +40,11 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) (output *ListNode) {
 		return l2
 	} else if l2 == nil {
 		return l1
-	} else if l1.val < l2.val {
-		l1.next = mergeTwoLists(l1.next, l2)
+	} else if l1.Val < l2.Val {
+		l1.Next = mergeTwoLists(l1.Next, l2)
 		return l1
 	} else {
-		l2.next = mergeTwoLists(l1, l2.next)
+		l2.Next = mergeTwoLists(l1, l2.Next)
 		return l2
 	}
 }
