@@ -1,4 +1,4 @@
-package main
+package array
 
 /**
 给你一个数组，将数组中的元素向右轮转 k个位置，其中k是非负数。

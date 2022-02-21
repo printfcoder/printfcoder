@@ -1,4 +1,4 @@
-package main
+package array
 
 func generateYanHuiTriangle(numRows int) [][]int {
 	// 公式

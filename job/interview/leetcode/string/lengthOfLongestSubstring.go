@@ -1,4 +1,4 @@
-package main
+package string
 
 func lengthOfLongestSubstring(s string) (sub string) {
 	// 忽略长度检查
@@ -7,7 +7,7 @@ func lengthOfLongestSubstring(s string) (sub string) {
 	// 如果存在，则丢掉
 	window := make([]byte, 0)
 	// 记录窗口起、始、余留坐标
-	start, end, res := 0, 0, 0
+	start, end := 0, 0
 
 	for start < len(s) && end < len(s) {
 		if isExist(window, s[end]) {
@@ -16,9 +16,6 @@ func lengthOfLongestSubstring(s string) (sub string) {
 		} else {
 			window = append(window, s[end])
 			end++
-			if res < len(window) {
-				res = len(window)
-			}
 		}
 	}
 

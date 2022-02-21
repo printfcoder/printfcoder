@@ -1,4 +1,4 @@
-package main
+package array
 
 // 给定一个数组 prices ，其中prices[i] 表示股票第 i 天的价格。
 //
