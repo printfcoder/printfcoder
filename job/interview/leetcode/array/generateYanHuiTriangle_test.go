@@ -1,4 +1,4 @@
-package main
+package array
 
 import (
 	"testing"
@@ -8,8 +8,7 @@ import (
 
 func TestGenerateYanHuiTriangle(t *testing.T) {
 	Convey("Testing remove duplicates", t, func() {
-	 output := generateYanHuiTriangle(5)
-		So(l, ShouldEqual, 4)
+		output := generateYanHuiTriangle(5)
 		So(output, ShouldResemble, []int{1, 2, 4, 8})
 	})
 }

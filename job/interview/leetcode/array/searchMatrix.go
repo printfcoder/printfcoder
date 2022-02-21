@@ -1,4 +1,4 @@
-package main
+package array
 
 func searchMatrix(arr [][]int, target int) bool {
 	// 空检测 忽略

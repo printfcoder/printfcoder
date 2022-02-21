@@ -1,4 +1,4 @@
-package main
+package array
 
 // FindAnyDuplicatedItemFromZero2Nm1 找到指定数组[0,n-1]中任一重复的数字，假设元数都小于n
 // 不使用Map，避免O(n)的空间复杂度

@@ -1,4 +1,4 @@
-package main
+package array
 
 /**
   采用位运算的异或法，用0去依次异或，出现两次因为bit位都相同，会被异或为0抵消掉
