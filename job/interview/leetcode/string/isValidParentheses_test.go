@@ -6,13 +6,13 @@ import . "github.com/smartystreets/goconvey/convey"
 
 func TestIsValidParentheses(t *testing.T) {
 	Convey("testing IsValidParentheses", t, func() {
-		v := IsValidParentheses("{}[]()")
+		v := isValidParentheses("{}[]()")
 		So(v, ShouldEqual, true)
-		v = IsValidParentheses("{[()]}")
+		v = isValidParentheses("{[()]}")
 		So(v, ShouldEqual, true)
-		v = IsValidParentheses("{[()]}}")
+		v = isValidParentheses("{[()]}}")
 		So(v, ShouldEqual, false)
-		v = IsValidParentheses("{[}]")
+		v = isValidParentheses("{[}]")
 		So(v, ShouldEqual, false)
 	})
 }
