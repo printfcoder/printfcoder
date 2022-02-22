@@ -31,3 +31,37 @@ func IsValidParentheses(s string) bool {
 
 	return 1 == len(stack)
 }
+
+func isValidParentheses(s string) bool {
+	l := len(s)
+
+	// 非偶数长度
+	if l%2 != 0 || l == 0 {
+		return false
+	}
+
+	m := map[rune]rune{
+		'(': ')',
+		'{': '}',
+		'[': ']',
+	}
+
+	stack := make([]rune, 0, l/2)
+	for i, c := range s {
+		if v, ok := m[c]; ok {
+			stack = append(stack, v)
+		} else if len(stack) == 0 || c != stack[len(stack)-1] {
+			return false
+		} else {
+			// 出栈
+			stack = stack[:len(stack)-1]
+		}
+
+		// 还没到头栈空间已经用完说明不是，对称的肯定只会用一半
+		if i-cap(stack) > 1 && len(stack) == cap(stack) {
+			return false
+		}
+	}
+
+	return len(stack) == 0
+}
