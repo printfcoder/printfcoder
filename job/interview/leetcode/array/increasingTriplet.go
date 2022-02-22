@@ -1,5 +1,7 @@
 package array
 
+import "math"
+
 /**
 递增的三元子序列
 给你一个整数数组nums ，判断这个数组中是否存在长度为 3 的递增子序列。
@@ -31,32 +33,23 @@ package array
 进阶：你能实现时间复杂度为 O(n) ，空间复杂度为 O(1) 的解决方案吗？
 */
 func increasingTriplet(nums []int) bool {
-	// 双指针法，fast在后面，负责为slow找匹配的
-	if len(nums) < 3 {
+	n := len(nums)
+	if n < 3 {
 		return false
 	}
 
-	// res为长度
-	slow, fast, res := 0, 1, make([]int, 3)
-	res[0] = nums[0]
-	for slow < fast && fast < len(nums)+1 {
-		if nums[slow] < nums[fast] {
-			res = append(res, nums[fast])
-			if len(res) == 3 {
-				return true
-			}
-		}
-
-		if fast < len(nums) {
-			fast++
-		} else {
-			// fast 到头，没找到
-			// 此时slow要向前，也即时res要置空，重新从下一个位置来
-			res = make([]int, 3)
-			slow++
-			fast = slow + 1
+	// 假设老二是最大的，开始遍历
+	first, second := nums[0], math.MaxInt32
+	for i := 1; i < n; i++ {
+		// 现在的比老二大，说明找到老三了
+		num := nums[i]
+		if num > second {
+			return true
+		} else if num > first { // 小于老三，但是比老大要大，说明是老二
+			second = num
+		} else { // 比老大小或等于，说明要当老大
+			first = num
 		}
 	}
-
 	return false
 }

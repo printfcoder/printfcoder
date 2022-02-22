@@ -14,11 +14,15 @@ func TestIncreasingTriplet(t *testing.T) {
 		So(output, ShouldEqual, false)
 		output = increasingTriplet([]int{5, 4})
 		So(output, ShouldEqual, false)
-
 		output = increasingTriplet([]int{1, 4, 3, 2, 5})
 		So(output, ShouldEqual, true)
-
 		output = increasingTriplet([]int{3, 4, 3, 2, 5})
+		So(output, ShouldEqual, true)
+		output = increasingTriplet([]int{0, 4, 2, 1, 0, -1, -3})
+		So(output, ShouldEqual, false)
+		output = increasingTriplet([]int{20, 100, 10, 12, 5, 13})
+		So(output, ShouldEqual, true)
+		output = increasingTriplet([]int{1, 5, 0, 4, 1, 3})
 		So(output, ShouldEqual, true)
 	})
 }
