@@ -1,12 +1,11 @@
-package main
+package bit
 
 import (
 	"fmt"
-	"testing" 
+	"testing"
 )
 
 func TestReverseBits(t *testing.T) {
- 
-		x := reverseBits(uint32(00000010100101000001111010011100))
- fmt.Println(x)
+	x := reverseBits(uint32(33223))
+	fmt.Println(x)
 }
