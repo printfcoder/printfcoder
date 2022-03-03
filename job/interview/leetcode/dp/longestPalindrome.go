@@ -26,30 +26,39 @@ package dp
 //
 // 1 <= s.length <= 1000
 // s 仅由数字和英文字母组成
-
 func longestPalindrome(s string) string {
-	// 采用动态规划完成
-	// dp[i][j]，i为第i个回文串，j为该串中间值的坐标
-	// 当dp[i]
-	// 状态方程：
-	// 在[0,i)范围内，头尾与dp时，dp[i][j] = s[i-len(dp[i-1])-1]+dp[i-1][j]+s[i]
-	// 在[0,i)，头尾不一致时， 范围内dp[i][j] = dp[i-1][j]
+	left, right, winWidth, maxLen, maxStart := 0, 0, 1, 0, 0
+	for i, _ := range s {
+		// 每次遍历都移动一位
+		left = i - 1
+		right = i + 1
 
-	dp := make([]string, len(s))
-	dp[0] = s[:1]
-	if s[0] == s[1] {
-		dp[1] = s[:2]
-	} else {
-		dp[1] = dp[0]
-	}
-	for i := 2; i < len(s); i++ {
-		//	if s[i-len(dp[i-1])-1:len()/] != s[i] {
-		if true {
-			dp[i] = dp[i-1]
-		} else {
-			dp[i] = string(s[i-len(dp[i-1])-1]) + dp[i-1] + string(s[i])
+		// left 找一样的
+		for left >= 0 && s[i] == s[left] {
+			winWidth++
+			left--
 		}
+
+		// right 找一样的
+		for right < len(s) && s[i] == s[right] {
+			winWidth++
+			right++
+		}
+
+		// 找一样left和right两边一样的
+		for left >= 0 && right < len(s) && s[left] == s[right] {
+			winWidth += 2
+			right++
+			left--
+		}
+
+		if winWidth > maxLen {
+			maxLen = winWidth
+			maxStart = left
+		}
+
+		winWidth = 1
 	}
 
-	return dp[len(s)-1]
+	return s[maxStart+1 : maxStart+maxLen+1]
 }

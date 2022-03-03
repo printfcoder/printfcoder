@@ -1,4 +1,4 @@
-package main
+package tree
 
 import "math"
 
@@ -25,13 +25,13 @@ import "math"
 提示：
 
 树中节点数目范围在[1, 104] 内
--231 <= Node.val <= 231 - 1
+-231 <= TreeNode.val <= 231 - 1
 */
-func isValidBST(root *Node) bool {
+func isValidBST(root *TreeNode) bool {
 	return isValidbst(root, math.Inf(-1), math.Inf(1))
 }
 
-func isValidbst(root *Node, min, max float64) bool {
+func isValidbst(root *TreeNode, min, max float64) bool {
 	if root == nil {
 		return true
 	}

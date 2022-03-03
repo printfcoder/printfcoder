@@ -1,4 +1,4 @@
-package main
+package tree
 
 import (
 	"testing"
@@ -9,12 +9,12 @@ import (
 func TestInorderTraversalWithRecursion(t *testing.T) {
 	Convey("testing inorderTraversalWithRecursion", t, func() {
 		v := inorderTraversalWithRecursion(
-			&Node{
+			&TreeNode{
 				Val:  3,
-				Left: &Node{Val: 9},
-				Right: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 9},
+				Right: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
 			},
 		)
@@ -25,12 +25,12 @@ func TestInorderTraversalWithRecursion(t *testing.T) {
 func TestInorderTraversalWithIteration(t *testing.T) {
 	Convey("testing inorderTraversalWithIteration", t, func() {
 		v := inorderTraversalWithIteration(
-			&Node{
+			&TreeNode{
 				Val:  3,
-				Left: &Node{Val: 9},
-				Right: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 9},
+				Right: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
 			},
 		)

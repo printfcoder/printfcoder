@@ -1,4 +1,4 @@
-package main
+package tree
 
 //给定一个二叉树，找出其最大深度。
 //
@@ -18,10 +18,10 @@ package main
 // 返回它的最大深度 3 。
 // Related Topics 树 深度优先搜索 广度优先搜索 二叉树 👍 1054 👎 0
 
-type Node struct {
+type TreeNode struct {
 	Val   int
-	Left  *Node
-	Right *Node
+	Left  *TreeNode
+	Right *TreeNode
 }
 
 func max(x, y int) int {
@@ -32,7 +32,7 @@ func max(x, y int) int {
 }
 
 // O(N) time, O(heightOf(N)) space
-func maxDepthWithDepthFirst(root *Node) int {
+func maxDepthWithDepthFirst(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
@@ -44,12 +44,12 @@ func maxDepthWithDepthFirst(root *Node) int {
 // 使用一数组来存放当前节点的左右孩子，然后遍历这个数组，每次遍历迭代会把当前迭代的元素清掉，当当前迭代的元素有孩子时时把孩子塞到数组中，继续遍历
 // 每遍历完一次说明有1级深度
 // O(N) time, O(N) space
-func maxDepthWithBreadthFirst(root *Node) int {
+func maxDepthWithBreadthFirst(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
 
-	var arr []*Node
+	var arr []*TreeNode
 	arr = append(arr, root)
 	ans := 0
 

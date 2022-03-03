@@ -1,4 +1,4 @@
-package main
+package tree
 
 import (
 	"testing"
@@ -9,29 +9,29 @@ import (
 func TestSortedArrayToBST(t *testing.T) {
 	Convey("testing sortedArrayToBST", t, func() {
 		v := sortedArrayToBST([]int{1, 2, 3, 4, 5, 6, 7})
-		So(v, ShouldResemble, &Node{
+		So(v, ShouldResemble, &TreeNode{
 			Val: 4,
-			Left: &Node{
+			Left: &TreeNode{
 				Val:   2,
-				Left:  &Node{Val: 1},
-				Right: &Node{Val: 3},
+				Left:  &TreeNode{Val: 1},
+				Right: &TreeNode{Val: 3},
 			},
-			Right: &Node{
+			Right: &TreeNode{
 				Val:   6,
-				Left:  &Node{Val: 5},
-				Right: &Node{Val: 7},
+				Left:  &TreeNode{Val: 5},
+				Right: &TreeNode{Val: 7},
 			},
 		})
 
 		v = sortedArrayToBST([]int{1})
-		So(v, ShouldResemble, &Node{
+		So(v, ShouldResemble, &TreeNode{
 			Val: 1,
 		})
 
 		v = sortedArrayToBST([]int{1, 2})
-		So(v, ShouldResemble, &Node{
+		So(v, ShouldResemble, &TreeNode{
 			Val: 2,
-			Left: &Node{
+			Left: &TreeNode{
 				Val: 1,
 			},
 		})

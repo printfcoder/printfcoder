@@ -7,9 +7,9 @@ import (
 )
 
 func TestLongestPalindrome(t *testing.T) {
-	Convey("Testing merge two lists", t, func() {
+	Convey("Testing longestPalindrome", t, func() {
 		x := longestPalindrome("babad")
-		So(x, ShouldEqual, "aba")
+		So(x, ShouldEqual, "bab")
 
 		x = longestPalindrome("cbbd")
 		So(x, ShouldEqual, "bb")
