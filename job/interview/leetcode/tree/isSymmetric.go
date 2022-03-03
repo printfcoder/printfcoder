@@ -1,13 +1,13 @@
-package main
+package tree
 
 // O(n) time，O(n) space，空间为高度
-func isSymmetricWithRecursion(root *Node) bool {
+func isSymmetricWithRecursion(root *TreeNode) bool {
 	return check(root, root)
 }
 
 // O(n) time，O(n) space，空间为高度
-func isSymmetricWithIteration(root *Node) bool {
-	var q []*Node
+func isSymmetricWithIteration(root *TreeNode) bool {
+	var q []*TreeNode
 	q = append(q, root)
 	q = append(q, root)
 	u, v := root, root
@@ -35,7 +35,7 @@ func isSymmetricWithIteration(root *Node) bool {
 	return true
 }
 
-func check(p, q *Node) bool {
+func check(p, q *TreeNode) bool {
 	if p == nil && q == nil {
 		return true
 	}

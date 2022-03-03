@@ -1,4 +1,4 @@
-package main
+package tree
 
 import "testing"
 
@@ -7,12 +7,12 @@ import . "github.com/smartystreets/goconvey/convey"
 func TestMaxDepthWithDepthFirst(t *testing.T) {
 	Convey("testing maxDepthWithDepthFirst", t, func() {
 		v := maxDepthWithDepthFirst(
-			&Node{
+			&TreeNode{
 				Val:  3,
-				Left: &Node{Val: 9},
-				Right: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 9},
+				Right: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
 			},
 		)
@@ -23,12 +23,12 @@ func TestMaxDepthWithDepthFirst(t *testing.T) {
 func TestMaxDepthWithBreadthFirst(t *testing.T) {
 	Convey("testing maxDepthWithBreadthFirst", t, func() {
 		v := maxDepthWithBreadthFirst(
-			&Node{
+			&TreeNode{
 				Val:  3,
-				Left: &Node{Val: 9},
-				Right: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 9},
+				Right: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
 			},
 		)

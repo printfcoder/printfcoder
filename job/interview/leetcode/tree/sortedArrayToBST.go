@@ -1,4 +1,4 @@
-package main
+package tree
 
 //给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 高度平衡 二叉搜索树。
 //
@@ -34,7 +34,7 @@ package main
 //
 // Related Topics 树 二叉搜索树 数组 分治 二叉树 👍 891 👎 0
 
-func sortedArrayToBST(nums []int) *Node {
+func sortedArrayToBST(nums []int) *TreeNode {
 	if len(nums) == 0 {
 		return nil
 	}
@@ -42,7 +42,7 @@ func sortedArrayToBST(nums []int) *Node {
 	leftNums := nums[:rootIdx]
 	rightNums := nums[rootIdx+1:]
 
-	return &Node{
+	return &TreeNode{
 		Val:   nums[rootIdx],
 		Left:  sortedArrayToBST(leftNums),
 		Right: sortedArrayToBST(rightNums),

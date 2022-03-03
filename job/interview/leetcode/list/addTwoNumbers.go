@@ -37,5 +37,5 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) (output *ListNode) {
 		cur = cur.Next
 	}
 
-	return head
+	return head.Next
 }

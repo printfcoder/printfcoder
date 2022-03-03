@@ -1,7 +1,6 @@
 package list
 
 import (
-	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -9,33 +8,15 @@ import (
 
 func TestAddTwoNums(t *testing.T) {
 	Convey("Testing two nums", t, func() {
-		l1 := &ListNode{
-			3,
-			&ListNode{
-				4,
-				&ListNode{
-					6,
-					nil,
-				},
-			},
-		}
-		l2 := &ListNode{
-			8,
-			&ListNode{
-				4,
-				&ListNode{
-					5,
-					nil,
-				},
-			},
-		}
-		x := addTwoNumbers(l1, l2)
-		v := ""
-		for x.Next != nil {
-			v = v + fmt.Sprintf("%d", x.Next.Val)
-			x.Next = x.Next.Next
-		}
-
-		So(v, ShouldEqual, "1911")
+		x := addTwoNumbers(arrayToList([]int{2, 4, 3}), arrayToList([]int{5, 6, 4}))
+		So(x, ShouldResemble, arrayToList([]int{7, 0, 8}))
+		x = addTwoNumbers(arrayToList([]int{9, 9, 9, 9, 9, 9, 9}), arrayToList([]int{9, 9, 9, 9}))
+		So(x, ShouldResemble, arrayToList([]int{8, 9, 9, 9, 0, 0, 0, 1}))
+		x = addTwoNumbers(arrayToList([]int{9}), arrayToList([]int{9}))
+		So(x, ShouldResemble, arrayToList([]int{8, 1}))
+		x = addTwoNumbers(arrayToList([]int{9}), nil)
+		So(x, ShouldResemble, arrayToList([]int{9}))
+		x = addTwoNumbers(arrayToList([]int{9}), arrayToList([]int{0}))
+		So(x, ShouldResemble, arrayToList([]int{9}))
 	})
 }

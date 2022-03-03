@@ -1,4 +1,4 @@
-package main
+package tree
 
 import (
 	"testing"
@@ -9,30 +9,30 @@ import (
 func TestIsSymmetricWithRecursion(t *testing.T) {
 	Convey("testing isSymmetricWithRecursion", t, func() {
 		v := isSymmetricWithRecursion(
-			&Node{
+			&TreeNode{
 				Val: 3,
-				Left: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
-				Right: &Node{Val: 20,
-					Right: &Node{Val: 15},
-					Left:  &Node{Val: 7},
+				Right: &TreeNode{Val: 20,
+					Right: &TreeNode{Val: 15},
+					Left:  &TreeNode{Val: 7},
 				},
 			},
 		)
 		So(v, ShouldEqual, true)
 
 		v = isSymmetricWithRecursion(
-			&Node{
+			&TreeNode{
 				Val: 3,
-				Left: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
-				Right: &Node{Val: 20,
-					Left: &Node{Val: 15},
-					Right:  &Node{Val: 7},
+				Right: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
 			},
 		)
@@ -43,30 +43,30 @@ func TestIsSymmetricWithRecursion(t *testing.T) {
 func TestIsSymmetricWithIteration(t *testing.T) {
 	Convey("testing isSymmetricWithIteration", t, func() {
 		v := isSymmetricWithIteration(
-			&Node{
+			&TreeNode{
 				Val: 3,
-				Left: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
-				Right: &Node{Val: 20,
-					Right: &Node{Val: 15},
-					Left:  &Node{Val: 7},
+				Right: &TreeNode{Val: 20,
+					Right: &TreeNode{Val: 15},
+					Left:  &TreeNode{Val: 7},
 				},
 			},
 		)
 		So(v, ShouldEqual, true)
 
 		v = isSymmetricWithRecursion(
-			&Node{
+			&TreeNode{
 				Val: 3,
-				Left: &Node{Val: 20,
-					Left:  &Node{Val: 15},
-					Right: &Node{Val: 7},
+				Left: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
-				Right: &Node{Val: 20,
-					Left: &Node{Val: 15},
-					Right:  &Node{Val: 7},
+				Right: &TreeNode{Val: 20,
+					Left:  &TreeNode{Val: 15},
+					Right: &TreeNode{Val: 7},
 				},
 			},
 		)
