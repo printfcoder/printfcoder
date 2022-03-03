@@ -1,4 +1,4 @@
-package main
+package list
 
 func isPalindrome(head *ListNode) bool {
 	cur := head
