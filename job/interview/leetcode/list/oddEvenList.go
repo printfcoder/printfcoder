@@ -1,4 +1,4 @@
-package main
+package list
 
 /**
 奇偶链表

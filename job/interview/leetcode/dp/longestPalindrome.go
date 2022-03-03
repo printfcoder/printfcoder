@@ -43,7 +43,8 @@ func longestPalindrome(s string) string {
 		dp[1] = dp[0]
 	}
 	for i := 2; i < len(s); i++ {
-		if s[i-len(dp[i-1])-1:len()/] != s[i] {
+		//	if s[i-len(dp[i-1])-1:len()/] != s[i] {
+		if true {
 			dp[i] = dp[i-1]
 		} else {
 			dp[i] = string(s[i-len(dp[i-1])-1]) + dp[i-1] + string(s[i])
@@ -52,5 +53,3 @@ func longestPalindrome(s string) string {
 
 	return dp[len(s)-1]
 }
-
-

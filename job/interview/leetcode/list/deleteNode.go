@@ -1,4 +1,4 @@
-package main
+package list
 
 // SinglyLinkedListNode Definition for singly-linked list.
 type SinglyLinkedListNode struct {

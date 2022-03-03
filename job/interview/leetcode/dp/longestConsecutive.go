@@ -21,23 +21,27 @@ package dp
 -109 <= nums[i] <= 109
 */
 func longestConsecutive(nums []int) int {
-	// 规划方程里需要有最大值出现的最后一次位置和坐标
-	// d[i][j]表示第i个元素时，最大j个连续数
-	if len(nums) < 2 {
-		return len(nums)
+	mp := map[int]bool{}
+	for _, i := range nums {
+		mp[i] = true
 	}
-	dp := make([][]int, len(nums))
-	dp[0][0] = nums[0]
 
-	for i := 1; i < len(nums); i++ {
-		// 当第i个元素与上一个的衔接上时就附加上，不是就送给它
-		last := dp[i-1][len(dp[i-1])]
-		if nums[i]-last == 1 {
-			dp[i] = append(dp[i-1], nums[i])
-		} else {
-			dp[i] = dp[i-1]
+	maxLen := 0
+	for i := 0; i < len(nums); i++ {
+		// 如果有上一个，则说明是连续的
+		if !mp[nums[i]-1] {
+			// 那么从当前开始寻找
+			cur := nums[i]
+			count := 1
+			for mp[cur+1] {
+				cur++
+				count++
+			}
+
+			if count > maxLen {
+				maxLen = count
+			}
 		}
 	}
-
-	return len(dp[len(nums)-1])
+	return maxLen
 }
