@@ -32,6 +32,7 @@ func lengthOfLongestSubstring(s string) (sub string) {
 		return s
 	}
 
+	// 记录上一次出现的位置，要到这个位置重新找
 	m := make(map[uint8]int)
 	maxL, left, longestStr := 0, 0, ""
 	for i := 0; i < len(s); i++ {
