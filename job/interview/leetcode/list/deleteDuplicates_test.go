@@ -35,6 +35,9 @@ func TestDeleteDuplicatesSaveOne(t *testing.T) {
 }
 
 func arrayToList(arr []int) *ListNode {
+	if len(arr) == 0 {
+		return nil
+	}
 	ret := &ListNode{}
 	cur := ret
 	for i, v := range arr {
