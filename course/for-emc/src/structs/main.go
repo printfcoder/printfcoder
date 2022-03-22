@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/stack-labs/stack/broker"
+	"github.com/stack-labs/stack/plugin/registry/consul"
+)
 
 func main() {
 	stdZhang := &Student{
