@@ -1,0 +1,47 @@
+{
+    "root": {
+        "data": {
+            "id": "crgfgnh3py80",
+            "created": 1679845304871,
+            "text": "A股"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "crgfgrb055s0",
+                    "created": 1679845313209,
+                    "text": "代码",
+                    "layout_mind_offset": {
+                        "x": -116,
+                        "y": -145
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "crgfgvno00o0",
+                            "created": 1679845322682,
+                            "text": "拉取所有上市公司列表",
+                            "layout_right_offset": {
+                                "x": 2,
+                                "y": -82
+                            }
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "crgfjo0ftuo0",
+                    "created": 1679845541132,
+                    "text": "静态指标"
+                },
+                "children": []
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

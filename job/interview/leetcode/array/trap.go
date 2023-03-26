@@ -22,6 +22,7 @@ func trap(height []int) int {
 	// 快慢指纹
 	// fast用于找slow后面比slow小的，第一个是小的就继续，否则slow也向前
 	// 是小的就继续
-	slow, fast, res, temp, l := 0, 1, 0, 0, len(height)
+	// slow, fast, res, temp, l := 0, 1, 0, 0, len(height)
 
+	return 0
 }
