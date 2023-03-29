@@ -26,6 +26,7 @@ type DBConfig struct {
 
 type PGConfig struct {
 	DBName            string `sc:"dbName"`            // The name of the database to connect to
+	SearchPath        string `sc:"searchPath"`        // searchPath
 	User              string `sc:"user"`              // the user to sign in as
 	Password          string `sc:"password"`          // The user's password
 	Host              string `sc:"host"`              // The host to connect to.Values that start with / are for unix domain sockets. (default is localhost)

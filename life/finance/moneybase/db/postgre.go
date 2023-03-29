@@ -34,12 +34,12 @@ func initPostgre(ctx context.Context) error {
 }
 
 func parseConnectStr() string {
-	str := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?", c.DB.Postgre.User, c.DB.Postgre.Password, c.DB.Postgre.Host,
-		c.DB.Postgre.Port, c.DB.Postgre.DBName)
+	str := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?search_path=%s", c.DB.Postgre.User, c.DB.Postgre.Password, c.DB.Postgre.Host,
+		c.DB.Postgre.Port, c.DB.Postgre.DBName, c.DB.Postgre.SearchPath)
 
 	log.Infof("[initPG] pg connected %s", str)
 
-	str = fmt.Sprintf("%ssslmode=%s", str, c.DB.Postgre.SSLMode)
+	str = fmt.Sprintf("%s&sslmode=%s", str, c.DB.Postgre.SSLMode)
 
 	if c.DB.Postgre.SSLMode != "disable" {
 		if c.DB.Postgre.SSLCert != "" {

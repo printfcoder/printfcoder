@@ -1,2 +1,2 @@
 stack:
-  includes: stack-db.yml, stack-biz.yml
+  includes: stack-db.yml, stack-biz.yml, stack-keys.yml
