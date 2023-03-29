@@ -1,0 +1,5 @@
+api:
+  # 腾讯资料：https://blog.csdn.net/kokiafans/article/details/88329183
+  tencent:
+    # 股东查询
+    gudong: http://ifzq.gtimg.cn/stock/corp/gudb/query?symbol=

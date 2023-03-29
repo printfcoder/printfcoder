@@ -28,6 +28,42 @@
                             }
                         },
                         "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "crgfjvi5nag0",
+                            "created": 1679845557441,
+                            "text": "拉取每天涨跌数据",
+                            "layout_right_offset": {
+                                "x": 25,
+                                "y": -86
+                            }
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "crgfk1mk7080",
+                            "created": 1679845570768,
+                            "text": "拉取股东异动",
+                            "layout_right_offset": {
+                                "x": 33,
+                                "y": -93
+                            }
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cri29brrffk0",
+                            "created": 1680011176329,
+                            "text": "版块成交额",
+                            "layout_right_offset": {
+                                "x": 33,
+                                "y": -85
+                            }
+                        },
+                        "children": []
                     }
                 ]
             },
