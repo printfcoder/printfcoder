@@ -15,7 +15,7 @@
                         "x": 56,
                         "y": -211
                     },
-                    "expandState": "collapse"
+                    "expandState": "expand"
                 },
                 "children": [
                     {
@@ -43,7 +43,8 @@
                         "data": {
                             "id": "crbovbf7q400",
                             "created": 1679364044303,
-                            "text": "分解方式"
+                            "text": "分解方式",
+                            "expandState": "collapse"
                         },
                         "children": [
                             {
@@ -276,7 +277,8 @@
                         "data": {
                             "id": "crckujdl6vc0",
                             "created": 1679454258772,
-                            "text": "参考资源"
+                            "text": "参考资源",
+                            "expandState": "collapse"
                         },
                         "children": [
                             {
@@ -294,6 +296,99 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "data": {
+                            "id": "crhnk0pr0w80",
+                            "created": 1679969697620,
+                            "text": "GDPt"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crhnkna2y8o0",
+                                    "created": 1679969746739,
+                                    "text": "t：基准年份"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crjcjg515tc0",
+                                    "created": 1680141740536,
+                                    "text": "实际GDP：不变的价格"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crjcjwjqk8w0",
+                                    "created": 1680141776254,
+                                    "text": "名义GDP：当前价格"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crjcw79wobc0",
+                                    "created": 1680142739974,
+                                    "text": "价格水平指标",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crjckirx4ps0",
+                                            "created": 1680141824638,
+                                            "text": "GDP缩减指数t "
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crjclbsq2k80",
+                                                    "created": 1680141887813,
+                                                    "text": "= 名义GDPt/实际GDPt * 100"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crjclf7i47s0",
+                                                    "created": 1680141895237,
+                                                    "text": "变化率"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crjconmi33c0",
+                                                            "created": 1680142148651,
+                                                            "text": "通胀"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "crjcos4ujoo0",
+                                                            "created": 1680142158467,
+                                                            "text": "通胀 = (GDPdefl(t) - GDPdefl(t-1))/GDPdefl(t-1)"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crjcwfk3r3c0",
+                                            "created": 1680142758005,
+                                            "text": "消费者物价指数"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
@@ -303,9 +398,10 @@
                     "created": 1679363783603,
                     "text": "GNP",
                     "layout_mind_offset": {
-                        "x": 457,
-                        "y": 96
-                    }
+                        "x": 423,
+                        "y": 372
+                    },
+                    "expandState": "collapse"
                 },
                 "children": [
                     {
@@ -592,6 +688,105 @@
                                     }
                                 },
                                 "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crgs5vgp7880",
+                                    "created": 1679881134683,
+                                    "text": "= SP+SG",
+                                    "layout_right_offset": {
+                                        "x": 242,
+                                        "y": 7
+                                    }
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crgs616cyoo0",
+                                            "created": 1679881147119,
+                                            "text": "私人储蓄 + 政府储蓄",
+                                            "layout_right_offset": {
+                                                "x": 255,
+                                                "y": 0
+                                            }
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crgs77loesg0",
+                                            "created": 1679881239470,
+                                            "text": "SG = T - G",
+                                            "layout_right_offset": {
+                                                "x": 206,
+                                                "y": 0
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crgs7fo8iu80",
+                                                    "created": 1679881257039,
+                                                    "text": "T : 政府税收",
+                                                    "layout_right_offset": {
+                                                        "x": 228,
+                                                        "y": -9
+                                                    }
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crgsf95t6a00",
+                                            "created": 1679881869777,
+                                            "text": "SP = GNP - T- C",
+                                            "layout_right_offset": {
+                                                "x": 234,
+                                                "y": 0
+                                            }
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crgskwk4u7k0",
+                                            "created": 1679882312530,
+                                            "text": "BD = G - T = - SG",
+                                            "layout_right_offset": {
+                                                "x": 238,
+                                                "y": 13
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crgslgrb9fc0",
+                                                    "created": 1679882356500,
+                                                    "text": "BD < 0 ：政府储蓄透支",
+                                                    "layout_right_offset": {
+                                                        "x": 328,
+                                                        "y": 51
+                                                    }
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crgslo2lyog0",
+                                                    "created": 1679882372421,
+                                                    "text": "BD：国家预算赤字",
+                                                    "layout_right_offset": {
+                                                        "x": 303,
+                                                        "y": -54
+                                                    }
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }

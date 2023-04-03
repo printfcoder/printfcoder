@@ -22,11 +22,11 @@ func (g *GuBenTencent) DaiMa() string {
 }
 
 func (g *GuBenTencent) ZongGuBen() int64 {
-	return g.ZGB
+	return g.ZGB * 10000
 }
 
 func (g *GuBenTencent) LiuTongGuBen() int64 {
-	return g.LTGB
+	return g.LTGB * 10000
 }
 
 func (g *GuBenTencent) RenJunChiGu() float64 {
