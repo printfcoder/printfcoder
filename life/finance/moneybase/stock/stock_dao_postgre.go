@@ -16,7 +16,7 @@ func (d *DaoPostgre) SetDB(db *sql.DB) {
 	d.db = db
 }
 
-func (d *DaoPostgre) WriteAllAStocks(aStockBases []AStockBase) error {
+func (d *DaoPostgre) WriteAllAStocks(aStockBases ...AStockBase) error {
 	if d.db == nil {
 		return common.ErrorDBNil
 	}

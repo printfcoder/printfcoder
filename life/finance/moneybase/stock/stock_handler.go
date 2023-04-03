@@ -1,24 +1,25 @@
 package stock
 
 import (
-	"net/http"
+	"context"
 
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
-	"github.com/stack-labs/stack/service/web"
 )
 
-func Handlers() []web.HandlerFunc {
-	return []web.HandlerFunc{
+func Handlers() []common.HandlerFunc {
+	return []common.HandlerFunc{
 		{
-			"sync-stock-base",
-			SyncStocks,
+			Method:      "POST",
+			Path:        "sync-stock-base",
+			HandlerFunc: SyncStocks,
 		},
 	}
 }
 
-func SyncStocks(w http.ResponseWriter, r *http.Request) {
+func SyncStocks(ctx context.Context, r *app.RequestContext) {
 	rsp := &common.HTTPRsp{}
-	nation := r.URL.Query().Get("nation")
+	nation := r.Query("nation")
 	if nation != "cn" {
 		nation = "cn"
 	}
@@ -26,15 +27,15 @@ func SyncStocks(w http.ResponseWriter, r *http.Request) {
 	var err error
 	switch nation {
 	case "cn":
-		err = SyncAllStockBases()
+		err = SyncAllStockBases(ctx)
 	default:
 		// do nothing
 	}
 
 	if err != nil {
-		common.WriteFailHTTP(w, rsp, err)
+		common.WriteFailHTTP(r, rsp, err)
 		return
 	}
 
-	common.WriteSuccessHTTP(w, rsp)
+	common.WriteSuccessHTTP(r, rsp)
 }

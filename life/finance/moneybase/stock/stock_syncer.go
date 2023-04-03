@@ -1,6 +1,16 @@
 package stock
 
-import "context"
+import (
+	"context"
+	"sync"
+
+	log "github.com/stack-labs/stack/logger"
+)
+
+var (
+	syncers   = map[string]Syncer{}
+	syncerMux sync.Mutex
+)
 
 type Syncer interface {
 	// Init 初始化
@@ -13,12 +23,15 @@ type Syncer interface {
 	SyncAllStockBases() error
 	// SyncGuBen 同步股本
 	SyncGuBen() error
+	// MethodSupported 是否支持该方法
+	MethodSupported(methodName string) (supported bool, err error)
 }
 
 type SyncerOption func(o *SyncerOptions)
 
 type SyncerOptions struct {
-	Dao Dao
+	Dao  Dao
+	Name string
 }
 
 func WithDao(db Dao) SyncerOption {
@@ -28,5 +41,20 @@ func WithDao(db Dao) SyncerOption {
 }
 
 func SyncerAdapter(ctx context.Context) Syncer {
+	methodName, err := getMethodNameFromHTTP(ctx)
+	if err != nil {
+		// todo 优化
+	}
 
+	methodName = "sync-stock-base"
+	for _, syncer := range syncers {
+		if ok, err := syncer.MethodSupported(methodName); ok {
+			return syncer
+		} else {
+			log.Errorf("[SyncerAdapter] check syncer[%s] method support err: %s", syncer.Name(), err)
+			continue
+		}
+	}
+
+	panic("no syncer")
 }

@@ -17,8 +17,6 @@ var (
 	c KeysConfig
 
 	s sync.Mutex
-
-	syncers map[string]Syncer
 )
 
 type KeysConfig struct {
@@ -53,8 +51,6 @@ func Init(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-
-	syncers[syncerMairui.Name()] = syncerMairui
 
 	return nil
 }
