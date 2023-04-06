@@ -2,9 +2,10 @@ package stock
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
 	log "github.com/stack-labs/stack/logger"
-	"net/http"
 )
 
 func NewSyncerMairui() *SyncerMairui {
@@ -13,6 +14,10 @@ func NewSyncerMairui() *SyncerMairui {
 
 type SyncerMairui struct {
 	Options *SyncerOptions
+}
+
+func (s *SyncerMairui) SyncSingleStockGuBen(code string) error {
+	return common.ErrorStockUnimplementedMethod
 }
 
 func (s *SyncerMairui) MethodSupported(methodName string) (supported bool, err error) {
@@ -65,7 +70,7 @@ func (s *SyncerMairui) SyncAllStockBases() error {
 		return err
 	}
 
-	err = s.Options.Dao.WriteAllAStocks(aStockBases...)
+	err = s.Options.Dao.WriteAllAStockBases(aStockBases...)
 	if err != nil {
 		log.Errorf("mairui同步股票基本信息到数据库异常。err: %s", err)
 		return err
@@ -74,6 +79,6 @@ func (s *SyncerMairui) SyncAllStockBases() error {
 	return nil
 }
 
-func (s *SyncerMairui) SyncGuBen() error {
+func (s *SyncerMairui) SyncAllStockGuBen() error {
 	return common.ErrorStockUnimplementedMethod
 }

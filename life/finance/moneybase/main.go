@@ -36,11 +36,9 @@ func main() {
 		server.WithBasePath("/api/money-base"),
 		server.WithHostPorts(":8899"),
 	)
-
-	handlers(h)
-
 	h.Use(stock.MethodNameInjectWrapper)
 
+	handlers(h)
 	h.Name = "printfcoder.money.base"
 
 	h.Spin()
