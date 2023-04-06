@@ -15,14 +15,22 @@ var (
 type Syncer interface {
 	// Init 初始化
 	Init(opts ...SyncerOption) error
+
 	// Name 同步插件名字
 	Name() string
+
 	// Sync 同步汇总
 	Sync() error
+
 	// SyncAllStockBases 同步所有股票基本信息
 	SyncAllStockBases() error
-	// SyncGuBen 同步股本
-	SyncGuBen() error
+
+	// SyncAllStockGuBen 同步所有股票股本
+	SyncAllStockGuBen() error
+
+	// SyncSingleStockGuBen 同步单支股本
+	SyncSingleStockGuBen(code string) error
+
 	// MethodSupported 是否支持该方法
 	MethodSupported(methodName string) (supported bool, err error)
 }
@@ -46,7 +54,6 @@ func SyncerAdapter(ctx context.Context) Syncer {
 		// todo 优化
 	}
 
-	methodName = "sync-stock-base"
 	for _, syncer := range syncers {
 		if ok, err := syncer.MethodSupported(methodName); ok {
 			return syncer

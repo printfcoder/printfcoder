@@ -6,6 +6,12 @@ type Dao interface {
 	// SetDB 设置DB
 	SetDB(db *sql.DB)
 
-	// WriteAllAStocks 写入所有A股信息到数据库
-	WriteAllAStocks(aStockBases ...AStockBase) error
+	// ReadAllAStockBases 读取所有A股股本信息到数据库
+	ReadAllAStockBases() (list []AStockBase, err error)
+
+	// WriteAllAStockBases 写入所有A股信息到数据库
+	WriteAllAStockBases(aStockBases ...AStockBase) error
+
+	// WriteAStockGuBen 写入所有A股股本信息到数据库
+	WriteAStockGuBen(guBenInfo GuBenInfo) error
 }

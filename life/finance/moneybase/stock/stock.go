@@ -22,6 +22,7 @@ var (
 type KeysConfig struct {
 	Keys struct {
 		MairuiClub MairuiClubConfig `sc:"mairui-club"`
+		Tencent    TencentConfig    `sc:"tencent"`
 	} `sc:"keys"`
 }
 
@@ -32,6 +33,10 @@ type MairuiClubConfig struct {
 
 func (m *MairuiClubConfig) getHSLTURL() string {
 	return fmt.Sprintf("%s%s", m.HSLTURL, m.Key)
+}
+
+type TencentConfig struct {
+	GubenUrl string `sc:"guben-url"`
 }
 
 func Init(ctx context.Context) error {
@@ -48,6 +53,12 @@ func Init(ctx context.Context) error {
 	// mairui 插件
 	syncerMairui := NewSyncerMairui()
 	err = syncerMairui.Init(WithDao(dao))
+	if err != nil {
+		return err
+	}
+
+	syncerTencent := NewSyncerTencent()
+	err = syncerTencent.Init(WithDao(dao))
 	if err != nil {
 		return err
 	}
