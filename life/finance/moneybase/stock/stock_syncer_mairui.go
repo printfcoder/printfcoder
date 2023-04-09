@@ -16,6 +16,10 @@ type SyncerMairui struct {
 	Options *SyncerOptions
 }
 
+func (s *SyncerMairui) GetStockQT(symbol ...string) ([]StockQTData, error) {
+	return nil, common.ErrorStockUnimplementedMethod
+}
+
 func (s *SyncerMairui) SyncSingleStockGuBen(code string) error {
 	return common.ErrorStockUnimplementedMethod
 }

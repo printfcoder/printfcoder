@@ -29,7 +29,10 @@ type Syncer interface {
 	SyncAllStockGuBen() error
 
 	// SyncSingleStockGuBen 同步单支股本
-	SyncSingleStockGuBen(code string) error
+	SyncSingleStockGuBen(symbol string) error
+
+	// GetStockQT 获取股票当前价值
+	GetStockQT(symbol ...string) ([]StockQTData, error)
 
 	// MethodSupported 是否支持该方法
 	MethodSupported(methodName string) (supported bool, err error)

@@ -1,0 +1,34 @@
+keys:
+  mairui-club:
+    hslt-url: http://api.mairui.club/hslt/list/
+    key: 6512ddbcfc5719804
+  tencent:
+    # 股本行情
+    guben-url: http://ifzq.gtimg.cn/stock/corp/gudb/query?symbol=
+    # 分钟行情（K线）
+    minute-url: http://ifzq.gtimg.cn/appstock/app/minute/query?code=
+    # 获取实时资金流向
+    zijin-liuxiang-url: http://qt.gtimg.cn/q=
+db:
+  dialect: postgre
+  postgre:
+    dbName: postgres
+    searchPath: moneybase
+    user: me
+    password: 123
+    host: 127.0.0.1
+    port: 5432
+    sslMode: disable
+    connectTimeout:
+    sslCert:
+    sslKey:
+    sslRootCert:
+    maxOpenConnection:
+    maxIdleConnection:
+api:
+  adapter:
+    sync-stock-base:
+  # 腾讯资料：https://blog.csdn.net/kokiafans/article/details/88329183
+  tencent:
+    # 股东查询
+    gudong: http://ifzq.gtimg.cn/stock/corp/gudb/query?symbol=
