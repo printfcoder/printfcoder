@@ -2,6 +2,7 @@ package stock
 
 import (
 	"context"
+	"strings"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
@@ -23,6 +24,11 @@ func Handlers() []common.HandlerFunc {
 			Method:      "POST",
 			Path:        "sync-all-stock-guben",
 			HandlerFunc: syncAllGuBen,
+		},
+		{
+			Method:      "GET",
+			Path:        "get-current-value",
+			HandlerFunc: getCurrentValue,
 		},
 	}
 }
@@ -99,5 +105,26 @@ func syncAllGuBen(ctx context.Context, r *app.RequestContext) {
 		return
 	}
 
+	common.WriteSuccessHTTP(r, rsp)
+}
+
+func getCurrentValue(ctx context.Context, r *app.RequestContext) {
+	rsp := &common.HTTPRsp{}
+
+	symbolStr := r.Query("symbols")
+	if symbolStr == "" {
+		common.WriteFailHTTP(r, rsp, common.ErrorStockInvalidCode)
+		return
+	}
+
+	symbols := strings.Split(symbolStr, ",")
+
+	stockQTs, err := GetStockQT(ctx, symbols...)
+	if err != nil {
+		common.WriteFailHTTP(r, rsp, err)
+		return
+	}
+
+	rsp.Data = stockQTs
 	common.WriteSuccessHTTP(r, rsp)
 }

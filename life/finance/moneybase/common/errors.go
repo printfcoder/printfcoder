@@ -34,4 +34,5 @@ var (
 	ErrorStockSyncGuBenToDB            = &Error{No: "120005", Msg: "同步股票股本信息异常"}
 	ErrorStockVendorGuBenIsNil         = &Error{No: "120006", Msg: "供应商股本信息不存在"}
 	ErrorStockSyncAllGuBenToDB         = &Error{No: "120007", Msg: "同步所有股票股本信息异常"}
+	ErrorStockVendorGuBenReadError     = &Error{No: "120008", Msg: "供应商股本结构接口读取异常"}
 )

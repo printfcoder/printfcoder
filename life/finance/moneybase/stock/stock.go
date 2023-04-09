@@ -36,7 +36,9 @@ func (m *MairuiClubConfig) getHSLTURL() string {
 }
 
 type TencentConfig struct {
-	GubenUrl string `sc:"guben-url"`
+	GubenUrl         string `sc:"guben-url"`
+	MinuteURL        string `sc:"minute-url"`
+	ZiJinLiuxiangUrl string `sc:"zijin-liuxiang-url"`
 }
 
 func Init(ctx context.Context) error {

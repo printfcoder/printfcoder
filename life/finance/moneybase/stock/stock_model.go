@@ -137,3 +137,25 @@ type GuBenInfo struct {
 	FundChiGu []FundChiGu
 	GuDong    []GuDong
 }
+
+/*
+*
+
+	1: 股票名字
+	    2: 股票代码
+	    3: 当前价格
+	    4: 昨收
+	    5: 今开
+	    6: 成交量（手）
+*/
+type StockCurrent struct {
+	MC             string  `json:"mc"`
+	DM             string  `json:"dm"`
+	JinKai         float64 `json:"jin_kai"`
+	ZuoShou        float64 `json:"zuo_shou"`
+	DangQianJia    float64 `json:"dang_qian_jia"`
+	ZhangFu        float64 `json:"zhang_fu"`
+	ZhangFuPercent float64 `json:"zhang_fu_percent"`
+	ZhuLiLiuRu     float64 `json:"zhu_li_liu_ru"`
+	ZhuLiLiuChu    float64 `json:"zhu_li_liu_chu"`
+}
