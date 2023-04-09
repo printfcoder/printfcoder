@@ -1,0 +1,800 @@
+{
+    "root": {
+        "data": {
+            "id": "crbonx3dqqo0",
+            "created": 1679363464564,
+            "text": "经济学"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "crbopt3q17c0",
+                    "created": 1679363612605,
+                    "text": "GDP",
+                    "layout_mind_offset": {
+                        "x": 56,
+                        "y": -211
+                    },
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "crbosoz5obk0",
+                            "created": 1679363838715,
+                            "text": "定义",
+                            "layout_right_offset": {
+                                "x": -7,
+                                "y": -55
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crbosrim43c0",
+                                    "created": 1679363844245,
+                                    "text": "经济体最终商品和服务的总价值"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "crbovbf7q400",
+                            "created": 1679364044303,
+                            "text": "分解方式",
+                            "expandState": "collapse"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crbovgj9ryg0",
+                                    "created": 1679364055432,
+                                    "text": "要素收入"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crbp3ikig740",
+                                            "created": 1679364686774,
+                                            "text": "经济体中要素收入之和"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "crbp3sldfw00",
+                                    "created": 1679364708594,
+                                    "text": "要素支出"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crbp5m294fk0",
+                                            "created": 1679364851106,
+                                            "text": "经济体中要素的支出之和"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crcjhgcgehc0",
+                                            "created": 1679450412330,
+                                            "text": "Y=C+I+G+(X-M)=C+I+G+NX",
+                                            "expandState": "expand"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crcjhvk896g0",
+                                                    "created": 1679450445451,
+                                                    "text": "Y",
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crcjhxgpe280",
+                                                            "created": 1679450449591,
+                                                            "text": "GDP"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crcji0q92zc0",
+                                                    "created": 1679450456699,
+                                                    "text": "C"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crcji81bnc00",
+                                                            "created": 1679450472606,
+                                                            "text": "私人消费"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crcjibgswjs0",
+                                                    "created": 1679450480072,
+                                                    "text": "I"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crcjidbev1c0",
+                                                            "created": 1679450484100,
+                                                            "text": "投资"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crcjiesjpq00",
+                                                    "created": 1679450487313,
+                                                    "text": "G"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crcjigpo4t40",
+                                                            "created": 1679450491492,
+                                                            "text": "政府支出"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crcjijiuca00",
+                                                    "created": 1679450497610,
+                                                    "text": "X"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crcjim9rdo80",
+                                                            "created": 1679450503591,
+                                                            "text": "出口"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crcjio9r0f40",
+                                                    "created": 1679450507944,
+                                                    "text": "M"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crcjiq39he80",
+                                                            "created": 1679450511905,
+                                                            "text": "进口"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crcjirmc9cw0",
+                                                    "created": 1679450515236,
+                                                    "text": "NX",
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crcjiu4jwf40",
+                                                            "created": 1679450520690,
+                                                            "text": "净出口"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "crcjixyzivc0",
+                                                            "created": 1679450529061,
+                                                            "text": "X-M"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crddtpavxyw0",
+                                                    "created": 1679536005493,
+                                                    "text": "C+I+G"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crddtursetc0",
+                                                            "created": 1679536017398,
+                                                            "text": "国内居民总支出：国内吸收"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "crbp66nmae80",
+                                    "created": 1679364895933,
+                                    "text": "附加值分解"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crcjf4nr8f40",
+                                            "created": 1679450230163,
+                                            "text": "生产过程中不同阶段产生的附件值，相当于创造出的新价值"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crcjfhof25k0",
+                                            "created": 1679450258501,
+                                            "text": "附加值"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crcjfjpduuo0",
+                                                    "created": 1679450262913,
+                                                    "text": "商品服务的收入 减去 中间商品服务的支出 得出的差额"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "crckujdl6vc0",
+                            "created": 1679454258772,
+                            "text": "参考资源",
+                            "expandState": "collapse"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crckun9wt2w0",
+                                    "created": 1679454267257,
+                                    "text": "中国GDP趋势",
+                                    "hyperlink": "https://sc.macromicro.me/collections/22/cn-gdp-relative/984/cn-gdp-percentage",
+                                    "hyperlinkTitle": "中国GDP数据趋势",
+                                    "layout_right_offset": {
+                                        "x": 0,
+                                        "y": 37
+                                    }
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "crhnk0pr0w80",
+                            "created": 1679969697620,
+                            "text": "GDPt"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crhnkna2y8o0",
+                                    "created": 1679969746739,
+                                    "text": "t：基准年份"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crjcjg515tc0",
+                                    "created": 1680141740536,
+                                    "text": "实际GDP：不变的价格"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crjcjwjqk8w0",
+                                    "created": 1680141776254,
+                                    "text": "名义GDP：当前价格"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crjcw79wobc0",
+                                    "created": 1680142739974,
+                                    "text": "价格水平指标",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crjckirx4ps0",
+                                            "created": 1680141824638,
+                                            "text": "GDP缩减指数t "
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crjclbsq2k80",
+                                                    "created": 1680141887813,
+                                                    "text": "= 名义GDPt/实际GDPt * 100"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crjclf7i47s0",
+                                                    "created": 1680141895237,
+                                                    "text": "变化率"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "crjconmi33c0",
+                                                            "created": 1680142148651,
+                                                            "text": "通胀"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "crjcos4ujoo0",
+                                                            "created": 1680142158467,
+                                                            "text": "通胀 = (GDPdefl(t) - GDPdefl(t-1))/GDPdefl(t-1)"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crjcwfk3r3c0",
+                                            "created": 1680142758005,
+                                            "text": "消费者物价指数"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "crborznperk0",
+                    "created": 1679363783603,
+                    "text": "GNP",
+                    "layout_mind_offset": {
+                        "x": 423,
+                        "y": 372
+                    },
+                    "expandState": "collapse"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "crddu94hyj40",
+                            "created": 1679536048642,
+                            "text": "国民生成总值",
+                            "layout_right_offset": {
+                                "x": 291,
+                                "y": 19
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crddz0jqo2o0",
+                                    "created": 1679536421793,
+                                    "text": "居民所有生产要素产生之和",
+                                    "layout_right_offset": {
+                                        "x": 338,
+                                        "y": 14
+                                    }
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crddzdxd0jk0",
+                                    "created": 1679536450915,
+                                    "text": "不包含在本国的外国居民",
+                                    "layout_right_offset": {
+                                        "x": 365,
+                                        "y": 26
+                                    }
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "crdduc3mj9c0",
+                            "created": 1679536055119,
+                            "text": "= GDP+NIRA",
+                            "layout_right_offset": {
+                                "x": 284,
+                                "y": 30
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crde0ntaq6g0",
+                                    "created": 1679536550801,
+                                    "text": "NIRA",
+                                    "layout_right_offset": {
+                                        "x": 207,
+                                        "y": 5
+                                    }
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crde0q8l00w0",
+                                            "created": 1679536556079,
+                                            "text": "定义：从国外获取净收入",
+                                            "layout_right_offset": {
+                                                "x": 287.50000033527624,
+                                                "y": -13.250000055879354
+                                            }
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crdej4eiwu00",
+                                            "created": 1679537997468,
+                                            "text": "从拥有的外资中获取的收入之和 - 支付外国拥有的本国资产的收入",
+                                            "layout_right_offset": {
+                                                "x": 477,
+                                                "y": -17
+                                            }
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "crdem2klzig0",
+                                    "created": 1679538228575,
+                                    "text": "= C + I +G + NX + NIRA",
+                                    "layout_right_offset": {
+                                        "x": 296,
+                                        "y": -10
+                                    }
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cre93w4x90w0",
+                                    "created": 1679624258418,
+                                    "text": "C + I + G + CB",
+                                    "layout_right_offset": {
+                                        "x": 282,
+                                        "y": 7
+                                    },
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cre91yqw6dc0",
+                                            "created": 1679624107372,
+                                            "text": "经常项目（CB）",
+                                            "layout_right_offset": {
+                                                "x": 274,
+                                                "y": -2
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "cre93d1jzpc0",
+                                                    "created": 1679624216856,
+                                                    "text": "NX+NIRA",
+                                                    "layout_right_offset": {
+                                                        "x": 250,
+                                                        "y": -13
+                                                    }
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "cre94rbq7fc0",
+                                                    "created": 1679624326310,
+                                                    "text": "CB < 0",
+                                                    "layout_right_offset": {
+                                                        "x": 248,
+                                                        "y": -2
+                                                    }
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "cre95a5py8g0",
+                                                            "created": 1679624367305,
+                                                            "text": "经常项目赤字",
+                                                            "layout_right_offset": {
+                                                                "x": 222,
+                                                                "y": 8
+                                                            }
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "cre96hcajzk0",
+                                                    "created": 1679624461305,
+                                                    "text": "CB = 0",
+                                                    "layout_right_offset": {
+                                                        "x": 240,
+                                                        "y": 0
+                                                    }
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "cre96l5ym0o0",
+                                                            "created": 1679624469629,
+                                                            "text": "封闭经济体",
+                                                            "layout_right_offset": {
+                                                                "x": 191,
+                                                                "y": 14
+                                                            }
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "crdeo1wbxzk0",
+                            "created": 1679538383835,
+                            "text": "债权国",
+                            "layout_right_offset": {
+                                "x": 249,
+                                "y": -2
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crdeo8g1vj40",
+                                    "created": 1679538398089,
+                                    "text": "GNP>GDP",
+                                    "layout_right_offset": {
+                                        "x": 212,
+                                        "y": -4
+                                    }
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crdeofy6qps0",
+                                    "created": 1679538414423,
+                                    "text": "从国外资产获取的收多于国外负债",
+                                    "layout_right_offset": {
+                                        "x": 342,
+                                        "y": -5
+                                    }
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "crdeojce7wo0",
+                            "created": 1679538421812,
+                            "text": "债务国",
+                            "layout_right_offset": {
+                                "x": 261,
+                                "y": 12
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "crdeos7sdio0",
+                                    "created": 1679538441125,
+                                    "text": "GNP<GDP",
+                                    "layout_right_offset": {
+                                        "x": 212,
+                                        "y": 6
+                                    }
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cre99i8bv3k0",
+                            "created": 1679624698334,
+                            "text": "国内储蓄（S）",
+                            "layout_right_offset": {
+                                "x": 300,
+                                "y": 54
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cre9ad89sdk0",
+                                    "created": 1679624765811,
+                                    "text": "= GNP - C - G",
+                                    "layout_right_offset": {
+                                        "x": 280,
+                                        "y": 0
+                                    }
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crgs0z3kpg00",
+                                    "created": 1679880750776,
+                                    "text": "= CB + I",
+                                    "layout_right_offset": {
+                                        "x": 247,
+                                        "y": -6
+                                    }
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "crgs5vgp7880",
+                                    "created": 1679881134683,
+                                    "text": "= SP+SG",
+                                    "layout_right_offset": {
+                                        "x": 242,
+                                        "y": 7
+                                    }
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "crgs616cyoo0",
+                                            "created": 1679881147119,
+                                            "text": "私人储蓄 + 政府储蓄",
+                                            "layout_right_offset": {
+                                                "x": 255,
+                                                "y": 0
+                                            }
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crgs77loesg0",
+                                            "created": 1679881239470,
+                                            "text": "SG = T - G",
+                                            "layout_right_offset": {
+                                                "x": 206,
+                                                "y": 0
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crgs7fo8iu80",
+                                                    "created": 1679881257039,
+                                                    "text": "T : 政府税收",
+                                                    "layout_right_offset": {
+                                                        "x": 228,
+                                                        "y": -9
+                                                    }
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crgsf95t6a00",
+                                            "created": 1679881869777,
+                                            "text": "SP = GNP - T- C",
+                                            "layout_right_offset": {
+                                                "x": 234,
+                                                "y": 0
+                                            }
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "crgskwk4u7k0",
+                                            "created": 1679882312530,
+                                            "text": "BD = G - T = - SG",
+                                            "layout_right_offset": {
+                                                "x": 238,
+                                                "y": 13
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "crgslgrb9fc0",
+                                                    "created": 1679882356500,
+                                                    "text": "BD < 0 ：政府储蓄透支",
+                                                    "layout_right_offset": {
+                                                        "x": 328,
+                                                        "y": 51
+                                                    }
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "crgslo2lyog0",
+                                                    "created": 1679882372421,
+                                                    "text": "BD：国家预算赤字",
+                                                    "layout_right_offset": {
+                                                        "x": 303,
+                                                        "y": -54
+                                                    }
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

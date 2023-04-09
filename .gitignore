@@ -1,2 +1,6 @@
 .DS_Store
 ~*
+
+stack-db.yml
+stack-biz.yml
+stack-keys.yml

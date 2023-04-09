@@ -1,0 +1,83 @@
+{
+    "root": {
+        "data": {
+            "id": "crgfgnh3py80",
+            "created": 1679845304871,
+            "text": "A股"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "crgfgrb055s0",
+                    "created": 1679845313209,
+                    "text": "代码",
+                    "layout_mind_offset": {
+                        "x": -116,
+                        "y": -145
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "crgfgvno00o0",
+                            "created": 1679845322682,
+                            "text": "拉取所有上市公司列表",
+                            "layout_right_offset": {
+                                "x": 2,
+                                "y": -82
+                            }
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "crgfjvi5nag0",
+                            "created": 1679845557441,
+                            "text": "拉取每天涨跌数据",
+                            "layout_right_offset": {
+                                "x": 25,
+                                "y": -86
+                            }
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "crgfk1mk7080",
+                            "created": 1679845570768,
+                            "text": "拉取股东异动",
+                            "layout_right_offset": {
+                                "x": 33,
+                                "y": -93
+                            }
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cri29brrffk0",
+                            "created": 1680011176329,
+                            "text": "版块成交额",
+                            "layout_right_offset": {
+                                "x": 33,
+                                "y": -85
+                            }
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "crgfjo0ftuo0",
+                    "created": 1679845541132,
+                    "text": "静态指标"
+                },
+                "children": []
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
