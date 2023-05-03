@@ -30,6 +30,16 @@ func Handlers() []common.HandlerFunc {
 			Path:        "get-current-value",
 			HandlerFunc: getCurrentValue,
 		},
+		{
+			Method:      "POST",
+			Path:        "write-single-qt-daily",
+			HandlerFunc: writeSingleQTDaily,
+		},
+		{
+			Method:      "POST",
+			Path:        "write-qt-daily",
+			HandlerFunc: writeQTDaily,
+		},
 	}
 }
 
@@ -126,5 +136,35 @@ func getCurrentValue(ctx context.Context, r *app.RequestContext) {
 	}
 
 	rsp.Data = stockQTs
+	common.WriteSuccessHTTP(r, rsp)
+}
+
+func writeSingleQTDaily(ctx context.Context, r *app.RequestContext) {
+	rsp := &common.HTTPRsp{}
+
+	symbol := r.Query("symbol")
+	if symbol == "" {
+		common.WriteFailHTTP(r, rsp, common.ErrorStockInvalidCode)
+		return
+	}
+
+	err := WriteSingleStockQTDaily(ctx, symbol)
+	if err != nil {
+		common.WriteFailHTTP(r, rsp, err)
+		return
+	}
+
+	common.WriteSuccessHTTP(r, rsp)
+}
+
+func writeQTDaily(ctx context.Context, r *app.RequestContext) {
+	rsp := &common.HTTPRsp{}
+
+	err := WriteStockQTDaily(ctx)
+	if err != nil {
+		common.WriteFailHTTP(r, rsp, err)
+		return
+	}
+
 	common.WriteSuccessHTTP(r, rsp)
 }

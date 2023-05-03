@@ -18,6 +18,20 @@ func SyncAllStockGuBen(ctx context.Context) error {
 }
 
 // GetStockQT 从A股获取股票QT信息
-func GetStockQT(ctx context.Context, symbols ...string) ([]StockQTData, error) {
+func GetStockQT(ctx context.Context, symbols ...string) ([]StockQTDataTencent, error) {
 	return SyncerAdapter(ctx).GetStockQT(symbols...)
+}
+
+// WriteSingleStockQTDaily 写入单个每天QT
+func WriteSingleStockQTDaily(ctx context.Context, symbol string) (err error) {
+	return SyncerAdapter(ctx).WriteSingleStockQTDaily(symbol)
+}
+
+// WriteStockQTDaily 写入每天QT
+func WriteStockQTDaily(ctx context.Context) (err error) {
+	return SyncerAdapter(ctx).WriteStockQTDaily()
+}
+
+func WriteXianRenZhang(ctx context.Context, sms string) (err error) {
+	return
 }

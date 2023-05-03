@@ -295,39 +295,77 @@ func (g *GuBenInfoTencent) ToGuBenInfo() GuBenInfo {
 ————————————————
 */
 
-// StockQTData 当前行情
-type StockQTData struct {
-	MC                                string `json:"mc"`
-	DaiMa                             string `json:"dai_ma"`
-	DangQianJiaGe                     string `json:"dang_qian_jia_ge"`
-	ZuoShou                           string `json:"zuo_shou"`
-	JinKai                            string `json:"jin_kai"`
-	ChengJiaoLiangShou                string `json:"cheng_jiao_liang"`
-	WaiPan                            string `json:"wai_pan"`
-	NaiPan                            string `json:"nai_pan"`
-	Mai3Yi                            string `json:"mai_3_yi"`
-	Mai3YiShou                        string `json:"mai_3_yi_shou"`
-	Mai4Yi                            string `json:"mai_4_yi"`
-	Mai4YiShou                        string `json:"mai_4_yi_shou"`
-	ZuiJinZhuBiChengJiao              string `json:"zui_jin_zhu_bi_cheng_jiao"`
-	ShiJian                           string `json:"shi_jian"`
-	ZhangDie                          string `json:"zhang_die"`
-	ZhangDiePercent                   string `json:"zhang_die_percent"`
-	Max                               string `json:"max"`
-	Min                               string `json:"min"`
-	JiaGeChengJiaoLiangShouChengJiaoE string `json:"jia_ge_cheng_jiao_liang_shou_cheng_jiao_e"`
-	ChengJiaoLiangShou2               string `json:"cheng_jiao_liang_shou_2"`
-	ChengJiaoEWan                     string `json:"cheng_jiao_e_wan"`
-	HuanShouLv                        string `json:"huan_shou_lv"`
-	ShiYingLv                         string `json:"shi_ying_lv"`
-	ZuiGao2                           string `json:"zui_gao_2"`
-	ZuiDi2                            string `json:"zui_di_2"`
-	ZhenFu                            string `json:"zhen_fu"`
-	LiuTongShiZhi                     string `json:"liu_tong_shi_zhi"`
-	ZongShiZhi                        string `json:"zong_shi_zhi"`
-	ShiJingLv                         string `json:"shi_jing_lv"`
-	ZhangTingJia                      string `json:"zhang_ting_jia"`
-	DieTingJia                        string `json:"die_ting_jia"`
+// StockQTDataTencent 当前行情
+type StockQTDataTencent struct {
+	MC                                string  `json:"mc"`
+	DaiMa                             string  `json:"dai_ma"`
+	DangQianJiaGe                     float64 `json:"dang_qian_jia_ge"`
+	ZuoShou                           float64 `json:"zuo_shou"`
+	JinKai                            float64 `json:"jin_kai"`
+	ChengJiaoLiangShou                int64   `json:"cheng_jiao_liang"`
+	WaiPan                            int64   `json:"wai_pan"`
+	NeiPan                            int64   `json:"nei_pan"`
+	Mai3Yi                            float64 `json:"mai_3_yi"`
+	Mai3YiShou                        int64   `json:"mai_3_yi_shou"`
+	Mai4Yi                            float64 `json:"mai_4_yi"`
+	Mai4YiShou                        int64   `json:"mai_4_yi_shou"`
+	ZuiJinZhuBiChengJiao              int64   `json:"zui_jin_zhu_bi_cheng_jiao"`
+	ShiJian                           int64   `json:"shi_jian"`
+	ZhangDie                          float64 `json:"zhang_die"`
+	ZhangDiePercent                   float64 `json:"zhang_die_percent"`
+	Max                               float64 `json:"max"`
+	Min                               float64 `json:"min"`
+	JiaGeChengJiaoLiangShouChengJiaoE string  `json:"jia_ge_cheng_jiao_liang_shou_cheng_jiao_e"`
+	ChengJiaoLiangShou2               int64   `json:"cheng_jiao_liang_shou_2"`
+	ChengJiaoEWan                     float64 `json:"cheng_jiao_e_wan"`
+	HuanShouLv                        float64 `json:"huan_shou_lv"`
+	ShiYingLv                         float64 `json:"shi_ying_lv"`
+	ZuiGao2                           float64 `json:"zui_gao_2"`
+	ZuiDi2                            float64 `json:"zui_di_2"`
+	ZhenFu                            float64 `json:"zhen_fu"`
+	LiuTongShiZhi                     float64 `json:"liu_tong_shi_zhi"`
+	ZongShiZhi                        float64 `json:"zong_shi_zhi"`
+	ShiJingLv                         float64 `json:"shi_jing_lv"`
+	ZhangTingJia                      float64 `json:"zhang_ting_jia"`
+	DieTingJia                        float64 `json:"die_ting_jia"`
+}
+
+func (s *StockQTDataTencent) ToStockQT() StockQTData {
+	ob := StockQTData{
+		MC:                                s.MC,
+		DaiMa:                             s.DaiMa,
+		DangQianJiaGe:                     s.DangQianJiaGe,
+		ZuoShou:                           s.ZuoShou,
+		JinKai:                            s.JinKai,
+		ChengJiaoLiangShou:                s.ChengJiaoLiangShou,
+		WaiPan:                            s.WaiPan,
+		NeiPan:                            s.NeiPan,
+		Mai3Yi:                            s.Mai3Yi,
+		Mai3YiShou:                        s.Mai3YiShou,
+		Mai4Yi:                            s.Mai4Yi,
+		Mai4YiShou:                        s.Mai4YiShou,
+		ZuiJinZhuBiChengJiao:              s.ZuiJinZhuBiChengJiao,
+		ShiJian:                           s.ShiJian,
+		ZhangDie:                          s.ZhangDie,
+		ZhangDiePercent:                   s.ZhangDiePercent,
+		Max:                               s.Max,
+		Min:                               s.Min,
+		ChengJiaoLiangShou2:               s.ChengJiaoLiangShou2,
+		ChengJiaoEWan:                     s.ChengJiaoEWan,
+		HuanShouLv:                        s.HuanShouLv,
+		ShiYingLv:                         s.ShiYingLv,
+		ZuiGao2:                           s.ZuiGao2,
+		ZuiDi2:                            s.ZuiDi2,
+		ZhenFu:                            s.ZhenFu,
+		LiuTongShiZhi:                     s.LiuTongShiZhi,
+		ZongShiZhi:                        s.ZongShiZhi,
+		ShiJingLv:                         s.ShiJingLv,
+		ZhangTingJia:                      s.ZhangTingJia,
+		DieTingJia:                        s.DieTingJia,
+		JiaGeChengJiaoLiangShouChengJiaoE: s.JiaGeChengJiaoLiangShouChengJiaoE,
+	}
+
+	return ob
 }
 
 // endregion

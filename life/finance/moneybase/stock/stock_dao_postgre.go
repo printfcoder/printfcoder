@@ -209,3 +209,92 @@ func (d *DaoPostgre) WriteAStockGuBen(guBenInfo GuBenInfo) error {
 
 	return nil
 }
+
+func (d *DaoPostgre) WriteStockQTDaily(qt StockQTData) error {
+	if d.db == nil {
+		return common.ErrorDBNil
+	}
+
+	tx, err := d.db.Begin()
+	if err != nil {
+		log.Errorf("[WriteStockQTDaily]，开启事务异常。err: %s", err)
+		return err
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 查出一天内有相同写过的
+	row, err := tx.Query(`SELECT 1 FROM stock_qt_daily WHERE dai_ma = $1 AND $2 - shi_jian < 235959`, qt.DaiMa, qt.ShiJian)
+	if err != nil {
+		log.Errorf("[WriteStockQTDaily]，查询QT[%s-%s-%d]信息异常，err: %s", qt.MC, qt.DaiMa, qt.ShiJian, err)
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if err = row.Close(); err != nil {
+				log.Errorf("[WriteStockQTDaily]，row[%s-%d]关闭异常。err: %s", qt.DaiMa, qt.ShiJian, err)
+			}
+		}
+	}()
+
+	// 不存在，则写入
+	if !row.Next() {
+		log.Infof("[WriteStockQTDaily] 查询QT[%s-%s-%d]信息异常", qt.MC, qt.DaiMa, qt.ShiJian)
+		_, err = tx.Exec(`INSERT INTO stock_qt_daily (
+                            mc, dai_ma, dang_qian_jia_ge, zuo_shou, jin_kai, cheng_jiao_liang, wai_pan, nei_pan,
+                            mai_3_yi, mai_3_yi_shou, mai_4_yi, mai_4_yi_shou, zui_jin_zhu_bi_cheng_jiao, shi_jian,
+                            zhang_die, zhang_die_percent, max_, min_, jia_ge_cheng_jiao_liang_shou_cheng_jiao_e,
+                            cheng_jiao_liang_shou_2, cheng_jiao_e_wan, huan_shou_lv, shi_ying_lv, zui_gao_2, zui_di_2,
+                            zhen_fu, liu_tong_shi_zhi, zong_shi_zhi, shi_jing_lv, zhang_ting_jia, die_ting_jia)
+					VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 
+					        $9, $10, $11, $12, $13, $14,
+					        $15, $16, $17, $18, $19, $20,
+					        $21, $22, $23, $24, $25, $26,$27,
+					        $28, $29, $30, $31
+					        )`,
+			qt.MC, qt.DaiMa, qt.DangQianJiaGe, qt.ZuoShou, qt.JinKai, qt.ChengJiaoLiangShou, qt.WaiPan, qt.NeiPan,
+			qt.Mai3Yi, qt.Mai3YiShou, qt.Mai4Yi, qt.Mai4YiShou, qt.ZuiJinZhuBiChengJiao, qt.ShiJian, qt.ZhangDie,
+			qt.ZhangDiePercent, qt.Max, qt.Min, qt.JiaGeChengJiaoLiangShouChengJiaoE, qt.ChengJiaoLiangShou2,
+			qt.ChengJiaoEWan, qt.HuanShouLv, qt.ShiYingLv, qt.ZuiGao2, qt.ZuiDi2, qt.ZhenFu, qt.LiuTongShiZhi,
+			qt.ZongShiZhi, qt.ShiJingLv, qt.ZhangTingJia, qt.DieTingJia,
+		)
+		if err != nil {
+			log.Errorf("[WriteStockQTDaily]，插入QT[%s-%d]信息异常。err: %s", qt.DaiMa, qt.ShiJian, err)
+			return err
+		}
+	} else { // 有则更新
+		err = row.Close()
+		if err != nil {
+			log.Errorf("[WriteStockQTDaily]，row[%s-%d]关闭异常。err: %s", qt.DaiMa, qt.ShiJian, err)
+			return common.ErrorDBRowClose
+		}
+
+		log.Infof("[WriteAStockGuBen] 查询到今天QT信息 %s-%d", qt.DaiMa, qt.ShiJian)
+		_, err = tx.Exec(`UPDATE stock_qt_daily SET dang_qian_jia_ge = $3, cheng_jiao_liang = $4, wai_pan = $5, nei_pan = $6,
+                            mai_3_yi = $7, mai_3_yi_shou = $8, mai_4_yi = $9, mai_4_yi_shou = $10, zui_jin_zhu_bi_cheng_jiao = $11, shi_jian = $12,
+                            zhang_die = $13 , zhang_die_percent = $14, max_ = $15, min_ = $16, jia_ge_cheng_jiao_liang_shou_cheng_jiao_e = $17,
+                            cheng_jiao_liang_shou_2 = $18 , cheng_jiao_e_wan = $19 , huan_shou_lv = $20, shi_ying_lv = $21 , zui_gao_2 = $22 , zui_di_2 = $23,
+                            zhen_fu = $24, liu_tong_shi_zhi = $25, zong_shi_zhi = $26, shi_jing_lv = $27, zhang_ting_jia = $28, die_ting_jia = $29
+					WHERE dai_ma = $1 AND $2 - shi_jian < 235959`, qt.DaiMa, qt.ShiJian, qt.DangQianJiaGe, qt.ChengJiaoLiangShou, qt.WaiPan,
+			qt.NeiPan, qt.Mai3Yi, qt.Mai3YiShou, qt.Mai4Yi, qt.Mai4YiShou, qt.ZuiJinZhuBiChengJiao,
+			qt.ShiJian, qt.ZhangDie, qt.ZhangDiePercent, qt.Max, qt.Min, qt.JiaGeChengJiaoLiangShouChengJiaoE,
+			qt.ChengJiaoLiangShou2, qt.ChengJiaoEWan, qt.HuanShouLv, qt.ShiJingLv, qt.ZuiGao2, qt.ZuiDi2,
+			qt.ZhenFu, qt.LiuTongShiZhi, qt.ZongShiZhi, qt.ShiJingLv, qt.ZhangTingJia, qt.DieTingJia,
+		)
+		if err != nil {
+			log.Errorf("[WriteStockQTDaily]，更新QT[%s-%d]信息异常。err: %s", qt.DaiMa, qt.ShiJian, err)
+			return err
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		log.Errorf("[WriteStockQTDaily]，更新QT事务提交异常。err: %s", err)
+		return common.ErrorDBCommit
+	}
+
+	return nil
+}

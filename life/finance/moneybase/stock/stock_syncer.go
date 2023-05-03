@@ -32,7 +32,13 @@ type Syncer interface {
 	SyncSingleStockGuBen(symbol string) error
 
 	// GetStockQT 获取股票当前价值
-	GetStockQT(symbol ...string) ([]StockQTData, error)
+	GetStockQT(symbol ...string) ([]StockQTDataTencent, error)
+
+	// WriteSingleStockQTDaily 写入单个每天QT
+	WriteSingleStockQTDaily(symbol string) error
+
+	// WriteStockQTDaily 写入每天QT
+	WriteStockQTDaily() error
 
 	// MethodSupported 是否支持该方法
 	MethodSupported(methodName string) (supported bool, err error)
@@ -55,6 +61,10 @@ func SyncerAdapter(ctx context.Context) Syncer {
 	methodName, err := getMethodNameFromHTTP(ctx)
 	if err != nil {
 		// todo 优化
+	}
+
+	if methodName == "" {
+
 	}
 
 	for _, syncer := range syncers {

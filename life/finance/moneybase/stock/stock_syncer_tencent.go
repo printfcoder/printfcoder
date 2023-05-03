@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -20,10 +21,28 @@ type SyncerTencent struct {
 	Options *SyncerOptions
 }
 
-func (s *SyncerTencent) GetStockQT(symbols ...string) ([]StockQTData, error) {
+func (s *SyncerTencent) Init(opts ...SyncerOption) error {
+	s.Options = &SyncerOptions{}
+	for _, o := range opts {
+		o(s.Options)
+	}
+
+	if s.Options.Dao == nil {
+		log.Errorf("DB 未传入")
+		return common.ErrorDBNil
+	}
+
+	syncerMux.Lock()
+	syncers[s.Name()] = s
+	syncerMux.Unlock()
+
+	return nil
+}
+
+func (s *SyncerTencent) GetStockQT(symbols ...string) ([]StockQTDataTencent, error) {
 	wg := sync.WaitGroup{}
 
-	var ret []StockQTData
+	var ret []StockQTDataTencent
 	for i := 0; i < len(symbols); i++ {
 		wg.Add(1)
 		symbol := symbols[i]
@@ -69,37 +88,71 @@ func (s *SyncerTencent) SyncAllStockBases() error {
 
 func (s *SyncerTencent) MethodSupported(methodName string) (supported bool, err error) {
 	switch methodName {
-	case "sync-single-stock-guben", "sync-all-stock-guben", "get-current-value":
+	case "sync-single-stock-guben", "sync-all-stock-guben",
+		"get-current-value", "write-single-qt-daily", "write-qt-daily":
 		return true, nil
 	default:
 		return false, nil
 	}
 }
 
-func (s *SyncerTencent) Name() string {
-	return "tencent"
+func (s *SyncerTencent) Sync() error {
+	return common.ErrorStockUnimplementedMethod
 }
 
-func (s *SyncerTencent) Init(opts ...SyncerOption) error {
-	s.Options = &SyncerOptions{}
-	for _, o := range opts {
-		o(s.Options)
+func (s *SyncerTencent) WriteSingleStockQTDaily(symbol string) error {
+	qts, err := s.GetStockQT(symbol)
+	if err != nil {
+		log.Errorf("[WriteSingleStockQTDaily] 获取腾讯QT接口异常：%s", err)
+		return common.ErrorStockQTDailyReadError
 	}
 
-	if s.Options.Dao == nil {
-		log.Errorf("DB 未传入")
-		return common.ErrorDBNil
-	}
+	for i := 0; i < len(qts); i++ {
+		qtTencent := qts[i]
+		qt := qtTencent.ToStockQT()
 
-	syncerMux.Lock()
-	syncers[s.Name()] = s
-	syncerMux.Unlock()
+		err = s.Options.Dao.WriteStockQTDaily(qt)
+		if err != nil {
+			log.Errorf("[WriteSingleStockQTDaily] 写入腾讯QT异常：%s", err)
+			return common.ErrorStockQTDailyWriteError
+		}
+	}
 
 	return nil
 }
 
-func (s *SyncerTencent) Sync() error {
-	return common.ErrorStockUnimplementedMethod
+func (s *SyncerTencent) WriteStockQTDaily() error {
+	sbs, err := s.Options.Dao.ReadAllAStockBases()
+	if err != nil {
+		log.Errorf("[WriteStockQTDaily] 读取所有股票基本信息异常。err: %s", err)
+		return common.ErrorStockSyncAllGuBenToDB
+	}
+
+	for i, v := range sbs {
+		log.Infof("[WriteStockQTDaily] sync [%d-%s-%s-%s]", i+1, v.JYS, v.DM, v.MC)
+		symbol := v.JYS + v.DM
+		qts, err := s.GetStockQT(symbol)
+		if err != nil {
+			log.Errorf("[WriteStockQTDaily] 获取腾讯QT接口异常：%s", err)
+			return common.ErrorStockQTDailyReadError
+		}
+
+		for i := 0; i < len(qts); i++ {
+			qtTencent := qts[i]
+			qt := qtTencent.ToStockQT()
+
+			err = s.Options.Dao.WriteStockQTDaily(qt)
+			if err != nil {
+				log.Errorf("[WriteStockQTDaily] 写入腾讯QT异常：%s", err)
+				return common.ErrorStockQTDailyWriteError
+			}
+		}
+
+		// 睡50ms，免得被封了
+		time.Sleep(50 * time.Millisecond)
+	}
+
+	return nil
 }
 
 func (s *SyncerTencent) SyncSingleStockGuBen(code string) error {
@@ -156,7 +209,11 @@ func (s *SyncerTencent) SyncAllStockGuBen() error {
 	return nil
 }
 
-func parseCurrentBodyString(symbol, input string) StockQTData {
+func (s *SyncerTencent) Name() string {
+	return "tencent"
+}
+
+func parseCurrentBodyString(symbol, input string) StockQTDataTencent {
 	/**
 	0: 未知
 	      1: 股票名字
@@ -197,39 +254,58 @@ func parseCurrentBodyString(symbol, input string) StockQTData {
 	// v_sz000610="xxxx"，取xxx部分
 	input = input[len(symbol)+2 : len(input)-3]
 	datas := strings.Split(input, "~")
-	data := StockQTData{
+	data := StockQTDataTencent{
 		MC:                                datas[1],
 		DaiMa:                             datas[2],
-		DangQianJiaGe:                     datas[3],
-		ZuoShou:                           datas[4],
-		JinKai:                            datas[5],
-		ChengJiaoLiangShou:                datas[6],
-		WaiPan:                            datas[7],
-		NaiPan:                            datas[8],
-		Mai3Yi:                            datas[9],
-		Mai3YiShou:                        datas[10],
-		Mai4Yi:                            datas[19],
-		Mai4YiShou:                        datas[20],
-		ZuiJinZhuBiChengJiao:              datas[29],
-		ShiJian:                           datas[30],
-		ZhangDie:                          datas[31],
-		ZhangDiePercent:                   datas[32],
-		Max:                               datas[33],
-		Min:                               datas[34],
 		JiaGeChengJiaoLiangShouChengJiaoE: datas[35],
-		ChengJiaoLiangShou2:               datas[36],
-		ChengJiaoEWan:                     datas[37],
-		HuanShouLv:                        datas[38],
-		ShiYingLv:                         datas[39],
-		ZuiGao2:                           datas[41],
-		ZuiDi2:                            datas[42],
-		ZhenFu:                            datas[43],
-		LiuTongShiZhi:                     datas[44],
-		ZongShiZhi:                        datas[45],
-		ShiJingLv:                         datas[46],
-		ZhangTingJia:                      datas[47],
-		DieTingJia:                        datas[48],
 	}
 
+	data.DangQianJiaGe = toFloat(datas, 3)
+	data.ZuoShou = toFloat(datas, 4)
+	data.JinKai = toFloat(datas, 5)
+	data.ChengJiaoLiangShou = toInt(datas, 6)
+	data.WaiPan = toInt(datas, 7)
+	data.NeiPan = toInt(datas, 8)
+	data.Mai3Yi = toFloat(datas, 9)
+	data.Mai3YiShou = toInt(datas, 10)
+	data.Mai4Yi = toFloat(datas, 19)
+	data.Mai4YiShou = toInt(datas, 20)
+	data.ZuiJinZhuBiChengJiao = toInt(datas, 29)
+	data.ShiJian = toInt(datas, 30)
+	data.ZhangDie = toFloat(datas, 31)
+	data.ZhangDiePercent = toFloat(datas, 32)
+	data.Max = toFloat(datas, 33)
+	data.Min = toFloat(datas, 34)
+	data.ChengJiaoLiangShou2 = toInt(datas, 36)
+	data.ChengJiaoEWan = toFloat(datas, 37)
+	data.HuanShouLv = toFloat(datas, 38)
+	data.ShiYingLv = toFloat(datas, 39)
+	data.ZuiGao2 = toFloat(datas, 41)
+	data.ZuiDi2 = toFloat(datas, 42)
+	data.ZhenFu = toFloat(datas, 43)
+	data.LiuTongShiZhi = toFloat(datas, 44)
+	data.ZongShiZhi = toFloat(datas, 45)
+	data.ShiJingLv = toFloat(datas, 46)
+	data.ZhangTingJia = toFloat(datas, 47)
+	data.DieTingJia = toFloat(datas, 48)
+
 	return data
+}
+
+func toFloat(input []string, idx int) float64 {
+	val, err := strconv.ParseFloat(input[idx], 64)
+	if err != nil {
+		log.Errorf("[toFloat]转换字符串[%d]到浮点异常，%s", idx, err)
+	}
+
+	return val
+}
+
+func toInt(input []string, idx int) int64 {
+	val, err := strconv.ParseInt(input[idx], 10, 64)
+	if err != nil {
+		log.Errorf("[toFloat]转换字符串[%d]到整形异常，%s", idx, err)
+	}
+
+	return val
 }

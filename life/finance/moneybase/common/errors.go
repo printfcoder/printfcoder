@@ -14,6 +14,7 @@ var (
 	ErrorDBDelete        = &Error{No: "100009", Msg: "数据库删除失败"}
 	ErrorParseBody       = &Error{No: "100010", Msg: "参数解析失败"}
 	ErrorDBNil           = &Error{No: "100011", Msg: "DB不存在"}
+	ErrorDBRowClose      = &Error{No: "100012", Msg: "DB Row Close异常"}
 
 	/** People业务区 */
 
@@ -35,4 +36,6 @@ var (
 	ErrorStockVendorGuBenIsNil         = &Error{No: "120006", Msg: "供应商股本信息不存在"}
 	ErrorStockSyncAllGuBenToDB         = &Error{No: "120007", Msg: "同步所有股票股本信息异常"}
 	ErrorStockVendorGuBenReadError     = &Error{No: "120008", Msg: "供应商股本结构接口读取异常"}
+	ErrorStockQTDailyReadError         = &Error{No: "120009", Msg: "同步当天单个股票QT异常"}
+	ErrorStockQTDailyWriteError        = &Error{No: "120010", Msg: "写入当天单个股票QT异常"}
 )

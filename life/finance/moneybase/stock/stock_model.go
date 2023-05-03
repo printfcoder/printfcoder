@@ -2,6 +2,13 @@ package stock
 
 import "time"
 
+type OperateType int
+
+var (
+	OperateTypeBuy  = 1
+	OperateTypeSell = 2
+)
+
 // AStockBase A股股票基本数据结构，以mairui接口为基准
 type AStockBase struct {
 	DM  string    `json:"dm"`          // 代码
@@ -158,4 +165,50 @@ type StockCurrent struct {
 	ZhangFuPercent float64 `json:"zhang_fu_percent"`
 	ZhuLiLiuRu     float64 `json:"zhu_li_liu_ru"`
 	ZhuLiLiuChu    float64 `json:"zhu_li_liu_chu"`
+}
+
+// StockQTData 当前行情
+type StockQTData struct {
+	MC                                string  `json:"mc"`
+	DaiMa                             string  `json:"dai_ma"`
+	DangQianJiaGe                     float64 `json:"dang_qian_jia_ge"`
+	ZuoShou                           float64 `json:"zuo_shou"`
+	JinKai                            float64 `json:"jin_kai"`
+	ChengJiaoLiangShou                int64   `json:"cheng_jiao_liang"`
+	WaiPan                            int64   `json:"wai_pan"`
+	NeiPan                            int64   `json:"nei_pan"`
+	Mai3Yi                            float64 `json:"mai_3_yi"`
+	Mai3YiShou                        int64   `json:"mai_3_yi_shou"`
+	Mai4Yi                            float64 `json:"mai_4_yi"`
+	Mai4YiShou                        int64   `json:"mai_4_yi_shou"`
+	ZuiJinZhuBiChengJiao              int64   `json:"zui_jin_zhu_bi_cheng_jiao"`
+	ShiJian                           int64   `json:"shi_jian"`
+	ZhangDie                          float64 `json:"zhang_die"`
+	ZhangDiePercent                   float64 `json:"zhang_die_percent"`
+	Max                               float64 `json:"max"`
+	Min                               float64 `json:"min"`
+	JiaGeChengJiaoLiangShouChengJiaoE string  `json:"jia_ge_cheng_jiao_liang_shou_cheng_jiao_e"`
+	ChengJiaoLiangShou2               int64   `json:"cheng_jiao_liang_shou_2"`
+	ChengJiaoEWan                     float64 `json:"cheng_jiao_e_wan"`
+	HuanShouLv                        float64 `json:"huan_shou_lv"`
+	ShiYingLv                         float64 `json:"shi_ying_lv"`
+	ZuiGao2                           float64 `json:"zui_gao_2"`
+	ZuiDi2                            float64 `json:"zui_di_2"`
+	ZhenFu                            float64 `json:"zhen_fu"`
+	LiuTongShiZhi                     float64 `json:"liu_tong_shi_zhi"`
+	ZongShiZhi                        float64 `json:"zong_shi_zhi"`
+	ShiJingLv                         float64 `json:"shi_jing_lv"`
+	ZhangTingJia                      float64 `json:"zhang_ting_jia"`
+	DieTingJia                        float64 `json:"die_ting_jia"`
+}
+
+type StockOperateRecord struct {
+	ID          int64       `json:"id,omitempty"`
+	MC          string      `json:"mc,omitempty"`
+	DaiMa       string      `json:"dai_ma,omitempty"`
+	OperateType OperateType `json:"operate_type,omitempty"`
+	OperateTime time.Time   `json:"operate_time"`
+	GuShu       int64       `json:"gu_shu,omitempty"`
+	JiaGe       float64     `json:"jia_ge,omitempty"`
+	JinE        float64     `json:"jin_e,omitempty"`
 }

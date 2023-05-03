@@ -14,4 +14,7 @@ type Dao interface {
 
 	// WriteAStockGuBen 写入所有A股股本信息到数据库
 	WriteAStockGuBen(guBenInfo GuBenInfo) error
+
+	// WriteStockQTDaily 写入当天盘信息到数据库
+	WriteStockQTDaily(qt StockQTData) error
 }

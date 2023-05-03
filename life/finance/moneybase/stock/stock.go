@@ -65,5 +65,8 @@ func Init(ctx context.Context) error {
 		return err
 	}
 
+	// 定时器
+	initCron(ctx)
+
 	return nil
 }
