@@ -39,7 +39,7 @@ func (s *SyncerTencent) Init(opts ...SyncerOption) error {
 	return nil
 }
 
-func (s *SyncerTencent) GetStockQT(symbols ...string) ([]StockQTDataTencent, error) {
+func (s *SyncerTencent) GetStockQT(date string, symbols ...string) ([]StockQTDataTencent, error) {
 	wg := sync.WaitGroup{}
 
 	var ret []StockQTDataTencent
@@ -72,6 +72,11 @@ func (s *SyncerTencent) GetStockQT(symbols ...string) ([]StockQTDataTencent, err
 				log.Errorf("[GetStockQT] 解析腾讯[%s]股盘body-str异常：%s", symbol, err)
 				return
 			}
+			if len(str) < 100 { // 比较短的就是非法代码，直接忽略
+				log.Errorf("[GetStockQT] 解析腾讯[%s]股盘body-非法回参：%s", symbol, string(str))
+				return
+			}
+
 			data := parseCurrentBodyString(symbol, string(str))
 			ret = append(ret, data)
 		}()
@@ -100,8 +105,8 @@ func (s *SyncerTencent) Sync() error {
 	return common.ErrorStockUnimplementedMethod
 }
 
-func (s *SyncerTencent) WriteSingleStockQTDaily(symbol string) error {
-	qts, err := s.GetStockQT(symbol)
+func (s *SyncerTencent) WriteSingleStockQTDaily(date string, symbol string) error {
+	qts, err := s.GetStockQT(date, symbol)
 	if err != nil {
 		log.Errorf("[WriteSingleStockQTDaily] 获取腾讯QT接口异常：%s", err)
 		return common.ErrorStockQTDailyReadError
@@ -121,7 +126,7 @@ func (s *SyncerTencent) WriteSingleStockQTDaily(symbol string) error {
 	return nil
 }
 
-func (s *SyncerTencent) WriteStockQTDaily() error {
+func (s *SyncerTencent) WriteStockQTDaily(date string) error {
 	sbs, err := s.Options.Dao.ReadAllAStockBases()
 	if err != nil {
 		log.Errorf("[WriteStockQTDaily] 读取所有股票基本信息异常。err: %s", err)
@@ -263,7 +268,7 @@ func parseCurrentBodyString(symbol, input string) StockQTDataTencent {
 	data.DangQianJiaGe = toFloat(datas, 3)
 	data.ZuoShou = toFloat(datas, 4)
 	data.JinKai = toFloat(datas, 5)
-	data.ChengJiaoLiangShou = toInt(datas, 6)
+	data.ChengJiaoLiangShou = toFloat(datas, 6)
 	data.WaiPan = toInt(datas, 7)
 	data.NeiPan = toInt(datas, 8)
 	data.Mai3Yi = toFloat(datas, 9)

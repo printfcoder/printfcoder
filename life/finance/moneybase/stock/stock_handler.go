@@ -2,7 +2,10 @@ package stock
 
 import (
 	"context"
+	"fmt"
+	log "github.com/stack-labs/stack/logger"
 	"strings"
+	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
@@ -129,7 +132,12 @@ func getCurrentValue(ctx context.Context, r *app.RequestContext) {
 
 	symbols := strings.Split(symbolStr, ",")
 
-	stockQTs, err := GetStockQT(ctx, symbols...)
+	date := r.Query("date")
+	if date == "" {
+		date = todayStr()
+	}
+
+	stockQTs, err := GetStockQT(ctx, date, symbols...)
 	if err != nil {
 		common.WriteFailHTTP(r, rsp, err)
 		return
@@ -148,7 +156,12 @@ func writeSingleQTDaily(ctx context.Context, r *app.RequestContext) {
 		return
 	}
 
-	err := WriteSingleStockQTDaily(ctx, symbol)
+	date := r.Query("date")
+	if date == "" {
+		date = todayStr()
+	}
+
+	err := WriteSingleStockQTDaily(ctx, date, symbol)
 	if err != nil {
 		common.WriteFailHTTP(r, rsp, err)
 		return
@@ -160,11 +173,37 @@ func writeSingleQTDaily(ctx context.Context, r *app.RequestContext) {
 func writeQTDaily(ctx context.Context, r *app.RequestContext) {
 	rsp := &common.HTTPRsp{}
 
-	err := WriteStockQTDaily(ctx)
+	date := r.Query("date")
+	if date == "" {
+		date = todayStr()
+	}
+
+	err := WriteStockQTDaily(ctx, date)
 	if err != nil {
 		common.WriteFailHTTP(r, rsp, err)
 		return
 	}
 
 	common.WriteSuccessHTTP(r, rsp)
+}
+
+func todayStr() string {
+	now := time.Now()
+	year := now.Year()
+	mon := now.Month()
+	day := now.Day()
+
+	monS := fmt.Sprintf("%d", mon)
+	if mon < 10 {
+		monS = "0" + monS
+	}
+
+	dayS := fmt.Sprintf("%d", day)
+	if day < 10 {
+		dayS = "0" + dayS
+	}
+	ret := fmt.Sprintf("%d%s%s", year, monS, dayS)
+
+	log.Infof("[todayStr] use today: %s", ret)
+	return ret
 }

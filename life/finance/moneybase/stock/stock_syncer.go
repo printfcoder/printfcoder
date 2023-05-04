@@ -32,13 +32,13 @@ type Syncer interface {
 	SyncSingleStockGuBen(symbol string) error
 
 	// GetStockQT 获取股票当前价值
-	GetStockQT(symbol ...string) ([]StockQTDataTencent, error)
+	GetStockQT(date string, symbol ...string) ([]StockQTDataTencent, error)
 
 	// WriteSingleStockQTDaily 写入单个每天QT
-	WriteSingleStockQTDaily(symbol string) error
+	WriteSingleStockQTDaily(date string, symbol string) error
 
 	// WriteStockQTDaily 写入每天QT
-	WriteStockQTDaily() error
+	WriteStockQTDaily(date string) error
 
 	// MethodSupported 是否支持该方法
 	MethodSupported(methodName string) (supported bool, err error)
@@ -58,17 +58,21 @@ func WithDao(db Dao) SyncerOption {
 }
 
 func SyncerAdapter(ctx context.Context) Syncer {
-	methodName, err := getMethodNameFromHTTP(ctx)
+	methodName, syncerName, err := getMethodNameFromHTTP(ctx)
 	if err != nil {
 		// todo 优化
 	}
 
 	if methodName == "" {
-
+		// todo 优化
 	}
 
 	for _, syncer := range syncers {
 		if ok, err := syncer.MethodSupported(methodName); ok {
+			if syncerName != "" && syncer.Name() != syncerName {
+				log.Errorf("[SyncerAdapter] syncer[%s] is not the one [%s]", syncer.Name(), syncerName)
+				continue
+			}
 			return syncer
 		} else {
 			log.Errorf("[SyncerAdapter] check syncer[%s] method support err: %s", syncer.Name(), err)

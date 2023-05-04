@@ -23,6 +23,7 @@ type KeysConfig struct {
 	Keys struct {
 		MairuiClub MairuiClubConfig `sc:"mairui-club"`
 		Tencent    TencentConfig    `sc:"tencent"`
+		Tushare    TushareConfig    `sc:"tushare"`
 	} `sc:"keys"`
 }
 
@@ -39,6 +40,11 @@ type TencentConfig struct {
 	GubenUrl         string `sc:"guben-url"`
 	MinuteURL        string `sc:"minute-url"`
 	ZiJinLiuxiangUrl string `sc:"zijin-liuxiang-url"`
+}
+
+type TushareConfig struct {
+	BaseUri string `sc:"base-uri"`
+	Token   string `sc:"token"`
 }
 
 func Init(ctx context.Context) error {
@@ -61,6 +67,12 @@ func Init(ctx context.Context) error {
 
 	syncerTencent := NewSyncerTencent()
 	err = syncerTencent.Init(WithDao(dao))
+	if err != nil {
+		return err
+	}
+
+	syncerTushare := NewSyncerTushare()
+	err = syncerTushare.Init(WithDao(dao))
 	if err != nil {
 		return err
 	}

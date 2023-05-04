@@ -12,7 +12,7 @@ func initCron(ctx context.Context) {
 		c := cron.New(cron.WithSeconds())
 		id, err := c.AddFunc("1 2 18 ? * *", func() {
 			ctxB := context.WithValue(context.Background(), methodWrapperKey{}, "write-qt-daily")
-			err := WriteStockQTDaily(ctxB)
+			err := WriteStockQTDaily(ctxB, todayStr())
 			if err != nil {
 				log.Errorf("[WriteStockQTDaily] cron query err: %s", err)
 			}

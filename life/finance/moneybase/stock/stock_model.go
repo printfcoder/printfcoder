@@ -174,7 +174,7 @@ type StockQTData struct {
 	DangQianJiaGe                     float64 `json:"dang_qian_jia_ge"`
 	ZuoShou                           float64 `json:"zuo_shou"`
 	JinKai                            float64 `json:"jin_kai"`
-	ChengJiaoLiangShou                int64   `json:"cheng_jiao_liang"`
+	ChengJiaoLiangShou                float64 `json:"cheng_jiao_liang"`
 	WaiPan                            int64   `json:"wai_pan"`
 	NeiPan                            int64   `json:"nei_pan"`
 	Mai3Yi                            float64 `json:"mai_3_yi"`

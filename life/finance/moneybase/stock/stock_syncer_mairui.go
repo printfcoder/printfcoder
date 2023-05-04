@@ -16,7 +16,7 @@ type SyncerMairui struct {
 	Options *SyncerOptions
 }
 
-func (s *SyncerMairui) GetStockQT(symbol ...string) ([]StockQTDataTencent, error) {
+func (s *SyncerMairui) GetStockQT(date string, symbol ...string) ([]StockQTDataTencent, error) {
 	return nil, common.ErrorStockUnimplementedMethod
 }
 
@@ -79,11 +79,11 @@ func (s *SyncerMairui) SyncAllStockBases() error {
 	return nil
 }
 
-func (s *SyncerMairui) WriteSingleStockQTDaily(symbol string) error {
+func (s *SyncerMairui) WriteSingleStockQTDaily(date string, symbol string) error {
 	return common.ErrorStockUnimplementedMethod
 }
 
-func (s *SyncerMairui) WriteStockQTDaily() error {
+func (s *SyncerMairui) WriteStockQTDaily(date string) error {
 	return common.ErrorStockUnimplementedMethod
 }
 
