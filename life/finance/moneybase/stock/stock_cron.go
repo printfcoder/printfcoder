@@ -3,6 +3,7 @@ package stock
 import (
 	"context"
 
+	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
 	"github.com/robfig/cron/v3"
 	log "github.com/stack-labs/stack/logger"
 )
@@ -12,7 +13,7 @@ func initCron(ctx context.Context) {
 		c := cron.New(cron.WithSeconds())
 		id, err := c.AddFunc("1 2 18 ? * *", func() {
 			ctxB := context.WithValue(context.Background(), methodWrapperKey{}, "write-qt-daily")
-			err := WriteStockQTDaily(ctxB, todayStr())
+			err := WriteStockQTDaily(ctxB, common.TodayStr())
 			if err != nil {
 				log.Errorf("[WriteStockQTDaily] cron query err: %s", err)
 			}

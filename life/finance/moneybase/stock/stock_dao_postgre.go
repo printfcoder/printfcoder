@@ -2,6 +2,8 @@ package stock
 
 import (
 	"database/sql"
+	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
@@ -226,8 +228,13 @@ func (d *DaoPostgre) WriteStockQTDaily(qt StockQTData) error {
 		}
 	}()
 
+	// 20230101235929 -> 20230101000001 20230101235959，转成一天的开始和结束
+	shijianPrefix := fmt.Sprintf("%d", qt.ShiJian)[0:8]
+	shijianBegin, _ := strconv.ParseInt(shijianPrefix+"000001", 10, 64)
+	shijianEnd, _ := strconv.ParseInt(shijianPrefix+"235959", 10, 64)
+
 	// 查出一天内有相同写过的
-	row, err := tx.Query(`SELECT 1 FROM stock_qt_daily WHERE dai_ma = $1 AND $2 - shi_jian < 235959`, qt.DaiMa, qt.ShiJian)
+	row, err := tx.Query(`SELECT 1 FROM stock_qt_daily WHERE dai_ma = $1 AND shi_jian <= $2 AND shi_jian >=  $3`, qt.DaiMa, shijianEnd, shijianBegin)
 	if err != nil {
 		log.Errorf("[WriteStockQTDaily]，查询QT[%s-%s-%d]信息异常，err: %s", qt.MC, qt.DaiMa, qt.ShiJian, err)
 		return err
@@ -278,11 +285,11 @@ func (d *DaoPostgre) WriteStockQTDaily(qt StockQTData) error {
                             zhang_die = $13 , zhang_die_percent = $14, max_ = $15, min_ = $16, jia_ge_cheng_jiao_liang_shou_cheng_jiao_e = $17,
                             cheng_jiao_liang_shou_2 = $18 , cheng_jiao_e_wan = $19 , huan_shou_lv = $20, shi_ying_lv = $21 , zui_gao_2 = $22 , zui_di_2 = $23,
                             zhen_fu = $24, liu_tong_shi_zhi = $25, zong_shi_zhi = $26, shi_jing_lv = $27, zhang_ting_jia = $28, die_ting_jia = $29
-					WHERE dai_ma = $1 AND $2 - shi_jian < 235959`, qt.DaiMa, qt.ShiJian, qt.DangQianJiaGe, qt.ChengJiaoLiangShou, qt.WaiPan,
+					WHERE dai_ma = $1 AND shi_jian <= $31 AND shi_jian >=  $30 AND $2=$2`, qt.DaiMa, qt.ShiJian, qt.DangQianJiaGe, qt.ChengJiaoLiangShou, qt.WaiPan,
 			qt.NeiPan, qt.Mai3Yi, qt.Mai3YiShou, qt.Mai4Yi, qt.Mai4YiShou, qt.ZuiJinZhuBiChengJiao,
 			qt.ShiJian, qt.ZhangDie, qt.ZhangDiePercent, qt.Max, qt.Min, qt.JiaGeChengJiaoLiangShouChengJiaoE,
 			qt.ChengJiaoLiangShou2, qt.ChengJiaoEWan, qt.HuanShouLv, qt.ShiJingLv, qt.ZuiGao2, qt.ZuiDi2,
-			qt.ZhenFu, qt.LiuTongShiZhi, qt.ZongShiZhi, qt.ShiJingLv, qt.ZhangTingJia, qt.DieTingJia,
+			qt.ZhenFu, qt.LiuTongShiZhi, qt.ZongShiZhi, qt.ShiJingLv, qt.ZhangTingJia, qt.DieTingJia, shijianBegin, shijianEnd,
 		)
 		if err != nil {
 			log.Errorf("[WriteStockQTDaily]，更新QT[%s-%d]信息异常。err: %s", qt.DaiMa, qt.ShiJian, err)
@@ -297,4 +304,80 @@ func (d *DaoPostgre) WriteStockQTDaily(qt StockQTData) error {
 	}
 
 	return nil
+}
+
+func (d *DaoPostgre) QueryXiaDieTrend(daiMa []StockXiaDie, dateStart, dateEnd int64) (trend []StockXiaDie, err error) {
+	for _, dm := range daiMa {
+		rows, errIn := d.db.Query(`SELECT mc, dang_qian_jia_ge, shi_jian FROM stock_qt_daily WHERE dai_ma = $1 AND shi_jian >= $2 AND shi_jian <= $3 AND zhang_die <= 0`, dm.DaiMa, dateStart, dateEnd)
+		if errIn != nil {
+			err = fmt.Errorf("[QueryXiaDieTrend] query db error: %s. dateStart[%d], dateEnd[%d]", errIn, dateStart, dateEnd)
+			log.Error(err)
+			return nil, err
+		}
+		s := StockXiaDie{
+			DaiMa: dm.DaiMa,
+		}
+		for rows.Next() {
+			ab := StockDailyJiaGe{}
+			err = rows.Scan(&ab.MC, &ab.JiaGe, &ab.Day)
+			if err != nil {
+				log.Errorf("[QueryXiaDieTrend] 获取下跌数据异常。err: %s", err)
+				return nil, common.ErrorDBQueryScan
+			}
+
+			s.Trend = append(s.Trend, ab)
+		}
+		rows.Close()
+		if len(s.Trend) > 0 {
+			trend = append(trend, s)
+		}
+	}
+	return
+}
+
+func (d *DaoPostgre) QueryAllXiaDieTrendByDay(dateStart, dateEnd int64) (trend []StockXiaDie, err error) {
+	rows, errIn := d.db.Query(`SELECT mc, dai_ma FROM stock_qt_daily WHERE shi_jian >= $1 AND shi_jian <= $2 AND jin_kai !=0 AND dang_qian_jia_ge != 0 AND zhang_die <= 0`, dateStart, dateEnd)
+	if errIn != nil {
+		err = fmt.Errorf("[QueryXiaDieTrend] query db error: %s. dateStart[%d], dateEnd[%d]", err, dateStart, dateEnd)
+		log.Error(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		ab := StockXiaDie{}
+		err = rows.Scan(&ab.MC, &ab.DaiMa)
+		if err != nil {
+			log.Errorf("[QueryXiaDieTrend] 获取所有下跌数据异常。err: %s", err)
+			return nil, common.ErrorDBQueryScan
+		}
+
+		trend = append(trend, ab)
+	}
+
+	return
+}
+
+func (d *DaoPostgre) QueryBenchmarkTradeDays(daiMa string, benchmarkDay int64, days int) (tradeDays []int64, err error) {
+	rows, err := d.db.Query(`SELECT shi_jian FROM stock_qt_daily WHERE dai_ma = $1 AND shi_jian <= $2 ORDER BY shi_jian DESC LIMIT $3`, daiMa, benchmarkDay, days)
+	if err != nil {
+		err = fmt.Errorf("[QueryBenchmarkTradeDays] query db error: %s. daiMa[%s], days[%d]", err, daiMa, days)
+		log.Error(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var tradeDay int64
+		err = rows.Scan(&tradeDay)
+		if err != nil {
+			log.Errorf("[QueryBenchmarkTradeDays] 获取基准时间数据异常。err: %s", err)
+			return nil, common.ErrorDBQueryScan
+		}
+
+		tradeDays = append(tradeDays, tradeDay)
+	}
+
+	return
+
 }

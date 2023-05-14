@@ -212,3 +212,20 @@ type StockOperateRecord struct {
 	JiaGe       float64     `json:"jia_ge,omitempty"`
 	JinE        float64     `json:"jin_e,omitempty"`
 }
+
+type StockXiaDieRsp struct {
+	Trend      map[int64][]StockXiaDie
+	TrendCount map[int64]int
+}
+
+type StockDailyJiaGe struct {
+	MC    string  `json:"mc,omitempty"`
+	Day   string  `json:"day,omitempty"`
+	JiaGe float64 `json:"jia_ge,omitempty"`
+}
+
+type StockXiaDie struct {
+	MC    string            `json:"mc,omitempty"`
+	DaiMa string            `json:"dai_ma,omitempty"`
+	Trend []StockDailyJiaGe `json:"trend,omitempty"`
+}

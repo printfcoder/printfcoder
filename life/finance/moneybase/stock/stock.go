@@ -17,6 +17,8 @@ var (
 	c KeysConfig
 
 	s sync.Mutex
+
+	dao Dao
 )
 
 type KeysConfig struct {
@@ -54,7 +56,7 @@ func Init(ctx context.Context) error {
 		return err
 	}
 
-	dao := &DaoPostgre{
+	dao = &DaoPostgre{
 		db: db.DB(),
 	}
 
@@ -81,4 +83,8 @@ func Init(ctx context.Context) error {
 	initCron(ctx)
 
 	return nil
+}
+
+func GetDao(ctx context.Context) Dao {
+	return dao
 }

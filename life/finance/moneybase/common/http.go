@@ -45,7 +45,14 @@ func NewError(err Error, oriMsg error) *Error {
 
 func WriteFailHTTP(r *app.RequestContext, rsp *HTTPRsp, err error) {
 	rsp.Success = false
-	rsp.Error = err.(*Error)
+
+	switch e := err.(type) {
+	case *Error:
+		rsp.Error = e
+	default:
+		rsp.Error = &Error{Msg: e.Error()}
+	}
+
 	r.JSON(consts.StatusOK, rsp)
 }
 

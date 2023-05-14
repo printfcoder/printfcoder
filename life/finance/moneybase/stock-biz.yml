@@ -9,6 +9,9 @@ keys:
     minute-url: http://ifzq.gtimg.cn/appstock/app/minute/query?code=
     # 获取实时资金流向
     zijin-liuxiang-url: http://qt.gtimg.cn/q=
+  tushare:
+    base-uri: http://api.tushare.pro
+    token: 1c01d7922ebdbd9aabb4f75a3312deab04110f0fa97ae4a0f598593b
 db:
   dialect: postgre
   postgre:

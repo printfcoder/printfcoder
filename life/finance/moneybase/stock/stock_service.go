@@ -1,6 +1,11 @@
 package stock
 
-import "context"
+import (
+	"context"
+	"fmt"
+	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
+	log "github.com/stack-labs/stack/logger"
+)
 
 // SyncAllStockBases 从A股中同步所有股票基本信息
 func SyncAllStockBases(ctx context.Context) error {
@@ -32,6 +37,47 @@ func WriteStockQTDaily(ctx context.Context, date string) (err error) {
 	return SyncerAdapter(ctx).WriteStockQTDaily(date)
 }
 
-func WriteXianRenZhang(ctx context.Context, sms string) (err error) {
+// QueryXiaDieByDays 查询一直在下跌的
+func QueryXiaDieByDays(ctx context.Context, date string, days int) (trends map[int64][]StockXiaDie, err error) {
+	dao := GetDao(ctx)
+
+	start, end := common.ParseDayStartAndEnd(date)
+
+	stocks, err := dao.QueryAllXiaDieTrendByDay(start, end)
+	if err != nil {
+		err = fmt.Errorf("[QueryXiaDieByDays] 查询所有stock异常：%s", err)
+		log.Error(err)
+		return
+	}
+
+	tradeDays, err := dao.QueryBenchmarkTradeDays("000001", end, days)
+	if err != nil {
+		err = fmt.Errorf("[QueryXiaDieByDays] 查询所有基准交易日异常：%s", err)
+		log.Error(err)
+		return
+	}
+
+	trends = make(map[int64][]StockXiaDie, len(tradeDays))
+	tempStocks := stocks
+	for _, tradeDay := range tradeDays {
+		startIn, endIn := common.ParseDayStartAndEnd(fmt.Sprintf("%d", tradeDay))
+		xiaDies, errIn := dao.QueryXiaDieTrend(tempStocks, startIn, endIn)
+		if errIn != nil {
+			err = fmt.Errorf("[QueryXiaDieByDays] 查询指定日期下跌股票异常：%s", errIn)
+			log.Error(err)
+			return
+		}
+
+		trends[tradeDay] = xiaDies
+
+		var tempStocksIn []StockXiaDie
+		for i := range xiaDies {
+			tempStocksIn = append(tempStocksIn, StockXiaDie{DaiMa: xiaDies[i].DaiMa})
+		}
+
+		log.Infof("[QueryXiaDieByDays] day[%d] stocks current[%d] next[%d]", tradeDay, len(tempStocks), len(tempStocksIn))
+		tempStocks = tempStocksIn
+	}
+
 	return
 }

@@ -2,10 +2,8 @@ package stock
 
 import (
 	"context"
-	"fmt"
-	log "github.com/stack-labs/stack/logger"
+	"strconv"
 	"strings"
-	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
@@ -42,6 +40,11 @@ func Handlers() []common.HandlerFunc {
 			Method:      "POST",
 			Path:        "write-qt-daily",
 			HandlerFunc: writeQTDaily,
+		},
+		{
+			Method:      "GET",
+			Path:        "query-xia-die-by-days",
+			HandlerFunc: queryXiaDieByDays,
 		},
 	}
 }
@@ -134,7 +137,7 @@ func getCurrentValue(ctx context.Context, r *app.RequestContext) {
 
 	date := r.Query("date")
 	if date == "" {
-		date = todayStr()
+		date = common.TodayStr()
 	}
 
 	stockQTs, err := GetStockQT(ctx, date, symbols...)
@@ -158,7 +161,7 @@ func writeSingleQTDaily(ctx context.Context, r *app.RequestContext) {
 
 	date := r.Query("date")
 	if date == "" {
-		date = todayStr()
+		date = common.TodayStr()
 	}
 
 	err := WriteSingleStockQTDaily(ctx, date, symbol)
@@ -175,7 +178,7 @@ func writeQTDaily(ctx context.Context, r *app.RequestContext) {
 
 	date := r.Query("date")
 	if date == "" {
-		date = todayStr()
+		date = common.TodayStr()
 	}
 
 	err := WriteStockQTDaily(ctx, date)
@@ -187,23 +190,41 @@ func writeQTDaily(ctx context.Context, r *app.RequestContext) {
 	common.WriteSuccessHTTP(r, rsp)
 }
 
-func todayStr() string {
-	now := time.Now()
-	year := now.Year()
-	mon := now.Month()
-	day := now.Day()
+func queryXiaDieByDays(ctx context.Context, r *app.RequestContext) {
+	rsp := &common.HTTPRsp{}
 
-	monS := fmt.Sprintf("%d", mon)
-	if mon < 10 {
-		monS = "0" + monS
+	date := r.Query("date")
+	if date == "" {
+		date = common.TodayStr()
 	}
 
-	dayS := fmt.Sprintf("%d", day)
-	if day < 10 {
-		dayS = "0" + dayS
+	daysStr := r.Query("days")
+	if date == "" {
+		date = common.TodayStr()
 	}
-	ret := fmt.Sprintf("%d%s%s", year, monS, dayS)
 
-	log.Infof("[todayStr] use today: %s", ret)
-	return ret
+	days, err := strconv.ParseInt(daysStr, 10, 10)
+	if err != nil {
+		common.WriteFailHTTP(r, rsp, err)
+		return
+	}
+
+	tradeTrends, err := QueryXiaDieByDays(ctx, date, int(days))
+	if err != nil {
+		common.WriteFailHTTP(r, rsp, err)
+		return
+	}
+
+	rspData := StockXiaDieRsp{
+		Trend:      tradeTrends,
+		TrendCount: map[int64]int{},
+	}
+
+	for k, v := range rspData.Trend {
+		rspData.TrendCount[k] = len(v)
+	}
+
+	rsp.Data = rspData
+
+	common.WriteSuccessHTTP(r, rsp)
 }

@@ -92,6 +92,11 @@ func (s *SyncerTushare) GetStockQT(date string, symbols ...string) ([]StockQTDat
 				log.Errorf("[GetStockQT] 解析Tushare[%s]股盘json异常：%s", symbol, err)
 				return
 			}
+
+			if rsp.Code != 0 {
+				log.Errorf("[GetStockQT] rsp返回异常：%d-%s-[%v]", symbol, rsp.Code, rsp.Msg, rsp)
+				return
+			}
 			ret = append(ret, rsp.ToStdQTData()...)
 		}()
 	}
@@ -107,7 +112,7 @@ func (s *SyncerTushare) SyncAllStockBases() error {
 
 func (s *SyncerTushare) MethodSupported(methodName string) (supported bool, err error) {
 	switch methodName {
-	case "write-single-daily", "get-current-value":
+	case "write-single-qt-daily", "get-current-value", "write-qt-daily":
 		return true, nil
 	default:
 		return false, nil
@@ -119,9 +124,9 @@ func (s *SyncerTushare) Sync() error {
 }
 
 func (s *SyncerTushare) WriteSingleStockQTDaily(date string, symbol string) error {
-	qts, err := s.GetStockQT(symbol)
+	qts, err := s.GetStockQT(date, symbol)
 	if err != nil {
-		log.Errorf("[WriteSingleStockQTDaily] 获取腾讯QT接口异常：%s", err)
+		log.Errorf("[WriteSingleStockQTDaily] 获取Tushare daily接口异常：%s", err)
 		return common.ErrorStockQTDailyReadError
 	}
 
@@ -131,7 +136,7 @@ func (s *SyncerTushare) WriteSingleStockQTDaily(date string, symbol string) erro
 
 		err = s.Options.Dao.WriteStockQTDaily(qt)
 		if err != nil {
-			log.Errorf("[WriteSingleStockQTDaily] 写入腾讯QT异常：%s", err)
+			log.Errorf("[WriteSingleStockQTDaily] 写入Tushare QT异常：%s", err)
 			return common.ErrorStockQTDailyWriteError
 		}
 	}
@@ -146,22 +151,31 @@ func (s *SyncerTushare) WriteStockQTDaily(date string) error {
 		return common.ErrorStockSyncAllGuBenToDB
 	}
 
-	for i, v := range sbs {
-		log.Infof("[WriteStockQTDaily] sync [%d-%s-%s-%s]", i+1, v.JYS, v.DM, v.MC)
-		symbol := v.JYS + v.DM
-		qts, err := s.GetStockQT(symbol)
+	for i := 0; i < len(sbs); i += 500 {
+		log.Infof("[WriteStockQTDaily] sync [%d-%d]", i+1, i+500)
+
+		var symbols []string
+		for j := 0; j < i+500; j++ {
+			symbols = append(symbols, sbs[j].DM+"."+strings.ToUpper(sbs[j].JYS))
+		}
+
+		qts, err := s.GetStockQT(date, symbols...)
 		if err != nil {
-			log.Errorf("[WriteStockQTDaily] 获取腾讯QT接口异常：%s", err)
+			log.Errorf("[WriteStockQTDaily] 获取Tushare daily接口异常：%s", err)
 			return common.ErrorStockQTDailyReadError
 		}
 
-		for i := 0; i < len(qts); i++ {
-			qtTencent := qts[i]
+		for j := 0; j < len(qts); j++ {
+			qtTencent := qts[j]
 			qt := qtTencent.ToStockQT()
-
+			if qt.ShiJian == 0 {
+				// todo 查询原因
+				log.Errorf("有空数据，%v-[%d]", qtTencent, j)
+				continue
+			}
 			err = s.Options.Dao.WriteStockQTDaily(qt)
 			if err != nil {
-				log.Errorf("[WriteStockQTDaily] 写入腾讯QT异常：%s", err)
+				log.Errorf("[WriteStockQTDaily] 写入腾讯Tushare daily异常：%s", err)
 				return common.ErrorStockQTDailyWriteError
 			}
 		}

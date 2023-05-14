@@ -136,7 +136,7 @@ func (s *SyncerTencent) WriteStockQTDaily(date string) error {
 	for i, v := range sbs {
 		log.Infof("[WriteStockQTDaily] sync [%d-%s-%s-%s]", i+1, v.JYS, v.DM, v.MC)
 		symbol := v.JYS + v.DM
-		qts, err := s.GetStockQT(symbol)
+		qts, err := s.GetStockQT(date, symbol)
 		if err != nil {
 			log.Errorf("[WriteStockQTDaily] 获取腾讯QT接口异常：%s", err)
 			return common.ErrorStockQTDailyReadError

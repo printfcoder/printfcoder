@@ -17,4 +17,13 @@ type Dao interface {
 
 	// WriteStockQTDaily 写入当天盘信息到数据库
 	WriteStockQTDaily(qt StockQTData) error
+
+	// QueryXiaDieTrend 指定代码与日期还在下跌的股票
+	QueryXiaDieTrend(daiMa []StockXiaDie, dateStart, dateEnd int64) (trend []StockXiaDie, err error)
+
+	// QueryAllXiaDieTrendByDay 指定日期的下跌股票
+	QueryAllXiaDieTrendByDay(dateStart, dateEnd int64) (trend []StockXiaDie, err error)
+
+	// QueryBenchmarkTradeDays 查询某支代码的基准交易日
+	QueryBenchmarkTradeDays(daiMa string, benchmarkDay int64, days int) (tradeDays []int64, err error)
 }
