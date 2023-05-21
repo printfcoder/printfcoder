@@ -44,6 +44,65 @@ func (d *DaoPostgre) ReadAllAStockBases() (ret []AStockBase, err error) {
 	return
 }
 
+func (d *DaoPostgre) ReadAllAStockBasesForSyncGuDong(guDongType int) (ret []AStockBase, err error) {
+	if d.db == nil {
+		return nil, common.ErrorDBNil
+	}
+
+	rows, err := d.db.Query(`SELECT DISTINCT a.dm, a.mc, jys
+      FROM stock_base a
+               LEFT JOIN stock_top_10_gudong b ON a.dm = b.dm AND b.update_time::date = current_date AND gu_dong_type = $1
+               LEFT JOIN stock_qt_daily c on c.dai_ma = a.dm
+      WHERE b.dm IS NULL AND c.jin_kai <> 0`, guDongType)
+	if err != nil {
+		log.Errorf("[ReadAllAStockBasesForSyncGuDong] 读取股票基本信息异常。err: %s", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		ab := AStockBase{}
+		err = rows.Scan(&ab.DM, &ab.MC, &ab.JYS)
+		if err != nil {
+			log.Errorf("[ReadAllAStockBasesForSyncGuDong] scan所有股票基本信息异常。err: %s", err)
+			return nil, common.ErrorDBQueryScan
+		}
+
+		ret = append(ret, ab)
+	}
+
+	return
+}
+
+func (d *DaoPostgre) ReadAllAStockBasesForSyncQT(dateStart, dateEnd int64) (ret []AStockBase, err error) {
+	if d.db == nil {
+		return nil, common.ErrorDBNil
+	}
+
+	rows, err := d.db.Query(`SELECT sb.dm, sb.mc, sb.jys
+			FROM stock_base sb
+        		 LEFT JOIN stock_qt_daily sqt ON sqt.dai_ma = sb.dm AND sqt.shi_jian > $1 AND sqt.shi_jian < $2
+		WHERE sqt.dai_ma IS NULL`, dateStart, dateEnd)
+	if err != nil {
+		log.Errorf("[ReadAllAStockBasesForSyncQT] 读取股票基本信息异常。err: %s", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		ab := AStockBase{}
+		err = rows.Scan(&ab.DM, &ab.MC, &ab.JYS)
+		if err != nil {
+			log.Errorf("[ReadAllAStockBasesForSyncQT] scan所有股票基本信息异常。err: %s", err)
+			return nil, common.ErrorDBQueryScan
+		}
+
+		ret = append(ret, ab)
+	}
+
+	return
+}
+
 func (d *DaoPostgre) WriteAllAStockBases(aStockBases ...AStockBase) error {
 	if d.db == nil {
 		return common.ErrorDBNil
@@ -92,6 +151,52 @@ func (d *DaoPostgre) WriteAllAStockBases(aStockBases ...AStockBase) error {
 	err = tx.Commit()
 	if err != nil {
 		log.Errorf("[WriteAllAStockBases] 写入股所有股票基本信息，事务提交异常。err: %s", err)
+		return err
+	}
+
+	return nil
+}
+
+func (d *DaoPostgre) InsertIgnoreStock(dm string, ignoreType int) error {
+	if d.db == nil {
+		return common.ErrorDBNil
+	}
+
+	log.Infof("[InsertIgnoreStock] ignore: %s-%d", dm, ignoreType)
+
+	tx, err := d.db.Begin()
+	if err != nil {
+		log.Errorf("[InsertIgnoreStock] 插入可忽略的股票，开启事务异常。err: %s", err)
+		return err
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	row, err := tx.Query(`SELECT 1 FROM stock_ignore WHERE dm = $1 AND ignore_type = $2`, dm, ignoreType)
+	if err != nil {
+		log.Errorf("[InsertIgnoreStock]，查询股本信息异常。err: %s", err)
+		return err
+	}
+	// 不存在，则写入
+	if !row.Next() {
+		_, err = tx.Exec("INSERT INTO stock_ignore(dm, ignore_type, update_time) VALUES ($1, $2, NOW())", dm, ignoreType)
+		if err != nil {
+			log.Errorf("[InsertIgnoreStock] 插入可忽略的股票，err: %s", err)
+			return err
+		}
+	} else {
+		return fmt.Errorf("[InsertIgnoreStock] 已存在: %s-%d", dm, ignoreType)
+	}
+
+	row.Close()
+
+	// 提交事务
+	err = tx.Commit()
+	if err != nil {
+		log.Errorf("[InsertIgnoreStock] 插入可忽略的股票，事务提交异常。err: %s", err)
 		return err
 	}
 
@@ -206,6 +311,59 @@ func (d *DaoPostgre) WriteAStockGuBen(guBenInfo GuBenInfo) error {
 	err = tx.Commit()
 	if err != nil {
 		log.Errorf("[WriteAStockGuBen]，插入股东事务提交异常。err: %s", err)
+		return common.ErrorDBCommit
+	}
+
+	return nil
+}
+
+func (d *DaoPostgre) WriteStockTop10GuDong(guDongs []StockTop10GuDong) error {
+	if d.db == nil {
+		return common.ErrorDBNil
+	}
+
+	tx, err := d.db.Begin()
+	if err != nil {
+		log.Errorf("[WriteStockTop10GuDong]，开启事务异常。err: %s", err)
+		return err
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 插入股本，如果变动日期没有变动，则不用插入
+	for _, v := range guDongs {
+		row, err := tx.Query(`SELECT 1 FROM stock_top_10_gudong WHERE dm = $1 AND ann_date = $2 AND end_date = $3
+                                    AND holder_name = $4 AND gu_dong_type = $5`, v.DM, v.AnnDate, v.EndDate, v.HolderName, v.GuDongType)
+		if err != nil {
+			log.Errorf("[WriteStockTop10GuDong]，查询Top股东信息异常。err: %s", err)
+			return err
+		}
+
+		// 不存在，则写入
+		if !row.Next() {
+			log.Infof("[WriteAStockGuBen] 未查询到股东信息，准备插入 %s-%s-%s-%s-%d-%v", v.DM, v.AnnDate, v.EndDate, v.HolderName, v.GuDongType, v.HoldRatio)
+			_, err = tx.Exec("INSERT INTO stock_top_10_gudong (dm, ann_date, end_date, holder_name, hold_amount, update_time, gu_dong_type, hold_ratio) VALUES ($1, $2, $3, $4, $5, NOW(), $6, $7)",
+				v.DM, v.AnnDate, v.EndDate, v.HolderName, v.HoldAmount, v.GuDongType, v.HoldRatio,
+			)
+
+			if err != nil {
+				log.Errorf("[WriteStockTop10GuDong]，插入Top10股东信息异常。err: %s", err)
+				return err
+			}
+		}
+		err = row.Close()
+		if err != nil {
+			log.Errorf("[WriteStockTop10GuDong]，row关闭异常。err: %s", err)
+			return err
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		log.Errorf("[WriteStockTop10GuDong]，插入股东事务提交异常。err: %s", err)
 		return common.ErrorDBCommit
 	}
 

@@ -3,6 +3,7 @@ package stock
 import (
 	"context"
 	"fmt"
+
 	"github.com/printfcoder/printfcoder/life/finance/moneybase/common"
 	log "github.com/stack-labs/stack/logger"
 )
@@ -25,6 +26,16 @@ func SyncAllStockGuBen(ctx context.Context) error {
 // GetStockQT 从A股获取股票QT信息
 func GetStockQT(ctx context.Context, date string, symbols ...string) ([]StockQTDataTencent, error) {
 	return SyncerAdapter(ctx).GetStockQT(date, symbols...)
+}
+
+// GetStockTop10GuDong GetStockTop10GuDong 获取 Top 10股东
+func GetStockTop10GuDong(ctx context.Context, symbol, startDate string, endDate string, guDongType int) ([]StockTop10GuDong, error) {
+	return SyncerAdapter(ctx).GetStockTop10GuDong(symbol, startDate, endDate, guDongType)
+}
+
+// SyncTop10Gudong 写入 Top 10股东
+func SyncTop10Gudong(ctx context.Context, startDate string, endDate string, guDongType int) error {
+	return SyncerAdapter(ctx).SyncTop10GuDong(startDate, endDate, guDongType)
 }
 
 // WriteSingleStockQTDaily 写入单个每天QT

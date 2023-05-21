@@ -28,14 +28,17 @@ var (
 
 	/** 股票区 **/
 
-	ErrorStockUnimplementedMethod      = &Error{No: "120001", Msg: "未实现的方法"}
-	ErrorStockSyncStockBaseInfo        = &Error{No: "120002", Msg: "同步股票基本信息异常"}
-	ErrorStockInvalidCode              = &Error{No: "120003", Msg: "证券代码不存在"}
-	ErrorStockVendorGuBenInvalidStruct = &Error{No: "120004", Msg: "供应商股本结构异常"}
-	ErrorStockSyncGuBenToDB            = &Error{No: "120005", Msg: "同步股票股本信息异常"}
-	ErrorStockVendorGuBenIsNil         = &Error{No: "120006", Msg: "供应商股本信息不存在"}
-	ErrorStockSyncAllGuBenToDB         = &Error{No: "120007", Msg: "同步所有股票股本信息异常"}
-	ErrorStockVendorGuBenReadError     = &Error{No: "120008", Msg: "供应商股本结构接口读取异常"}
-	ErrorStockQTDailyReadError         = &Error{No: "120009", Msg: "同步当天单个股票QT异常"}
-	ErrorStockQTDailyWriteError        = &Error{No: "120010", Msg: "写入当天单个股票QT异常"}
+	ErrorStockUnimplementedMethod               = &Error{No: "120001", Msg: "未实现的方法"}
+	ErrorStockSyncStockBaseInfo                 = &Error{No: "120002", Msg: "同步股票基本信息异常"}
+	ErrorStockInvalidCode                       = &Error{No: "120003", Msg: "证券代码不存在"}
+	ErrorStockVendorGuBenInvalidStruct          = &Error{No: "120004", Msg: "供应商股本结构异常"}
+	ErrorStockSyncGuBenToDB                     = &Error{No: "120005", Msg: "同步股票股本信息异常"}
+	ErrorStockVendorGuBenIsNil                  = &Error{No: "120006", Msg: "供应商股本信息不存在"}
+	ErrorStockSyncAllGuBenToDB                  = &Error{No: "120007", Msg: "同步所有股票股本信息异常"}
+	ErrorStockVendorGuBenReadError              = &Error{No: "120008", Msg: "供应商股本结构接口读取异常"}
+	ErrorStockQTDailyReadError                  = &Error{No: "120009", Msg: "同步当天单个股票QT异常"}
+	ErrorStockQTDailyWriteError                 = &Error{No: "120010", Msg: "写入当天单个股票QT异常"}
+	ErrorStockTop10GuDongReadError              = &Error{No: "120011", Msg: "读取Top10股东异常"}
+	ErrorStockTop10GuDongWriteError             = &Error{No: "120012", Msg: "写入Top10股东异常"}
+	ErrorStockTop10GuDongInvalidGuDongTypeError = &Error{No: "120013", Msg: "股东类型不合法"}
 )

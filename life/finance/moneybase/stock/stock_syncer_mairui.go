@@ -20,6 +20,10 @@ func (s *SyncerMairui) GetStockQT(date string, symbol ...string) ([]StockQTDataT
 	return nil, common.ErrorStockUnimplementedMethod
 }
 
+func (s *SyncerMairui) GetStockTop10GuDong(symbol string, startDate string, endDate string, guDongType int) (data []StockTop10GuDong, err error) {
+	return nil, common.ErrorStockUnimplementedMethod
+}
+
 func (s *SyncerMairui) SyncSingleStockGuBen(code string) error {
 	return common.ErrorStockUnimplementedMethod
 }
@@ -88,6 +92,10 @@ func (s *SyncerMairui) WriteStockQTDaily(date string) error {
 }
 
 func (s *SyncerMairui) SyncAllStockGuBen() error {
+	return common.ErrorStockUnimplementedMethod
+}
+
+func (s *SyncerMairui) SyncTop10GuDong(startDate string, endDate string, guDongType int) error {
 	return common.ErrorStockUnimplementedMethod
 }
 

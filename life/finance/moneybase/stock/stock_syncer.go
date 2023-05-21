@@ -34,6 +34,9 @@ type Syncer interface {
 	// GetStockQT 获取股票当前价值
 	GetStockQT(date string, symbol ...string) ([]StockQTDataTencent, error)
 
+	// GetStockTop10GuDong 获取 Top10 股东
+	GetStockTop10GuDong(symbol string, startDate string, endDate string, guDongType int) (data []StockTop10GuDong, err error)
+
 	// WriteSingleStockQTDaily 写入单个每天QT
 	WriteSingleStockQTDaily(date string, symbol string) error
 
@@ -42,6 +45,9 @@ type Syncer interface {
 
 	// MethodSupported 是否支持该方法
 	MethodSupported(methodName string) (supported bool, err error)
+
+	// SyncTop10GuDong 写入 Top10 股东
+	SyncTop10GuDong(startDate string, endDate string, guDongType int) error
 }
 
 type SyncerOption func(o *SyncerOptions)

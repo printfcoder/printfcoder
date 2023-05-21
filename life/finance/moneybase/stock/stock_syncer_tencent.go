@@ -87,6 +87,10 @@ func (s *SyncerTencent) GetStockQT(date string, symbols ...string) ([]StockQTDat
 	return ret, nil
 }
 
+func (s *SyncerTencent) GetStockTop10GuDong(symbol string, startDate string, endDate string, guDongType int) (data []StockTop10GuDong, err error) {
+	return nil, common.ErrorStockUnimplementedMethod
+}
+
 func (s *SyncerTencent) SyncAllStockBases() error {
 	return common.ErrorStockUnimplementedMethod
 }
@@ -116,6 +120,16 @@ func (s *SyncerTencent) WriteSingleStockQTDaily(date string, symbol string) erro
 		qtTencent := qts[i]
 		qt := qtTencent.ToStockQT()
 
+		// 价格为0不用再查了
+		if qt.DangQianJiaGe == 0 {
+			si := StockIgnore{
+				DM: qt.DaiMa,
+			}
+			si.SetType(IgnoreTuiShi)
+			log.Errorf("[WriteSingleStockQTDaily] 忽略该股票，[%+v]", si)
+			AddNewIgnore(si)
+		}
+
 		err = s.Options.Dao.WriteStockQTDaily(qt)
 		if err != nil {
 			log.Errorf("[WriteSingleStockQTDaily] 写入腾讯QT异常：%s", err)
@@ -127,7 +141,8 @@ func (s *SyncerTencent) WriteSingleStockQTDaily(date string, symbol string) erro
 }
 
 func (s *SyncerTencent) WriteStockQTDaily(date string) error {
-	sbs, err := s.Options.Dao.ReadAllAStockBases()
+	dateStart, dateEnd := common.ParseDayStartAndEnd(date)
+	sbs, err := s.Options.Dao.ReadAllAStockBasesForSyncQT(dateStart, dateEnd)
 	if err != nil {
 		log.Errorf("[WriteStockQTDaily] 读取所有股票基本信息异常。err: %s", err)
 		return common.ErrorStockSyncAllGuBenToDB
@@ -145,6 +160,16 @@ func (s *SyncerTencent) WriteStockQTDaily(date string) error {
 		for i := 0; i < len(qts); i++ {
 			qtTencent := qts[i]
 			qt := qtTencent.ToStockQT()
+
+			// 价格为0不用再查了
+			if qt.DangQianJiaGe == 0 || strings.HasPrefix(qt.MC, "退市") {
+				si := StockIgnore{
+					DM: qt.DaiMa,
+				}
+				si.SetType(IgnoreTuiShi)
+				log.Errorf("[WriteStockQTDaily] 忽略该股票，[%+v]", si)
+				AddNewIgnore(si)
+			}
 
 			err = s.Options.Dao.WriteStockQTDaily(qt)
 			if err != nil {
@@ -212,6 +237,10 @@ func (s *SyncerTencent) SyncAllStockGuBen() error {
 	}
 
 	return nil
+}
+
+func (s *SyncerTencent) SyncTop10GuDong(startDate string, endDate string, guDongType int) error {
+	return common.ErrorStockUnimplementedMethod
 }
 
 func (s *SyncerTencent) Name() string {

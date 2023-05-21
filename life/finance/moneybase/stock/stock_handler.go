@@ -27,9 +27,19 @@ func Handlers() []common.HandlerFunc {
 			HandlerFunc: syncAllGuBen,
 		},
 		{
+			Method:      "POST",
+			Path:        "sync-top10-gudong",
+			HandlerFunc: syncTop10Gudong,
+		},
+		{
 			Method:      "GET",
 			Path:        "get-current-value",
 			HandlerFunc: getCurrentValue,
+		},
+		{
+			Method:      "GET",
+			Path:        "get-top10-gudong",
+			HandlerFunc: getStockTop10GuDong,
 		},
 		{
 			Method:      "POST",
@@ -147,6 +157,72 @@ func getCurrentValue(ctx context.Context, r *app.RequestContext) {
 	}
 
 	rsp.Data = stockQTs
+	common.WriteSuccessHTTP(r, rsp)
+}
+
+func getStockTop10GuDong(ctx context.Context, r *app.RequestContext) {
+	rsp := &common.HTTPRsp{}
+
+	symbol := r.Query("symbol")
+	if symbol == "" {
+		common.WriteFailHTTP(r, rsp, common.ErrorStockInvalidCode)
+		return
+	}
+
+	startDate := r.Query("startDate")
+	if startDate == "" {
+		startDate = "20210101"
+	}
+
+	endDate := r.Query("endDate")
+	if endDate == "" {
+		endDate = common.TodayStr()
+	}
+
+	guDongType := r.Query("guDongType")
+	if guDongType == "" || (guDongType != "1" && guDongType != "2") {
+		common.WriteFailHTTP(r, rsp, common.ErrorStockTop10GuDongInvalidGuDongTypeError)
+		return
+	}
+
+	guDongTypeInt, _ := strconv.ParseInt(guDongType, 10, 64)
+
+	stockQTs, err := GetStockTop10GuDong(ctx, symbol, startDate, endDate, int(guDongTypeInt))
+	if err != nil {
+		common.WriteFailHTTP(r, rsp, err)
+		return
+	}
+
+	rsp.Data = stockQTs
+	common.WriteSuccessHTTP(r, rsp)
+}
+
+func syncTop10Gudong(ctx context.Context, r *app.RequestContext) {
+	rsp := &common.HTTPRsp{}
+
+	startDate := r.Query("startDate")
+	if startDate == "" {
+		startDate = "20210101"
+	}
+
+	endDate := r.Query("endDate")
+	if endDate == "" {
+		endDate = common.TodayStr()
+	}
+
+	guDongType := r.Query("guDongType")
+	if guDongType == "" || (guDongType != "1" && guDongType != "2") {
+		common.WriteFailHTTP(r, rsp, common.ErrorStockTop10GuDongInvalidGuDongTypeError)
+		return
+	}
+
+	guDongTypeInt, _ := strconv.ParseInt(guDongType, 10, 64)
+	err := SyncTop10Gudong(ctx, startDate, endDate, int(guDongTypeInt))
+	if err != nil {
+		common.WriteFailHTTP(r, rsp, err)
+		return
+	}
+
 	common.WriteSuccessHTTP(r, rsp)
 }
 

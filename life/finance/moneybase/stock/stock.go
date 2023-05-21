@@ -82,6 +82,9 @@ func Init(ctx context.Context) error {
 	// 定时器
 	initCron(ctx)
 
+	// 管道
+	initChannels(ctx)
+
 	return nil
 }
 

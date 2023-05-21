@@ -7,6 +7,17 @@ type OperateType int
 var (
 	OperateTypeBuy  = 1
 	OperateTypeSell = 2
+
+	// GuDongTypeFloat 流通股东
+	GuDongTypeFloat = 1
+	// GuDongTypeCommon 正常股东
+	GuDongTypeCommon = 2
+
+	// 1：忽略流通股东，2：忽略st，4：忽略退市，8：忽略正常股东
+	IgnoreLiuTongGuDong = 1
+	IgnoreST            = 2
+	IgnoreTuiShi        = 4
+	IgnoreCommonGuDong  = 8
 )
 
 // AStockBase A股股票基本数据结构，以mairui接口为基准
@@ -145,6 +156,16 @@ type GuBenInfo struct {
 	GuDong    []GuDong
 }
 
+type StockTop10GuDong struct {
+	DM         string  `json:"dm"`
+	AnnDate    string  `json:"ann_date"`
+	EndDate    string  `json:"end_date"`
+	HolderName string  `json:"holder_name"`
+	HoldAmount float64 `json:"hold_amount"`
+	HoldRatio  float64 `json:"hold_ratio"`
+	GuDongType int     `json:"gu_dong_type"`
+}
+
 /*
 *
 
@@ -228,4 +249,17 @@ type StockXiaDie struct {
 	MC    string            `json:"mc,omitempty"`
 	DaiMa string            `json:"dai_ma,omitempty"`
 	Trend []StockDailyJiaGe `json:"trend,omitempty"`
+}
+
+type StockIgnore struct {
+	DM         string `json:"dm,omitempty"`
+	IgnoreType int    `json:"ignore_type,omitempty"`
+}
+
+func (si *StockIgnore) SetType(guDongType int) {
+	if guDongType == GuDongTypeCommon {
+		si.IgnoreType = IgnoreCommonGuDong
+	} else {
+		si.IgnoreType = IgnoreLiuTongGuDong
+	}
 }
