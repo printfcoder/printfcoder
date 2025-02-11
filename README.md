@@ -3,7 +3,7 @@
 ### Hi there, I'm Shux🎉
 
 - 🌏 Open-source software developer
-- 🔭 I’m currently working on [StackRPC](https://github.com/stack-labs/stack-rpc)
+- 🔭 I’m currently working on [StackRPC](https://github.com/dirty-bro-tech)
 - 📫 How to reach me: i@shux.me
 - ⚡ Fun fact: Go, Java, JS
 
