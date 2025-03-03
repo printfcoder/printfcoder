@@ -2,8 +2,8 @@
 
 ### Hi there, I'm Shux🎉
 
-- 🌏 Open-source software developer
-- 🔭 I’m currently working on [StackRPC](https://github.com/dirty-bro-tech)
+- 🌏 Open-source software developer. worked at three startups, oppo for three years, and now TikTok. 
+- 🔭 I’m currently focusing on [DirtyBro](https://github.com/dirty-bro-tech) projects in my spare time.
 - 📫 How to reach me: i@shux.me
 - ⚡ Fun fact: Go, Java, JS
 
