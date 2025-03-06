@@ -4,7 +4,7 @@
 
 - 🌏 Open-source software developer. worked at three startups, oppo for three years, and now TikTok. 
 - 🔭 I’m currently focusing on [DirtyBro](https://github.com/dirty-bro-tech) projects in my spare time.
-- 📫 How to reach me: i@shux.me
+- 📫 How to reach me: printfcoder@gmail.com
 - ⚡ Fun fact: Go, Java, JS
 
 <img src="https://github-profile-trophy.vercel.app/?username=printfcoder&theme=flat&column=7&margin-w=10" alt="logo" height="160" align="center" />
