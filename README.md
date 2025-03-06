@@ -3,9 +3,9 @@
 ### Hi there, I'm Shux🎉
 
 - 🌏 Open-source software developer. worked at three startups, oppo for three years, and now TikTok. 
-- 🔭 I’m currently focusing on [DirtyBro](https://github.com/dirty-bro-tech) projects in my spare time.
+- 🔭 I’m currently focusing on [DirtyBro](https://github.com/dirty-bro-tech) projects in my spare time. I try to figure out a new social network ecology.
 - 📫 How to reach me: printfcoder@gmail.com
-- ⚡ Fun fact: Go, Java, JS
+- ⚡ Fun fact: Go, Java, JS, 
 
 <img src="https://github-profile-trophy.vercel.app/?username=printfcoder&theme=flat&column=7&margin-w=10" alt="logo" height="160" align="center" />
 
