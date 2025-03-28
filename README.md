@@ -1,8 +1,8 @@
 <img align="right" src="https://github-readme-stats.vercel.app/api?username=printfcoder&show_icons=true&theme=vue" alt="StackLabs's github stats" />
 
-### Hi there, I'm Shux🎉
+### Hi there, I'm Shuxian
 
-- 🌏 Open-source software developer. worked at three startups, oppo for three years, and now TikTok. 
+- 🌏 Open-source software developer. 12 years experience, worked at three startups, oppo for three years, and now TikTok. 
 - 🔭 I’m currently focusing on [DirtyBro](https://github.com/dirty-bro-tech) projects in my spare time. I try to figure out a new social network ecology.
 - 📫 How to reach me: printfcoder@gmail.com
 - ⚡ Fun fact: Go, Java, JS, 
