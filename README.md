@@ -2,7 +2,7 @@
 
 ### Hi there, I'm Shuxian
 
-- 🌏 Open-source software developer. 12 years experience, worked at three startups, oppo for three years, and now TikTok. 
+- 🌏 Open-source software developer. 13 years experience, worked at three startups, oppo for three years, and now TikTok. 
 - 🔭 I’m currently focusing on [PeersTouch](https://github.com/peers-touch) projects in my spare time. I try to figure out a new social network ecology.
 - 📫 How to reach me: printfcoder@gmail.com
 - ⚡ Fun fact: Go, Java, JS, 
