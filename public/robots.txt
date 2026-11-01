@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://printfcoder.github.io/printfcoder/sitemap-index.xml

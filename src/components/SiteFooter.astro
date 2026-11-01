@@ -1,0 +1,16 @@
+---
+import { SITE, withBase } from '../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mx-auto w-full max-w-[40rem] px-6 pb-12">
+  <div class="border-t hairline pt-5 flex flex-wrap items-center justify-between gap-3">
+    <p class="meta">© {year} {SITE.name}</p>
+    <div class="flex items-center gap-5">
+      <a class="nav-link" href={`mailto:${SITE.email}`}>email</a>
+      <a class="nav-link" href={SITE.github} rel="me noopener" target="_blank">github</a>
+      <a class="nav-link" href={withBase('/rss.xml')}>rss</a>
+    </div>
+  </div>
+</footer>

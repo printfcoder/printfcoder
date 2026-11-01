@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('writing', (p) => !p.data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<BaseLayout title="Writing" description="Notes and articles by printfcoder." path="/writing">
+  <header class="pt-6 pb-10">
+    <h1 class="text-2xl font-semibold tracking-tight">Writing</h1>
+    <p class="mt-2 text-[0.92rem] text-muted">
+      Notes on distributed systems, Go, platform engineering, and the occasional
+      non-technical detour. Posts stay in the language they were written in.
+    </p>
+  </header>
+
+  {
+    posts.length === 0 ? (
+      <div class="border border-line rounded-lg p-8 text-center">
+        <p class="font-mono text-[0.85rem] text-muted">
+          <span class="text-amber">$</span> ls writing/
+        </p>
+        <p class="mt-3 text-[0.92rem] text-faint">
+          Nothing published yet. The first notes are on their way.
+        </p>
+      </div>
+    ) : (
+      <ul class="divide-y hairline">
+        {posts.map((post) => (
+          <li>
+            <a
+              href={`/writing/${post.id}`}
+              class="group flex items-baseline gap-4 py-4"
+            >
+              <time class="meta shrink-0 w-24">{formatDate(post.data.pubDate)}</time>
+              <span class="text-[0.95rem] text-paper/90 group-hover:text-amber-soft transition-colors">
+                {post.data.title}
+              </span>
+              {post.data.lang === 'zh' && (
+                <span class="meta text-faint">中文</span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BaseLayout>

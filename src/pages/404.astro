@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/site';
+---
+
+<BaseLayout title="404 — Not found" description="Page not found." path="/404">
+  <section class="pt-20 text-center">
+    <p class="font-mono text-[0.85rem] text-amber">404</p>
+    <h1 class="mt-4 text-2xl font-semibold tracking-tight">Page not found</h1>
+    <p class="mt-3 text-[0.92rem] text-muted">
+      This path does not exist — it may have moved or never shipped.
+    </p>
+    <a class="link inline-block mt-8 font-mono text-[0.88rem]" href={withBase('/')}>
+      ← back to index
+    </a>
+  </section>
+</BaseLayout>

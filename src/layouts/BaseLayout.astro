@@ -1,0 +1,44 @@
+---
+import '../styles/global.css';
+import { SITE, withBase } from '../lib/site';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Canonical path without base, e.g. "/writing/some-post". */
+  path: string;
+}
+
+const { title, description = SITE.description, path } = Astro.props;
+const canonical = new URL(withBase(path), Astro.site!).toString();
+const ogTitle = path === '/' ? `${SITE.name} · ${SITE.handle}` : `${title} · ${SITE.handle}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.handle} href={withBase('/rss.xml')} />
+    <title>{ogTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <SiteHeader path={path} />
+    <main class="mx-auto w-full max-w-[40rem] flex-1 px-6 pt-14 pb-24">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
