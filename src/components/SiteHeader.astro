@@ -1,0 +1,29 @@
+---
+import { SITE, withBase } from '../lib/site';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
+const isActive = (candidate: string) =>
+  candidate === '/' ? path === '/' : path.startsWith(candidate);
+---
+
+<header class="mx-auto w-full max-w-[40rem] px-6 pt-10">
+  <nav class="flex items-baseline justify-between border-b hairline pb-4">
+    <a
+      href={withBase('/')}
+      class="font-mono text-[0.95rem] tracking-tight text-paper"
+      aria-current={isActive('/') ? 'page' : undefined}
+    >
+      {SITE.handle}
+      <span class="text-amber">_</span>
+    </a>
+    <div class="flex items-center gap-5">
+      <a class="nav-link" href={withBase('/writing')} aria-current={isActive('/writing') ? 'page' : undefined}>
+        writing
+      </a>
+      <a class="nav-link" href={SITE.github} rel="me noopener" target="_blank">github</a>
+    </div>
+  </nav>
+</header>

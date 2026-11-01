@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, withBase } from '../lib/site';
+---
+
+<BaseLayout title={SITE.name} path="/">
+  <section class="pt-6">
+    <p class="meta mb-4">hello, world</p>
+    <h1 class="text-[2.4rem] leading-tight font-semibold tracking-tight">
+      {SITE.name}
+    </h1>
+    <p class="mt-3 font-mono text-[0.85rem] text-muted">
+      <span class="text-amber">@</span>{SITE.handle}
+      <span class="text-faint mx-2">/</span>
+      {SITE.role}
+      <span class="text-faint mx-2">/</span>
+      {SITE.location}
+    </p>
+  </section>
+
+  <section class="mt-12 space-y-4 text-[0.98rem] text-paper/90">
+    <p>
+      I build backend platforms and the infrastructure around them — service
+      frameworks, resource-access layers, observability, and stability
+      systems. Most of the past decade went into making "it works" become
+      "it stays working at scale."
+    </p>
+    <p>
+      These days I work on <a class="link" href={SITE.peersTouch} rel="noopener" target="_blank">Peers&nbsp;Touch</a>,
+      a decentralized social network with built-in AI agents: peer-to-peer,
+      self-hostable, with people owning their social data and connections.
+      Earlier I ran the <a class="link" href="https://github.com/printfcoder/stack-rpc-tutorials" rel="noopener" target="_blank">Go-Micro China &amp; Stack-RPC tutorials</a>,
+      a Chinese-language Go microservice guide that grew into a sizable community.
+    </p>
+  </section>
+
+  <section class="mt-12 border-t hairline pt-6">
+    <h2 class="font-mono text-[0.78rem] tracking-[0.12em] uppercase text-faint mb-4">
+      now
+    </h2>
+    <ul class="space-y-2.5 text-[0.95rem] text-paper/90">
+      <li class="flex gap-3">
+        <span class="text-amber font-mono text-[0.8rem] leading-7">→</span>
+        <span>Designing federated client–station architecture and agent-native developer workflows.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-amber font-mono text-[0.8rem] leading-7">→</span>
+        <span>Writing occasionally about distributed systems, Go, and the engineering trade-offs in between — see <a class="link" href={withBase('/writing')}>writing</a>.</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="mt-12 border-t hairline pt-6">
+    <h2 class="font-mono text-[0.78rem] tracking-[0.12em] uppercase text-faint mb-4">
+      elsewhere
+    </h2>
+    <ul class="space-y-2.5 font-mono text-[0.88rem]">
+      <li>
+        <a class="link" href={SITE.github} rel="me noopener" target="_blank">github.com/{SITE.handle}</a>
+      </li>
+      <li>
+        <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
