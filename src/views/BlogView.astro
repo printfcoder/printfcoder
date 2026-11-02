@@ -2,36 +2,74 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryList, { type Entry } from '../components/EntryList.astro';
 import { getCollection } from 'astro:content';
-import { UI, lpath, type Locale } from '../lib/i18n';
+import { UI, BLOG_TAGS, tagLabel, lpath, type Locale } from '../lib/i18n';
+import { pairKey } from '../lib/content';
 
 interface Props {
   locale: Locale;
+  /** When set, only posts carrying this tag are shown. */
+  tag?: string;
 }
-const { locale } = Astro.props;
+const { locale, tag } = Astro.props;
 const t = UI[locale];
 
-const posts = (await getCollection('posts', (p) => !p.data.draft && p.data.lang === locale)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const allPosts = (
+  await getCollection('posts', (p) => !p.data.draft && p.data.lang === locale)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const baseKey = (id: string) => id.replace(/\.(en|zh)$/, '');
+const entries: Entry[] = allPosts
+  .filter((p) => !tag || p.data.tags.includes(tag))
+  .map((p) => ({
+    href: lpath(locale, `/posts/${pairKey(p.id)}`),
+    title: p.data.title,
+    date: p.data.pubDate,
+    description: p.data.description,
+    tags: p.data.tags,
+  }));
 
-const entries: Entry[] = posts.map((p) => ({
-  href: lpath(locale, `/posts/${baseKey(p.id)}`),
-  title: p.data.title,
-  date: p.data.pubDate,
-  description: p.data.description,
-}));
+const countFor = (slug: string) => allPosts.filter((p) => p.data.tags.includes(slug)).length;
+
+const title = tag ? `${tagLabel(tag, locale)} · ${t.blog.title.replace(/[.。]/g, '')}` : t.blog.title;
+const description = tag
+  ? `${locale === 'zh' ? '标签' : 'Tag'}: ${tagLabel(tag, locale)}`
+  : t.blog.subtitle;
 ---
 
-<BaseLayout locale={locale} page="blog" title={`${t.blog.eyebrow} · Blog`} description={t.blog.subtitle}>
+<BaseLayout locale={locale} page="blog" title={title} description={description}>
   <div class="shell">
     <header class="page-head">
       <p class="eyebrow">{locale === 'zh' ? '博客' : '博客 · Blog'}</p>
-      <h1 class="page-head__title">{t.blog.title}</h1>
-      <p class="page-head__subtitle">{t.blog.subtitle}</p>
+      <h1 class="page-head__title">
+        {tag ? tagLabel(tag, locale) : t.blog.title}
+      </h1>
+      <p class="page-head__subtitle">
+        {tag ? `${t.blog.filterLabel}: ${tagLabel(tag, locale)}` : t.blog.subtitle}
+      </p>
     </header>
+
+    <nav class="chip-row" aria-label={t.blog.filterLabel} style="margin-bottom: 40px">
+      <a
+        class="chip"
+        href={lpath(locale, '/blog')}
+        aria-current={!tag ? 'page' : undefined}
+      >
+        {t.blog.all} <span class="count">{allPosts.length}</span>
+      </a>
+      {BLOG_TAGS.map((slug) => (
+        <a
+          class="chip"
+          href={lpath(locale, `/blog/tag/${slug}`)}
+          aria-current={tag === slug ? 'page' : undefined}
+        >
+          {tagLabel(slug, locale)} <span class="count">{countFor(slug)}</span>
+        </a>
+      ))}
+    </nav>
   </div>
 
-  <EntryList entries={entries} locale={locale} />
+  <EntryList
+    entries={entries}
+    locale={locale}
+    tagHref={(t) => lpath(locale, `/blog/tag/${t}`)}
+  />
 </BaseLayout>

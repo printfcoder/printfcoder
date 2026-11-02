@@ -1,32 +1,44 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// Learning notes — short readings and study cards grouped by category.
-const notes = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/notes' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    pubDate: z.coerce.date(),
-    category: z.enum(['tech', 'history', 'philosophy']),
-    tags: z.array(z.string()).default([]),
-    source: z.string().optional(),
-    lang: z.enum(['en', 'zh']).default('zh'),
-    draft: z.boolean().default(false),
-  }),
-});
-
-// Blog — long-form essays.
+// One collection for all writing. Organization is purely tag-driven:
+//   fixed tags  — 学习/科技/历史/哲学 (registered in src/data/tags.json)
+//   topic tags  — agent, harness, ... (open, but registered for bilingual names)
+//   series      — optional ordered reading sequence, with series_order
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  // Keep the authored "<slug>.<locale>.md" convention visible in entry ids:
+  // the default id generator strips the inner dot, which would break the
+  // ".en/.zh" pair-key logic used by routes, feeds, and listing views.
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/posts',
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
     pubDate: z.coerce.date(),
     updated: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    series: z.string().optional(),
+    series_order: z.number().int().positive().optional(),
     lang: z.enum(['en', 'zh']).default('en'),
     draft: z.boolean().default(false),
   }),
 });
 
-export const collections = { notes, posts };
+// Long-form page copy lives here as Markdown, not as quoted strings in code.
+// Same "<key>.<locale>.md" pairing convention as posts, e.g. home-intro.en.md.
+// The body is the copy itself; only `lang` is carried in frontmatter.
+const copy = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/copy',
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
+  schema: z.object({
+    lang: z.enum(['en', 'zh']),
+  }),
+});
+
+export const collections = { posts, copy };

@@ -1,20 +1,22 @@
 ---
-import { UI, type Locale } from '../lib/i18n';
+import { UI, tagLabel, type Locale } from '../lib/i18n';
 
 export interface Entry {
   href: string;
   title: string;
   date: Date;
   description?: string;
-  tag?: string;
+  tags?: string[];
 }
 
 interface Props {
   entries: Entry[];
   locale: Locale;
+  /** Build a tag-filter href for an entry tag. */
+  tagHref?: (tag: string) => string;
 }
 
-const { entries, locale } = Astro.props;
+const { entries, locale, tagHref } = Astro.props;
 const t = UI[locale];
 const fmt = (d: Date) =>
   locale === 'zh'
@@ -34,18 +36,60 @@ const fmt = (d: Date) =>
     <div class="shell">
       <div class="entry-list">
         {entries.map((e) => (
-          <a class="entry-row" href={e.href}>
+          <div class="entry-row">
             <time class="entry-row__date" datetime={e.date.toISOString()}>{fmt(e.date)}</time>
             <span class="entry-row__main">
-              <span class="entry-row__title">{e.title}</span>
-              {e.description && (
-                <span class="entry-row__desc" style="display:block">{e.description}</span>
-              )}
+              <a class="entry-row__link" href={e.href}>
+                <span class="entry-row__title">{e.title}</span>
+                {e.description && (
+                  <span class="entry-row__desc" style="display:block">{e.description}</span>
+                )}
+              </a>
             </span>
-            {e.tag && <span class="entry-row__tag">{e.tag}</span>}
-          </a>
+            {e.tags && e.tags.length > 0 && (
+              <span class="entry-row__tags">
+                {e.tags.map((tag) =>
+                  tagHref ? (
+                    <a class="entry-tag" href={tagHref(tag)}>{tagLabel(tag, locale)}</a>
+                  ) : (
+                    <span class="entry-tag">{tagLabel(tag, locale)}</span>
+                  ),
+                )}
+              </span>
+            )}
+          </div>
         ))}
       </div>
     </div>
   )
 }
+
+<style>
+  .entry-row__link {
+    display: block;
+  }
+  .entry-row__tags {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 240px;
+  }
+  .entry-tag {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .entry-row__tags {
+      justify-content: flex-start;
+      max-width: none;
+    }
+  }
+</style>

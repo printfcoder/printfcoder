@@ -1,32 +1,21 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
-import { SITE, categoryLabel, type Locale } from './i18n';
+import { SITE, tagLabel, type Locale } from './i18n';
+import { pairKey } from './content';
 
 export async function buildFeed(locale: Locale, context: APIContext) {
-  const [posts, notes] = await Promise.all([
-    getCollection('posts', (p) => !p.data.draft && p.data.lang === locale),
-    getCollection('notes', (n) => !n.data.draft && n.data.lang === locale),
-  ]);
+  const posts = await getCollection('posts', (p) => !p.data.draft && p.data.lang === locale);
 
-  const pairKey = (id: string) => id.replace(/\.(en|zh)$/, '');
-
-  const items = [
-    ...posts.map((p) => ({
+  const items = posts
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .map((p) => ({
       title: p.data.title,
       description: p.data.description ?? '',
       pubDate: p.data.pubDate,
-      categories: ['blog'],
+      categories: p.data.tags.map((tag) => tagLabel(tag, locale)),
       link: `${locale === 'zh' ? '/zh' : ''}/posts/${pairKey(p.id)}/`,
-    })),
-    ...notes.map((n) => ({
-      title: n.data.title,
-      description: n.data.description ?? '',
-      pubDate: n.data.pubDate,
-      categories: [categoryLabel(n.data.category, locale)],
-      link: `${locale === 'zh' ? '/zh' : ''}/notes/${pairKey(n.id)}/`,
-    })),
-  ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+    }));
 
   return rss({
     title: `${SITE.name} — ${SITE.handle}`,
