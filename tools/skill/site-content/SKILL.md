@@ -20,6 +20,9 @@ README 的 "Writing content" 一节也指向同一文件。规则变更只改那
    `src/content/copy/`；短 UI 标签 → `src/lib/i18n.ts`。
 3. 中英成对处理：改动必须同时落到 `.en.md` 与 `.zh.md`；
    新增标签/系列先改 `src/data/tags.json` / `src/data/series.json`。
+   每篇 posts 必须声明 `authorship`（`human` 或 `human-ai`，闸门强制，
+   定义见 guide 第 3 节）；AI 参与研究/起草/校改的一律标 `human-ai`，
+   不得标 `human` 冒充纯手写。
 4. 中文必须符合作者本人的文风（资深后端工程师口吻），英文用自然技术英语重写，
    不逐字机翻。逐条文风自检以文档第 6 节为准。
    **「Agent 是如何工作的」系列额外执行第 7 章**：范围护栏、本地研究素材

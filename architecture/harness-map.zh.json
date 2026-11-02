@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "总图：Harness 里哪些是传统，哪些不是",
-    "subtitle": "工业级 coding agent（codex）的模块按与模型的关系分四立柱：灰、橙、红、青；右侧紫色是模型本身。",
+    "subtitle": "工业级 coding agent（codex）的模块按与模型的关系分四立柱：灰、橙、红、浅绿；右侧紫色是模型本身。",
     "locale": "zh-CN",
     "output": "harness-map.zh.html",
     "visual_preset": "signal-flow",
@@ -171,7 +171,7 @@
     {
       "id": "h-cyan",
       "type": "frontend",
-      "label": "青 · 围着模型建",
+      "label": "浅绿 · 围着模型建",
       "sublabel": "老手艺 · 新岗位",
       "pos": [940, 64],
       "size": [398, 56]
@@ -348,7 +348,7 @@
     },
     {
       "dot": "cyan",
-      "title": "青 · 老手艺，新岗位",
+      "title": "浅绿 · 老手艺，新岗位",
       "items": [
         "网关、协议适配、事件存储、内核复用：难点是限流重试、故障切换、版本兼容，不是概率。"
       ]

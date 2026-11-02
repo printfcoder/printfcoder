@@ -6,6 +6,7 @@ tags: [learning, tech, agent, harness]
 series: how-agents-work
 series_order: 1
 lang: en
+authorship: human-ai
 draft: false
 ---
 
@@ -23,11 +24,15 @@ The word "agent" has been stretched thin these past two years. Within three sent
 <figcaption>Figure 1 · Model, harness, environment, and the three boundaries between them</figcaption>
 </figure>
 
-There are three boundaries between these three things, and every later chapter traces one of them:
+There are three boundaries between these three things.
 
-- **The inference boundary**, harness to model: one token round-trip. It is the only probabilistic seam in the entire system — you cannot assume what comes back.
-- **The side-effect boundary**, harness to environment: where tools actually act. The world outside the process changes nowhere else.
-- **The human boundary**, between person and harness: instructions, approvals, interruption. Permission can be delegated; authority never fully is.
+First, to be clear: these are not official terminology. They are an analytical frame I use to read these systems. The dividing principle is simple: **the model is locked inside the shell and can touch nothing on its own; to affect anything it must pass through an exit, and on the other side there are exactly three kinds of objects, each with a different trust semantics.** Cutting along trust semantics that cannot be merged further yields three seams:
+
+- **The inference boundary**, harness to model: one token round-trip. Across it is the model — the only object whose output is probabilistic, so you cannot assume what comes back. Every uncertainty in the system enters through this one seam; retries, fallbacks, and budgets all orbit it.
+- **The side-effect boundary**, harness to environment: where tools actually act. Across it are files, networks, and other services — deterministic, mutable, and often irreversible. The world outside the process changes only past this boundary, which is why sandboxes and approvals guard it.
+- **The human boundary**, between person and harness. Across it is a person — who holds ultimate authority and can interrupt at any time: instructions, approvals, interruption. Permission can be delegated; authority never fully is.
+
+Three is the minimal cut that holds: fold the model into "environment" and you lose the key fact that there is only one probabilistic seam; split files and networks further and you add no new trust semantics. Every later chapter traces one of these seams. Real flows cross several at once (a tool call is the model choosing and the harness executing) — the boundaries exist to make the system legible, not to carve it into unrelated pieces.
 
 What is not covered, stated plainly: model training, weights, inference kernels, GPU scheduling — that is the model team's world, and this series does not touch it. Nor is it a collection of prompt tricks. It answers one question only: **what engineering does it take to turn a model into a system that does real work?**
 
