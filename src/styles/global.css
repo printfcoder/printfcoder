@@ -522,6 +522,36 @@ p { margin: 0; }
   font-weight: 700;
 }
 
+/* Date + authorship badge share one row. */
+.article__meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.authorship-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  cursor: help;
+}
+.authorship-badge--human-ai {
+  color: var(--color-accent);
+  border-color: var(--color-accent-line);
+  background: var(--color-accent-soft);
+}
+.authorship-badge--human {
+  color: var(--color-ink-muted);
+  background: transparent;
+}
+
 /* ---------- Series TOC ---------- */
 
 /* Visibility split: the full rail shows on wide screens, the preview card
@@ -939,6 +969,19 @@ a.series-nav__link {
   .series-nav__item { font-size: 0.8rem; }
 }
 
+/* ---- Mobile-first visibility (no hidden attribute, works without JS) ----
+   Default: preview card shown, full rail hidden. .is-expanded (added by JS)
+   flips them. Wide-screen media queries below force the full rail on. */
+.series-nav__full { display: none; }
+.series-nav__preview { display: block; }
+.series-nav.is-expanded .series-nav__full { display: block; }
+.series-nav.is-expanded .series-nav__preview { display: none; }
+
+/* Per-part section outline: collapsed unless the part is current/open. */
+.series-nav__outline { display: none; }
+.series-nav__item.is-current .series-nav__outline,
+.series-nav__item.is-open .series-nav__outline { display: block; }
+
 /* Rail lives from 780px up; the close affordance is hidden there. */
 @media (min-width: 780px) {
   .series-nav__full { display: block; }
@@ -947,8 +990,7 @@ a.series-nav__link {
 }
 
 /* Below 780px (phones, narrow splits) the rail becomes a bordered card
-   above the article and the single column fills the content width. The card
-   shows a 3-part preview until "expand all" is pressed. */
+   above the article and the single column fills the content width. */
 @media (max-width: 779px) {
   .article--with-nav .article__grid {
     grid-template-columns: minmax(0, 1fr);
@@ -965,8 +1007,6 @@ a.series-nav__link {
     background: var(--color-surface-card);
     box-shadow: var(--shadow-soft);
   }
-  .series-nav__full[hidden] { display: none; }
-  .series-nav__preview:not([hidden]) { display: block; }
 }
 
 @media (max-width: 860px) {

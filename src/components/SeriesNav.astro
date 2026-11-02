@@ -47,7 +47,10 @@ const hasMore = parts.length > PREVIEW_COUNT;
 ---
 
 <nav class="series-nav" aria-label={labels.seriesNav}>
-  <!-- Mobile preview: visible only below the rail breakpoint. -->
+  <!-- Visibility is CSS/class driven, never the hidden attribute: modern
+       UA sheets give [hidden] an !important display:none that a class cannot
+       override, so toggling a class is the robust path (works without JS). -->
+  <!-- Mobile preview: shown on narrow screens until "expand all". -->
   <div class="series-nav__preview">
     <p class="series-nav__eyebrow">
       <span>{labels.seriesNav}</span>
@@ -89,8 +92,9 @@ const hasMore = parts.length > PREVIEW_COUNT;
     )}
   </div>
 
-  <!-- Full rail: sticky on desktop; revealed on mobile by the expand button. -->
-  <div class="series-nav__full" data-series-full hidden>
+  <!-- Full rail: always shown on wide screens; revealed on mobile when the
+       nav gets .is-expanded. -->
+  <div class="series-nav__full" data-series-full>
     <p class="series-nav__eyebrow series-nav__eyebrow--closable">
       <span>{labels.seriesNav}</span>
       <button type="button" class="series-nav__close" data-series-collapse aria-label={labels.collapseAll}>
@@ -132,7 +136,7 @@ const hasMore = parts.length > PREVIEW_COUNT;
             )}
           </div>
           {part.outline && part.outline.length > 0 && (
-            <ol class="series-nav__outline" hidden={!part.current}>
+            <ol class:list={['series-nav__outline', part.current && 'is-open']}>
               {part.outline.map((line) => (
                 <li>{line}</li>
               ))}
@@ -147,15 +151,13 @@ const hasMore = parts.length > PREVIEW_COUNT;
 <script>
   const nav = document.querySelector<HTMLElement>('.series-nav');
   const full = nav?.querySelector<HTMLElement>('[data-series-full]');
-  const preview = nav?.querySelector<HTMLElement>('.series-nav__preview');
 
   function setExpanded(open: boolean) {
-    if (!full || !preview) return;
-    full.hidden = !open;
-    preview.hidden = open;
+    nav?.classList.toggle('is-expanded', open);
   }
 
-  // Default to the full rail on wide screens, preview on narrow ones.
+  // Wide screens show the rail via CSS regardless; on narrow screens start
+  // collapsed (preview card) and let the buttons expand it.
   const mobileQuery = window.matchMedia('(max-width: 779px)');
   function applyBreakpoint() {
     setExpanded(!mobileQuery.matches);
@@ -179,9 +181,9 @@ const hasMore = parts.length > PREVIEW_COUNT;
     if (!toggle) return;
     const item = toggle.closest('.series-nav__item');
     const outline = item?.querySelector<HTMLElement>('.series-nav__outline');
-    if (!outline) return;
+    if (!outline || !item) return;
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
-    outline.hidden = open;
+    item.classList.toggle('is-open', !open);
   });
 </script>
