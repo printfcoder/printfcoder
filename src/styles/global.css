@@ -103,16 +103,19 @@ p { margin: 0; }
 .site-header__inner {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: clamp(20px, 3.5vw, 40px);
   height: 68px;
+  flex-wrap: nowrap;
 }
 
 .brand {
+  flex: 0 0 auto;
   font-family: var(--font-mono);
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-ink);
+  white-space: nowrap;
 }
 
 .brand em {
@@ -122,8 +125,17 @@ p { margin: 0; }
 
 .site-nav {
   display: flex;
-  gap: 24px;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 28px);
   margin-right: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .site-nav a {
@@ -608,9 +620,9 @@ p { margin: 0; }
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 720px) {
-  .site-header__inner { height: auto; min-height: 68px; padding-block: 10px; flex-wrap: wrap; }
-  .site-nav { order: 3; width: 100%; gap: 20px; overflow-x: auto; scrollbar-width: none; }
+@media (max-width: 560px) {
+  .site-header__inner { height: auto; min-height: 68px; padding-block: 10px; flex-wrap: wrap; row-gap: 8px; }
+  .site-nav { order: 3; width: 100%; flex: 0 0 100%; gap: 20px; overflow-x: auto; scrollbar-width: none; }
   .site-nav::-webkit-scrollbar { display: none; }
   .entry-row { flex-wrap: wrap; gap: 6px; }
   .entry-row__date { flex-basis: 100%; }
