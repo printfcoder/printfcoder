@@ -134,6 +134,7 @@ if (existsSync(CONTENT_DIR)) {
       tags: parseList(field(fm, 'tags')),
       series: field(fm, 'series')?.replace(/['"]/g, '') ?? null,
       seriesOrder: field(fm, 'series_order'),
+      authorship: field(fm, 'authorship')?.replace(/['"]/g, '') ?? null,
     };
 
     if (isDraft(fm)) {
@@ -144,6 +145,12 @@ if (existsSync(CONTENT_DIR)) {
     if (meta.lang !== suffixLang) {
       failures.push(
         `[posts] ${file}: frontmatter lang is '${meta.lang ?? 'missing'}' but suffix says '${suffixLang}'`,
+      );
+    }
+
+    if (meta.authorship !== 'human' && meta.authorship !== 'human-ai') {
+      failures.push(
+        `[posts] ${file}: authorship must be 'human' or 'human-ai' (got '${meta.authorship ?? 'missing'}')`,
       );
     }
 

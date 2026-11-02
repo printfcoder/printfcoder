@@ -83,6 +83,10 @@ interface UIShape {
     sections: string;
     expandAll: string;
     collapseAll: string;
+    authorship: {
+      human: string;
+      'human-ai': string;
+    };
   };
   empty: { mark: string; text: string };
   notFound: { title: string; body: string; back: string };
@@ -137,6 +141,10 @@ export const UI: Record<Locale, UIShape> = {
       sections: 'Show sections',
       expandAll: 'See all {count} parts',
       collapseAll: 'Collapse',
+      authorship: {
+        human: 'Written by hand',
+        'human-ai': 'Human + AI',
+      },
     },
     empty: {
       mark: '∅ nothing published',
@@ -195,6 +203,10 @@ export const UI: Record<Locale, UIShape> = {
       sections: '展开小节',
       expandAll: '展开全部 {count} 篇',
       collapseAll: '收起',
+      authorship: {
+        human: '人手撰写',
+        'human-ai': '人机共著',
+      },
     },
     empty: {
       mark: '∅ 还没发内容',

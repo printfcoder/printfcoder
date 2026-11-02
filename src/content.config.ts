@@ -23,6 +23,11 @@ const posts = defineCollection({
     series: z.string().optional(),
     series_order: z.number().int().positive().optional(),
     lang: z.enum(['en', 'zh']).default('en'),
+    // Who wrote it. Mandatory so authorship is never left ambiguous:
+    //   human     — written entirely by the author
+    //   human-ai  — human/AI collaboration (research, drafting, or editing
+    //               by an AI; the author verifies and owns every claim)
+    authorship: z.enum(['human', 'human-ai']),
     draft: z.boolean().default(false),
   }),
 });
