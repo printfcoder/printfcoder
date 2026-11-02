@@ -285,6 +285,16 @@ p { margin: 0; }
 
 .text-link:hover { border-bottom-color: var(--color-accent); }
 
+/* Long-form copy rendered from src/content/copy Markdown */
+.copy-prose :where(p) { margin: 0; }
+.copy-prose :where(a) {
+  color: var(--color-accent);
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-accent-line);
+  transition: border-color 140ms ease;
+}
+.copy-prose :where(a):hover { border-bottom-color: var(--color-accent); }
+
 .section {
   margin-top: 88px;
 }
@@ -368,6 +378,15 @@ p { margin: 0; }
   font-family: var(--font-mono);
 }
 
+.index-card__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-hairline);
+  object-fit: cover;
+  background: #fff;
+}
+
 .index-card__title {
   margin-top: 16px;
   font-size: 1.1rem;
@@ -389,73 +408,7 @@ p { margin: 0; }
   color: var(--color-accent);
 }
 
-/* ---------- Timeline ---------- */
-
-.timeline {
-  position: relative;
-  padding-left: 28px;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: var(--color-accent-line);
-}
-
-.timeline__item {
-  position: relative;
-  padding-bottom: 40px;
-}
-
-.timeline__item:last-child { padding-bottom: 0; }
-
-.timeline__item::before {
-  content: '';
-  position: absolute;
-  left: -28px;
-  top: 8px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--color-canvas-1);
-  border: 3px solid var(--color-accent);
-}
-
-.timeline__phase {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.timeline__title {
-  margin-top: 6px;
-  font-size: 1.08rem;
-  font-weight: 700;
-}
-
-.timeline__body {
-  margin-top: 8px;
-  color: var(--color-ink-2);
-  font-size: 0.95rem;
-}
-
-.timeline__body ul {
-  margin: 8px 0 0;
-  padding-left: 1.15em;
-}
-
-.timeline__body li {
-  margin: 5px 0;
-}
-
-/* ---------- Content lists (learn / blog) ---------- */
+/* ---------- Content lists (blog) ---------- */
 
 .entry-list {
   border-top: 1px solid var(--color-line-soft);
@@ -532,6 +485,276 @@ p { margin: 0; }
   max-width: 44rem;
   margin: 0 auto;
   padding-block: clamp(40px, 6vw, 72px);
+}
+
+/* Series articles: sticky left rail (series TOC) + the 44rem reading column.
+   Non-series pages keep the single centered column. */
+.article--with-nav {
+  max-width: none;
+}
+
+.article--with-nav .article__grid {
+  display: grid;
+  /* Rail hugs the shell's left edge and the reading column keeps its
+     comfortable measure; surplus space falls on the right, so there is no
+     dead gutter between the window edge and the rail on wide screens. */
+  grid-template-columns: 216px minmax(0, 44rem);
+  gap: clamp(20px, 3vw, 44px);
+  justify-content: start;
+  align-items: start;
+}
+
+.article__main {
+  min-width: 0;
+}
+
+.article__aside {
+  position: sticky;
+  top: 88px;
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.article__aside::-webkit-scrollbar { display: none; }
+
+.article__series-label {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---------- Series TOC ---------- */
+
+/* Visibility split: the full rail shows on wide screens, the preview card
+   on narrow ones. JS toggles [hidden] when the user expands on mobile. */
+.series-nav__preview { display: none; }
+
+.series-nav__eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.series-nav__count {
+  flex: 0 0 auto;
+  margin-left: 10px;
+  padding: 2px 9px;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-card);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-transform: none;
+  color: var(--color-ink-muted);
+}
+
+.series-nav__close {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+}
+.series-nav__close:hover {
+  border-color: var(--color-hairline);
+  color: var(--color-accent);
+}
+.series-nav__close i {
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid currentColor;
+  border-top: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.series-nav__title {
+  margin: 10px 0 14px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-accent);
+}
+
+.series-nav__expand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 12px;
+  border: 1px dashed var(--color-hairline);
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.series-nav__expand:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+.series-nav__expand i {
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.series-nav__list {
+  margin: 0;
+  padding: 0 0 0 14px;
+  list-style: none;
+  border-left: 1px solid var(--color-line-soft);
+}
+
+.series-nav__item {
+  position: relative;
+  padding: 5px 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--color-ink-2);
+}
+
+.series-nav__item::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: 13px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-canvas-1);
+  border: 1.6px solid var(--color-line-soft);
+}
+
+.series-nav__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.series-nav__index {
+  flex: 0 0 auto;
+  padding-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-ink-muted);
+}
+
+.series-nav__link {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: inherit;
+}
+a.series-nav__link {
+  border-bottom: none;
+}
+.series-nav__item:not(.is-upcoming) .series-nav__link:hover {
+  color: var(--color-accent);
+}
+
+.series-nav__toggle {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+}
+.series-nav__toggle:hover {
+  border-color: var(--color-hairline);
+  color: var(--color-accent);
+}
+.series-nav__toggle i {
+  width: 6px;
+  height: 6px;
+  border-right: 1.4px solid currentColor;
+  border-bottom: 1.4px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform 0.16s ease;
+}
+.series-nav__toggle[aria-expanded='true'] i {
+  transform: rotate(-135deg) translate(-1px, -1px);
+}
+
+.series-nav__item.is-current {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+.series-nav__item.is-current::before {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.series-nav__item.is-upcoming {
+  color: var(--color-ink-muted);
+}
+.series-nav__item.is-upcoming::before {
+  border-style: dashed;
+}
+
+.series-nav__badge {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 1px 7px;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-pill);
+  font-size: 0.68rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+  vertical-align: 1px;
+}
+
+/* Section outline nested under a part. */
+.series-nav__outline {
+  margin: 6px 0 4px;
+  padding: 4px 0 4px 26px;
+  list-style: none;
+  border-left: 1px dashed var(--color-line-soft);
+  margin-left: 13px;
+}
+.series-nav__outline li {
+  position: relative;
+  padding: 3px 0 3px 12px;
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-ink-muted);
+}
+.series-nav__outline li::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 11px;
+  width: 8px;
+  border-top: 1px solid var(--color-line-soft);
+}
+.series-nav__item.is-current .series-nav__outline li {
+  color: var(--color-ink-2);
 }
 
 .article__meta {
@@ -618,7 +841,141 @@ p { margin: 0; }
   border-bottom: 1px solid var(--color-accent-line);
 }
 
+/* Diagram embeds: authored <figure data-slug> placeholders upgraded by
+   ArticleLayout into lazy, isolated archify readers. On plain articles they
+   break out of the 44rem reading column to the shell width; inside the
+   two-column series layout they stay in the column (the left TOC owns the
+   rail), and readers offer zoom / fullscreen for detail. */
+.article__body figure.diagram-embed {
+  width: min(1120px, calc(100vw - 48px));
+  margin: 2.4em 50%;
+  transform: translateX(-50%);
+}
+
+.article--with-nav .article__body figure.diagram-embed {
+  width: 100%;
+  margin-inline: 0;
+  transform: none;
+}
+
+.diagram-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--diagram-aspect);
+  overflow: hidden;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+.diagram-frame__iframe {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.diagram-frame__hint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--color-ink-muted);
+  font-size: 0.82rem;
+}
+
+.diagram-frame.is-loaded .diagram-frame__hint {
+  display: none;
+}
+
+.diagram-frame__pop {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.diagram-frame__pop:hover,
+.diagram-frame__pop:focus-visible {
+  border-color: var(--color-accent);
+  background: #fff;
+}
+
+.article__body figure.diagram-embed figcaption {
+  margin-top: 10px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+  text-align: center;
+}
+
 /* ---------- Responsive ---------- */
+
+/* Compact laptop / split-window band: keep the rail, make it narrower and
+   hide per-part section outlines so it stays short. */
+@media (max-width: 1023px) and (min-width: 780px) {
+  .article--with-nav .article__grid {
+    grid-template-columns: 176px minmax(0, 1fr);
+    gap: 22px;
+  }
+  .series-nav__outline { display: none; }
+  .series-nav__toggle { display: none; }
+  .series-nav__item { font-size: 0.8rem; }
+}
+
+/* Rail lives from 780px up; the close affordance is hidden there. */
+@media (min-width: 780px) {
+  .series-nav__full { display: block; }
+  .series-nav__preview { display: none; }
+  .series-nav__close { display: none; }
+}
+
+/* Below 780px (phones, narrow splits) the rail becomes a bordered card
+   above the article and the single column fills the content width. The card
+   shows a 3-part preview until "expand all" is pressed. */
+@media (max-width: 779px) {
+  .article--with-nav .article__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .article__aside {
+    position: static;
+    max-height: none;
+  }
+  .series-nav__preview,
+  .series-nav__full {
+    padding: 16px 18px;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-card);
+    box-shadow: var(--shadow-soft);
+  }
+  .series-nav__full[hidden] { display: none; }
+  .series-nav__preview:not([hidden]) { display: block; }
+}
+
+@media (max-width: 860px) {
+  .article__body figure.diagram-embed {
+    width: 100%;
+    margin-inline: 0;
+    transform: none;
+  }
+}
 
 @media (max-width: 560px) {
   .site-header__inner { height: auto; min-height: 68px; padding-block: 10px; flex-wrap: wrap; row-gap: 8px; }

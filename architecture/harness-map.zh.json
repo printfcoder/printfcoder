@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "总图：Harness 里哪些是传统，哪些不是",
+    "subtitle": "工业级 coding agent（codex）的模块按与模型的关系分四立柱：灰、橙、红、青；右侧紫色是模型本身。",
+    "locale": "zh-CN",
+    "output": "harness-map.zh.html",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "viewBox": [1360, 680],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "frontend": { "label": "围着模型建的传统工程" },
+        "backend": { "visible": false },
+        "database": { "label": "模型：概率部件" },
+        "cloud": { "visible": false },
+        "security": { "label": "概率催生的新工程" },
+        "messagebus": { "label": "污染带：老模块，新契约" },
+        "external": { "label": "与模型无关的传统工程" }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "h-grey",
+      "type": "external",
+      "label": "灰 · 与模型无关",
+      "sublabel": "九成底盘 · 没有 LLM 照样长这样",
+      "pos": [36, 64],
+      "size": [184, 56]
+    },
+    {
+      "id": "surfaces",
+      "type": "external",
+      "label": "界面",
+      "sublabel": "CLI · TUI · IDE",
+      "pos": [36, 150],
+      "size": [184, 64]
+    },
+    {
+      "id": "network",
+      "type": "external",
+      "label": "网络代理",
+      "sublabel": "出口管控",
+      "pos": [36, 242],
+      "size": [184, 64]
+    },
+    {
+      "id": "fs",
+      "type": "external",
+      "label": "文件 / Git",
+      "sublabel": "worktree · diff",
+      "pos": [36, 334],
+      "size": [184, 64]
+    },
+    {
+      "id": "secrets",
+      "type": "external",
+      "label": "密钥",
+      "sublabel": "keyring · env",
+      "pos": [36, 426],
+      "size": [184, 64]
+    },
+    {
+      "id": "packaging",
+      "type": "external",
+      "label": "安装更新",
+      "sublabel": "打包 · 签名",
+      "pos": [36, 518],
+      "size": [184, 64]
+    },
+    {
+      "id": "h-orange",
+      "type": "messagebus",
+      "label": "橙 · 污染带",
+      "sublabel": "老模块 · 新契约",
+      "pos": [236, 64],
+      "size": [184, 56]
+    },
+    {
+      "id": "exec",
+      "type": "messagebus",
+      "label": "进程执行",
+      "sublabel": "命令由模型发出",
+      "pos": [236, 150],
+      "size": [184, 64]
+    },
+    {
+      "id": "sandbox",
+      "type": "messagebus",
+      "label": "OS 沙箱",
+      "sublabel": "防的是自己的 agent",
+      "pos": [236, 242],
+      "size": [184, 64]
+    },
+    {
+      "id": "config",
+      "type": "messagebus",
+      "label": "配置",
+      "sublabel": "自然语言成了配置",
+      "pos": [236, 334],
+      "size": [184, 64]
+    },
+    {
+      "id": "telemetry",
+      "type": "messagebus",
+      "label": "日志指标",
+      "sublabel": "要回放决策链",
+      "pos": [236, 426],
+      "size": [184, 64]
+    },
+    {
+      "id": "h-red",
+      "type": "security",
+      "label": "红 · 概率催生的新工程",
+      "sublabel": "一成 · 传统软件里没有对应物",
+      "pos": [520, 64],
+      "size": [384, 56]
+    },
+    {
+      "id": "instructions",
+      "type": "security",
+      "label": "指令层级",
+      "sublabel": "prompt · AGENTS · skills",
+      "pos": [520, 150],
+      "size": [178, 64]
+    },
+    {
+      "id": "loop",
+      "type": "security",
+      "label": "Turn 循环",
+      "sublabel": "可能不收敛",
+      "tag": "核心",
+      "pos": [726, 150],
+      "size": [178, 64]
+    },
+    {
+      "id": "context",
+      "type": "security",
+      "label": "上下文工程",
+      "sublabel": "装配 · 预算 · 压缩",
+      "pos": [520, 242],
+      "size": [178, 64]
+    },
+    {
+      "id": "tool-loop",
+      "type": "security",
+      "label": "工具回灌",
+      "sublabel": "结果进上下文",
+      "pos": [726, 242],
+      "size": [178, 64]
+    },
+    {
+      "id": "replay",
+      "type": "security",
+      "label": "决策回放",
+      "sublabel": "trace · 评测",
+      "pos": [520, 334],
+      "size": [178, 64]
+    },
+    {
+      "id": "extensions",
+      "type": "security",
+      "label": "扩展面",
+      "sublabel": "MCP · hooks · plugin",
+      "pos": [726, 334],
+      "size": [178, 64]
+    },
+    {
+      "id": "h-cyan",
+      "type": "frontend",
+      "label": "青 · 围着模型建",
+      "sublabel": "老手艺 · 新岗位",
+      "pos": [940, 64],
+      "size": [398, 56]
+    },
+    {
+      "id": "gateway",
+      "type": "frontend",
+      "label": "Provider 网关",
+      "sublabel": "重试 · 故障切换",
+      "pos": [940, 150],
+      "size": [186, 64]
+    },
+    {
+      "id": "protocol",
+      "type": "frontend",
+      "label": "协议适配",
+      "sublabel": "responses · chat",
+      "pos": [1152, 150],
+      "size": [186, 64]
+    },
+    {
+      "id": "persistence",
+      "type": "frontend",
+      "label": "Rollout 存储",
+      "sublabel": "历史 · 附件",
+      "pos": [940, 242],
+      "size": [186, 64]
+    },
+    {
+      "id": "kernel",
+      "type": "frontend",
+      "label": "一副内核 N 副面孔",
+      "sublabel": "app-server 协议",
+      "pos": [1152, 242],
+      "size": [186, 64]
+    },
+    {
+      "id": "model",
+      "type": "database",
+      "label": "模型",
+      "sublabel": "无状态概率函数 · 不拥有任何东西",
+      "pos": [940, 334],
+      "size": [398, 84]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "wraps": ["h-grey", "surfaces", "network", "fs", "secrets", "packaging", "h-orange", "exec", "sandbox", "config", "telemetry"],
+      "label": "传统工程 · 九成底盘",
+      "pad": 16
+    },
+    {
+      "kind": "security-group",
+      "wraps": ["h-red", "instructions", "loop", "context", "tool-loop", "replay", "extensions"],
+      "label": "概率催生的新工程 · 一成",
+      "pad": 16
+    }
+  ],
+  "connections": [
+    {
+      "id": "surfaces-loop",
+      "from": "surfaces",
+      "to": "loop",
+      "fromSide": "top",
+      "toSide": "top",
+      "route": "orthogonal-h",
+      "via": [[128, 134], [815, 134]],
+      "label": "输入",
+      "labelAt": [456, 126]
+    },
+    {
+      "id": "instructions-loop",
+      "from": "instructions",
+      "to": "loop"
+    },
+    {
+      "id": "context-loop",
+      "from": "context",
+      "to": "loop"
+    },
+    {
+      "id": "loop-tool-loop",
+      "from": "loop",
+      "to": "tool-loop"
+    },
+    {
+      "id": "toolloop-context",
+      "from": "tool-loop",
+      "to": "context",
+      "variant": "dashed"
+    },
+    {
+      "id": "extensions-toolloop",
+      "from": "extensions",
+      "to": "tool-loop",
+      "variant": "dashed"
+    },
+    {
+      "id": "toolloop-exec",
+      "from": "tool-loop",
+      "to": "exec",
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "orthogonal-h",
+      "via": [[712, 274], [712, 318], [486, 318], [486, 182]],
+      "label": "命令",
+      "labelAt": [470, 252]
+    },
+    {
+      "id": "exec-sandbox",
+      "from": "exec",
+      "to": "sandbox",
+      "variant": "security",
+      "label": "隔离 / 审批",
+      "labelAt": [256, 230]
+    },
+    {
+      "id": "protocol-gateway",
+      "from": "protocol",
+      "to": "gateway",
+      "variant": "dashed"
+    },
+    {
+      "id": "loop-gateway",
+      "from": "loop",
+      "to": "gateway"
+    },
+    {
+      "id": "gateway-model",
+      "from": "gateway",
+      "to": "model",
+      "fromSide": "right",
+      "toSide": "top",
+      "route": "orthogonal-v",
+      "via": [[1139, 182], [1139, 334]],
+      "variant": "emphasis",
+      "label": "推理边界",
+      "labelAt": [1196, 318]
+    },
+    {
+      "id": "loop-persistence",
+      "from": "loop",
+      "to": "persistence",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "dashed",
+      "via": [[815, 228], [1033, 228]],
+      "label": "事件落盘",
+      "labelAt": [842, 232]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "slate",
+      "title": "灰 · 九成的底盘",
+      "items": [
+        "界面、网络、文件、密钥、安装包。没有 LLM 它们照样存在，用本来的工程手艺做。"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "橙 · 污染带",
+      "items": [
+        "沙箱要防自己的 agent；执行器吃模型生成的字符串；配置变成自然语言；日志要回放决策。模块是老的，契约是新的。"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "红 · 剩下那一成",
+      "items": [
+        "循环可能停不下来；上下文要当内存做预算和换页；指令是自然语言；行为只能靠回放评测。传统软件里没有对应物。"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "青 · 老手艺，新岗位",
+      "items": [
+        "网关、协议适配、事件存储、内核复用：难点是限流重试、故障切换、版本兼容，不是概率。"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "根因一句话",
+      "items": [
+        "传统系统的控制流可以枚举；agent 把“下一步做什么”交给了概率函数。设计目标从“接口正确”变成“被误解时仍然安全、可恢复、可观测”。"
+      ]
+    }
+  ]
+}

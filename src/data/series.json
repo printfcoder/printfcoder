@@ -1,0 +1,330 @@
+[
+  {
+    "slug": "how-agents-work",
+    "title": {
+      "en": "How agents work",
+      "zh": "Agent 是如何工作的"
+    },
+    "description": {
+      "en": "Where agent systems differ from ordinary software — and where the old engineering still applies.",
+      "zh": "Agent 系统和传统软件到底哪里不一样，哪些又还是老工程问题。"
+    },
+    "parts": [
+      {
+        "slug": "how-agents-work-00",
+        "title": {
+          "en": "Agents: The Model Is an Indispensable Part — the Rest Is Engineering",
+          "zh": "Agent：模型是个不可或缺的零件，剩下的都是工程"
+        },
+        "outline": {
+          "zh": [
+            "先说清楚我们在聊什么：模型、Harness、环境三个定义",
+            "三条边界：推理、副作用、人本",
+            "不讲什么：训练、权重、提示词偏方",
+            "和传统软件工程差在哪：90/10 论点",
+            "四立柱总图：灰、橙、红、青",
+            "污染带：老模块的新契约",
+            "根因一句话：控制权交给概率函数之后",
+            "系列读法与篇目地图"
+          ],
+          "en": [
+            "What we are talking about: model, harness, environment",
+            "Three boundaries: inference, side effects, human",
+            "Out of scope: training, weights, prompt tricks",
+            "Where it differs from ordinary software: the 90/10 thesis",
+            "The four-pillar map: grey, orange, red, cyan",
+            "The contamination belt: old modules, new contracts",
+            "Root cause: control handed to a probabilistic function",
+            "How to read the series"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-01",
+        "title": {
+          "en": "The life of one turn",
+          "zh": "一个 turn 的一生"
+        },
+        "outline": {
+          "zh": [
+            "场景：一个真实任务，从回车开始",
+            "turn 不是一次 HTTP 请求：消息进去，事件流出来",
+            "时间线全景：装配 → 推理 → 工具 → 执行 → 回灌 → 再推理 → 收尾",
+            "谁在驱动：为什么是循环而不是请求/响应",
+            "人可以中途打断：取消、插话、改主意",
+            "turn 的遗物：历史、状态、证据落在哪",
+            "小结：这张时间线就是后面九篇的目录"
+          ],
+          "en": [
+            "The scene: a real task, starting at enter",
+            "A turn is not one HTTP request: a message in, an event stream out",
+            "Timeline: assemble, infer, tool, execute, feed back, infer again, finish",
+            "Who drives: why a loop instead of request/response",
+            "The human can interrupt: cancel, interject, change their mind",
+            "What a turn leaves behind: history, state, evidence",
+            "Recap: this timeline is the table of contents for chapters 2–10"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-02",
+        "title": {
+          "en": "The core loop: plan, reflect, a state machine that may not stop",
+          "zh": "内核循环：规划、反思和一个可能停不下来的状态机"
+        },
+        "outline": {
+          "zh": [
+            "为什么核心是个循环，不是一次函数调用",
+            "循环的状态：输入、推理、动作、观察、再推理",
+            "规划与反思发生在哪：ReAct 不是框架，是循环里的相位",
+            "停止条件：模型宣告完成、人打断、预算耗尽、失败退出",
+            "不收敛的几种跑飞形态",
+            "事件溯源：codex 为什么把每一步写成 rollout 事件",
+            "checkpoint、恢复与续跑",
+            "对照：opencode 的循环长什么样"
+          ],
+          "en": [
+            "Why the core is a loop, not a function call",
+            "Loop states: input, inference, action, observation, re-inference",
+            "Where planning and reflection happen: ReAct as loop phases, not a framework",
+            "Stop conditions: model done, human interrupt, budget exhausted, failure",
+            "Forms of non-convergence when the loop runs away",
+            "Event sourcing: why codex writes every step as a rollout event",
+            "Checkpoint, resume, continuation",
+            "Contrast: what opencode's loop looks like"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-03",
+        "title": {
+          "en": "The model boundary: protocols, rate limits, failover, cost",
+          "zh": "模型边界：协议、限流、故障切换与成本"
+        },
+        "outline": {
+          "zh": [
+            "网关存在的理由：一个内核，多个 provider",
+            "两种协议：chat completions 与 responses",
+            "流式为什么是必须的：SSE 与增量渲染",
+            "reasoning 摘要等概率特性的协议适配",
+            "限流、重试、退避与幂等",
+            "故障切换：多 provider 与多模型",
+            "token 计费、成本追踪与预算上限",
+            "本地模型：ollama / lmstudio，边界不变"
+          ],
+          "en": [
+            "Why a gateway exists: one kernel, many providers",
+            "Two protocols: chat completions and responses",
+            "Why streaming is mandatory: SSE and incremental rendering",
+            "Adapting probabilistic features like reasoning summaries",
+            "Rate limits, retries, backoff, idempotency",
+            "Failover across providers and models",
+            "Token accounting, cost tracking, budget caps",
+            "Local models: ollama / lmstudio behind the same boundary"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-04",
+        "title": {
+          "en": "Context and memory: registers, RAM, and disk",
+          "zh": "上下文与记忆：寄存器、内存和磁盘"
+        },
+        "outline": {
+          "zh": [
+            "存储层级类比：寄存器（当前 turn）、内存（窗口）、磁盘（长期记忆）",
+            "寄存器：这一步真正送进模型的东西",
+            "内存里装什么：系统指令、历史、工具结果、附件",
+            "窗口不是数据库：预算、截断、装入优先级",
+            "压缩与换页：summarization 与 compaction",
+            "检索在层级中的位置：RAG 是换页机制，不是记忆本身",
+            "磁盘：跨会话长期记忆与 codex memories 的雏形",
+            "遗忘也是设计：该丢什么、什么时候丢",
+            "对照：两个样本各自的存储层级实现"
+          ],
+          "en": [
+            "The storage hierarchy: registers (turn), RAM (window), disk (long-term)",
+            "Registers: what actually goes into the model this step",
+            "What lives in RAM: instructions, history, tool results, attachments",
+            "The window is not a database: budget, truncation, load priority",
+            "Compression and paging: summarization and compaction",
+            "Where retrieval fits: RAG as paging, not as memory itself",
+            "Disk: cross-session memory and codex's memories prototype",
+            "Forgetting is design too: what to drop and when",
+            "Contrast: the two specimens' storage hierarchies"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-05",
+        "title": {
+          "en": "Tools and execution: how the model actually acts",
+          "zh": "工具与执行：模型怎么真正动手"
+        },
+        "outline": {
+          "zh": [
+            "模型怎么动手：function calling 协议",
+            "工具 schema 是写给概率读者的接口文档",
+            "apply_patch 为什么长那样：一个专用工具的设计取舍",
+            "shell 执行：从命令字符串到真实进程",
+            "输出回灌：截断、分页、结构化",
+            "失败也是信息：错误结果如何进上下文",
+            "工具的注册、发现与权限声明",
+            "对照：两个样本的工具体系"
+          ],
+          "en": [
+            "How the model acts: the function-calling protocol",
+            "Tool schemas as API documentation written for a probabilistic reader",
+            "Why apply_patch looks the way it does: one specialized tool's trade-offs",
+            "Shell execution: from a command string to a real process",
+            "Feeding results back: truncation, pagination, structure",
+            "Failure is information too: how errors enter the context",
+            "Tool registration, discovery, and declared permissions",
+            "Contrast: the two specimens' tool systems"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-06",
+        "title": {
+          "en": "Sandbox and the trust boundary: defending against the insider",
+          "zh": "沙箱与信任边界：防的是自己人"
+        },
+        "outline": {
+          "zh": [
+            "威胁模型变了：攻击者持有合法授权，而且真心觉得自己对",
+            "审批三档：全自动、逐次确认、只读",
+            "execpolicy：声明式的命令许可策略",
+            "OS 沙箱家族：seatbelt、landlock、bwrap、Windows sandbox",
+            "网络出口管控：默认不通，显式放行",
+            "文件系统隔离：worktree 与写入范围",
+            "人始终在环上：授权可以委托，权力不转移",
+            "对照：两个样本的默认安全姿态"
+          ],
+          "en": [
+            "The threat model changed: the insider holds valid authorization and is sincere",
+            "Three approval modes: full auto, per-action, read-only",
+            "execpolicy: declarative command policy",
+            "The OS sandbox family: seatbelt, landlock, bwrap, Windows sandbox",
+            "Egress control: deny by default, explicit allow",
+            "Filesystem isolation: worktrees and write scope",
+            "The human stays on the loop: permission delegated, authority not",
+            "Contrast: the two specimens' default security postures"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-07",
+        "title": {
+          "en": "Instruction layers: programming in natural language",
+          "zh": "指令层级：用自然语言编程"
+        },
+        "outline": {
+          "zh": [
+            "一种新文体：写给概率读者的可执行文本",
+            "层级全景：系统提示词 → AGENTS.md → 技能 → 斜杠命令 → 记忆",
+            "发现规则：AGENTS.md 在哪里被找到、如何合并",
+            "指令冲突时谁说了算：优先级与覆盖",
+            "提示注入：自然语言配置带来的新攻击面",
+            "版本化：codex 为什么把提示词文件放进仓库",
+            "指令工程的失效方式：歧义、过长、互相矛盾",
+            "对照：opencode 的指令层级"
+          ],
+          "en": [
+            "A new genre: executable text written for a probabilistic reader",
+            "The layer stack: system prompt, AGENTS.md, skills, slash commands, memory",
+            "Discovery: where AGENTS.md is found and how it merges",
+            "Who wins on conflict: precedence and overrides",
+            "Prompt injection: the new attack surface of natural-language config",
+            "Versioning: why codex keeps prompt files in the repository",
+            "How instruction engineering fails: ambiguity, length, contradiction",
+            "Contrast: opencode's instruction layers"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-08",
+        "title": {
+          "en": "Extensions: MCP, hooks, and plugins",
+          "zh": "扩展生态：MCP、hooks 与 plugin"
+        },
+        "outline": {
+          "zh": [
+            "三种扩展模式的分野：工具接入、生命周期挂点、内核扩展",
+            "MCP：进程外的工具与资源服务器",
+            "MCP 的信任传递：第三方能力凭什么能碰我的仓库",
+            "hooks：在生命周期事件上挂钩",
+            "plugin：更深的内核扩展面",
+            "扩展的权限模型与最小授权",
+            "供应链风险：装一个扩展等于开一道门",
+            "什么时候不该做扩展"
+          ],
+          "en": [
+            "Three extension modes: tool access, lifecycle hooks, kernel extension",
+            "MCP: out-of-process tool and resource servers",
+            "Trust transfer in MCP: why a third party may touch your repository",
+            "Hooks: attaching to lifecycle events",
+            "Plugins: the deeper kernel extension surface",
+            "Permission models and least privilege for extensions",
+            "Supply-chain risk: installing an extension is opening a door",
+            "When not to build an extension"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-09",
+        "title": {
+          "en": "One kernel, many faces; and multi-agent",
+          "zh": "一副内核，多副面孔；多智能体"
+        },
+        "outline": {
+          "zh": [
+            "为什么内核与界面必须分离",
+            "app-server 协议：同一副内核租给 CLI、TUI、IDE、云端",
+            "云端 task：headless 的执行形态",
+            "多智能体拓扑：主从、线程、消息板",
+            "agent 之间传什么：上下文、任务、还是结果",
+            "多 agent 什么时候是真需求，什么时候只是噱头",
+            "对照：codex 的 thread-store 与 message-board"
+          ],
+          "en": [
+            "Why kernel and interface must be separated",
+            "The app-server protocol: one kernel rented to CLI, TUI, IDE, cloud",
+            "Cloud tasks: the headless execution form",
+            "Multi-agent topologies: master-worker, threads, message boards",
+            "What passes between agents: context, tasks, or results",
+            "When multi-agent is a real need versus a gimmick",
+            "Contrast: codex's thread-store and message-board"
+          ]
+        }
+      },
+      {
+        "slug": "how-agents-work-10",
+        "title": {
+          "en": "Testing a probabilistic system; closing principles",
+          "zh": "概率系统怎么测；造 Harness 的几条原则"
+        },
+        "outline": {
+          "zh": [
+            "什么能单测，什么不能：确定性部件与概率部件的测试分界",
+            "trace 与回放：把一次运行变成可复现的证据",
+            "评测的根本困难：固定输入也没有固定输出",
+            "真人 journey 为什么不可替代",
+            "从九个样本里抽出的设计原则清单",
+            "边界显式化、默认不可信、上下文当内存、状态可回放",
+            "收口：回到 90/10，哪些手艺可以直接用，哪些必须重学"
+          ],
+          "en": [
+            "What is unit-testable and what is not: the testing divide",
+            "Trace and replay: turning one run into reproducible evidence",
+            "The hard problem of evaluation: fixed input, no fixed output",
+            "Why real human journeys cannot be replaced",
+            "Design principles distilled from the nine specimens",
+            "Explicit boundaries, distrust by default, context as memory, replayable state",
+            "Closing: back to 90/10 — which craft transfers and which must be relearned"
+          ]
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,187 @@
+---
+// Series table of contents for article pages that belong to a registered
+// series (src/data/series.json).
+//
+// Desktop (>=900px): a permanent sticky rail listing every part; the current
+// part's section outline is expanded.
+// Mobile (<900px): a card that shows a short preview (the current part plus
+// the next couple) with an "expand all" affordance, instead of collapsing to
+// a single empty-looking bar. Expanding reveals the full rail.
+import type { Locale } from '../lib/i18n';
+
+export interface SeriesPart {
+  slug: string;
+  title: string;
+  outline?: string[];
+  href?: string;
+  current?: boolean;
+}
+
+interface Props {
+  locale: Locale;
+  seriesTitle: string;
+  parts: SeriesPart[];
+  labels: {
+    seriesNav: string;
+    upcoming: string;
+    sections: string;
+    expandAll: string;
+    collapseAll: string;
+  };
+}
+
+const { locale, seriesTitle, parts, labels } = Astro.props;
+const expandAllLabel = labels.expandAll.replace('{count}', String(parts.length));
+
+// Preview order on narrow screens: the current part first, then the rest in
+// authored order, capped to a handful so the collapsed card still guides.
+const PREVIEW_COUNT = 3;
+const currentIndex = Math.max(0, parts.findIndex((p) => p.current));
+const previewParts = [
+  parts[currentIndex],
+  ...parts.filter((_, i) => i !== currentIndex),
+]
+  .filter(Boolean)
+  .slice(0, PREVIEW_COUNT);
+const hasMore = parts.length > PREVIEW_COUNT;
+---
+
+<nav class="series-nav" aria-label={labels.seriesNav}>
+  <!-- Mobile preview: visible only below the rail breakpoint. -->
+  <div class="series-nav__preview">
+    <p class="series-nav__eyebrow">
+      <span>{labels.seriesNav}</span>
+      <span class="series-nav__count">{parts.length}</span>
+    </p>
+    <p class="series-nav__title">{seriesTitle}</p>
+    <ol class="series-nav__list">
+      {previewParts.map((part, index) => (
+        <li
+          class:list={[
+            'series-nav__item',
+            part.current && 'is-current',
+            !part.href && 'is-upcoming',
+          ]}
+        >
+          <div class="series-nav__row">
+            <span class="series-nav__index">
+              {String(parts.indexOf(part)).padStart(2, '0')}
+            </span>
+            {part.href ? (
+              <a class="series-nav__link" href={part.href} aria-current={part.current ? 'true' : undefined}>
+                {part.title}
+              </a>
+            ) : (
+              <span class="series-nav__link">
+                {part.title}
+                <em class="series-nav__badge">{labels.upcoming}</em>
+              </span>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+    {hasMore && (
+      <button type="button" class="series-nav__expand" data-series-expand>
+        {expandAllLabel}
+        <i aria-hidden="true"></i>
+      </button>
+    )}
+  </div>
+
+  <!-- Full rail: sticky on desktop; revealed on mobile by the expand button. -->
+  <div class="series-nav__full" data-series-full hidden>
+    <p class="series-nav__eyebrow series-nav__eyebrow--closable">
+      <span>{labels.seriesNav}</span>
+      <button type="button" class="series-nav__close" data-series-collapse aria-label={labels.collapseAll}>
+        <i aria-hidden="true"></i>
+      </button>
+    </p>
+    <p class="series-nav__title">{seriesTitle}</p>
+    <ol class="series-nav__list">
+      {parts.map((part, index) => (
+        <li
+          class:list={[
+            'series-nav__item',
+            part.current && 'is-current',
+            !part.href && 'is-upcoming',
+          ]}
+        >
+          <div class="series-nav__row">
+            <span class="series-nav__index">{String(index).padStart(2, '0')}</span>
+            {part.href ? (
+              <a class="series-nav__link" href={part.href} aria-current={part.current ? 'true' : undefined}>
+                {part.title}
+              </a>
+            ) : (
+              <span class="series-nav__link">
+                {part.title}
+                <em class="series-nav__badge">{labels.upcoming}</em>
+              </span>
+            )}
+            {part.outline && part.outline.length > 0 && (
+              <button
+                type="button"
+                class="series-nav__toggle"
+                aria-expanded={part.current ? 'true' : 'false'}
+                aria-label={labels.sections}
+                title={labels.sections}
+              >
+                <i aria-hidden="true"></i>
+              </button>
+            )}
+          </div>
+          {part.outline && part.outline.length > 0 && (
+            <ol class="series-nav__outline" hidden={!part.current}>
+              {part.outline.map((line) => (
+                <li>{line}</li>
+              ))}
+            </ol>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</nav>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('.series-nav');
+  const full = nav?.querySelector<HTMLElement>('[data-series-full]');
+  const preview = nav?.querySelector<HTMLElement>('.series-nav__preview');
+
+  function setExpanded(open: boolean) {
+    if (!full || !preview) return;
+    full.hidden = !open;
+    preview.hidden = open;
+  }
+
+  // Default to the full rail on wide screens, preview on narrow ones.
+  const mobileQuery = window.matchMedia('(max-width: 779px)');
+  function applyBreakpoint() {
+    setExpanded(!mobileQuery.matches);
+  }
+  applyBreakpoint();
+  mobileQuery.addEventListener('change', applyBreakpoint);
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement | null;
+    if (target?.closest('[data-series-expand]')) {
+      setExpanded(true);
+      full?.querySelector('.series-nav__item.is-current')?.scrollIntoView({ block: 'nearest' });
+      return;
+    }
+    if (target?.closest('[data-series-collapse]')) {
+      setExpanded(false);
+      return;
+    }
+    // Per-part outline disclosure.
+    const toggle = target?.closest<HTMLButtonElement>('.series-nav__toggle');
+    if (!toggle) return;
+    const item = toggle.closest('.series-nav__item');
+    const outline = item?.querySelector<HTMLElement>('.series-nav__outline');
+    if (!outline) return;
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    outline.hidden = open;
+  });
+</script>

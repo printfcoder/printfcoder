@@ -1,8 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import type { Locale } from '../lib/i18n';
+import SeriesNav, { type SeriesPart } from '../components/SeriesNav.astro';
+import { UI, tagLabel, lpath, type Locale } from '../lib/i18n';
 
-type PageKey = 'hello' | 'learn' | 'blog';
+type PageKey = 'hello' | 'blog';
 
 interface Props {
   locale: Locale;
@@ -11,10 +12,33 @@ interface Props {
   description?: string;
   pubDate: Date;
   counterpart?: string;
-  tag?: string;
+  tags?: string[];
+  /** Used only for articles without a series rail. */
+  seriesLabel?: string;
+  /** Numbered part label shown above the title when a series rail exists
+   * (the rail already carries the series name, so it is not repeated). */
+  partLabel?: string;
+  /** Series TOC rendered as a left rail (desktop) / collapsed nav (mobile). */
+  seriesNav?: {
+    title: string;
+    currentSlug: string;
+    parts: SeriesPart[];
+  };
 }
 
-const { locale, page, title, description, pubDate, counterpart, tag } = Astro.props;
+const {
+  locale,
+  page,
+  title,
+  description,
+  pubDate,
+  counterpart,
+  tags = [],
+  seriesLabel,
+  partLabel,
+  seriesNav,
+} = Astro.props;
+const t = UI[locale];
 const formatted =
   locale === 'zh'
     ? `${pubDate.getFullYear()} 年 ${pubDate.getMonth() + 1} 月 ${pubDate.getDate()} 日`
@@ -28,17 +52,124 @@ const formatted =
   description={description}
   counterpart={counterpart}
 >
-  <article class="shell article">
-    <header>
-      <p class="meta">
-        <time datetime={pubDate.toISOString()}>{formatted}</time>
-        {tag && <span style="color: var(--color-accent); font-weight: 600">· {tag}</span>}
-      </p>
-      <h1 class="article__title">{title}</h1>
-      {description && <p class="article__desc">{description}</p>}
-    </header>
-    <div class="article__body">
-      <slot />
+  <article class:list={['shell', 'article', seriesNav && 'article--with-nav']}>
+    <div class="article__grid">
+      {seriesNav && (
+        <aside class="article__aside">
+          <SeriesNav
+            locale={locale}
+            seriesTitle={seriesNav.title}
+            parts={seriesNav.parts}
+            labels={t.article}
+          />
+        </aside>
+      )}
+      <div class="article__main">
+        <header>
+          {(partLabel || seriesLabel) && (
+            <p class="meta article__series-label">{partLabel ?? seriesLabel}</p>
+          )}
+          <p class="meta">
+            <time datetime={pubDate.toISOString()}>{formatted}</time>
+          </p>
+          <h1 class="article__title">{title}</h1>
+          {description && <p class="article__desc">{description}</p>}
+          {tags.length > 0 && (
+            <div class="chip-row" style="margin-top: 18px">
+              {tags.map((tag) => (
+                <a class="chip" href={lpath(locale, `/blog/tag/${tag}`)}>{tagLabel(tag, locale)}</a>
+              ))}
+            </div>
+          )}
+        </header>
+        <div class="article__body">
+          <slot />
+        </div>
+      </div>
     </div>
   </article>
 </BaseLayout>
+
+<script define:vars={{
+  loadingLabel: locale === 'zh' ? '图加载中…' : 'Loading diagram…',
+  openLabel: locale === 'zh' ? '在新窗口打开图' : 'Open diagram in a new tab',
+}}>
+  // Articles embed diagrams as authored placeholders:
+  //   <figure class="diagram-embed" data-slug="..." data-aspect="1.8">
+  //     <figcaption>…</figcaption>
+  //   </figure>
+  // The figure is upgraded at runtime into a lazily-loaded, isolated reader
+  // rendered at build time from architecture/<slug>.<locale>.json.
+  function upgradeDiagramFigures() {
+    const lang = document.documentElement.lang === 'zh' ? 'zh' : 'en';
+
+    document.querySelectorAll('figure.diagram-embed').forEach((fig) => {
+      if (fig.dataset.upgraded) return;
+      fig.dataset.upgraded = '1';
+
+      const slug = fig.dataset.slug;
+      if (!slug) return;
+      const aspect = Number.parseFloat(fig.dataset.aspect || '1.8');
+      const caption = fig.querySelector('figcaption');
+      const title = caption?.textContent?.trim() || slug;
+      const source = `/architecture-assets/${slug}.${lang}.html?theme=light&embed=1`;
+      const fullscreen = `/architecture-assets/${slug}.${lang}.html?theme=light&present=1`;
+
+      const frame = document.createElement('div');
+      frame.className = 'diagram-frame';
+      frame.style.setProperty('--diagram-aspect', String(aspect));
+
+      const hint = document.createElement('p');
+      hint.className = 'diagram-frame__hint';
+      hint.textContent = loadingLabel;
+
+      const pop = document.createElement('a');
+      pop.className = 'diagram-frame__pop';
+      pop.href = fullscreen;
+      pop.target = '_blank';
+      pop.rel = 'noopener';
+      pop.setAttribute('aria-label', openLabel);
+      pop.title = openLabel;
+      pop.innerHTML =
+        '<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2H2v4M10 2h4v4M6 14H2v-4M10 14h4v-4"></path></svg>';
+
+      const iframe = document.createElement('iframe');
+      iframe.className = 'diagram-frame__iframe';
+      iframe.title = title;
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'no-referrer';
+
+      frame.append(iframe, hint, pop);
+      fig.insertBefore(frame, caption);
+
+      const activate = () => {
+        if (iframe.dataset.loaded) return;
+        iframe.dataset.loaded = '1';
+        iframe.src = source;
+        iframe.addEventListener('load', () => frame.classList.add('is-loaded'), { once: true });
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                activate();
+                io.disconnect();
+              }
+            }
+          },
+          { rootMargin: '200px' },
+        );
+        io.observe(iframe);
+      } else {
+        activate();
+      }
+    });
+  }
+
+  // Idempotent across ClientRouter view transitions. Series TOC breakpoint
+  // and expand/collapse behavior live inside the SeriesNav component.
+  document.addEventListener('astro:page-load', upgradeDiagramFigures);
+  upgradeDiagramFigures();
+</script>
