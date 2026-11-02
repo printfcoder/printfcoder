@@ -11,7 +11,7 @@ export const SITE = {
   peersTouch: 'https://github.com/peers-labs/peers-touch',
 } as const;
 
-// Astro injects the configured `base` through BASE_URL ("/printfcoder" here).
+// Astro injects the configured `base` through BASE_URL ("/" on the custom domain).
 // Every internal href goes through this helper so a domain/base change is one-line.
 export function withBase(path: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
