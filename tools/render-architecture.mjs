@@ -13,7 +13,15 @@
 //   node tools/render-architecture.mjs
 
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readdirSync, readFileSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
+import {
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  mkdirSync,
+  writeFileSync,
+  unlinkSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -43,8 +51,12 @@ if (candidates.length === 0) {
   process.exit(1);
 }
 
-rmSync(outputDir, { recursive: true, force: true });
+// Only readers are regenerated: exported PNGs are committed and must survive
+// a CI build (which has no Chrome to re-export them). Clean stale *.html.
 mkdirSync(outputDir, { recursive: true });
+for (const stale of readdirSync(outputDir).filter((f) => f.endsWith('.html'))) {
+  unlinkSync(join(outputDir, stale));
+}
 const tmpDir = mkdtempSync(join(tmpdir(), 'archify-candidates-'));
 
 let rendered = 0;

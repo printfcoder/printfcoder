@@ -5,8 +5,12 @@ node_modules/
 dist/
 .astro/
 
-# ---- generated diagram readers (source of truth: architecture/*.json) ----
-public/architecture-assets/
+# ---- generated diagram readers (source of truth: architecture/*.json);
+#      exported PNGs are committed for external syndication ----
+public/architecture-assets/*.html
+
+# ---- syndication bundles generated for Juejin/V2EX publishing ----
+.publish/
 
 # ---- local, machine-specific (never commit) ----
 .research-sources.json

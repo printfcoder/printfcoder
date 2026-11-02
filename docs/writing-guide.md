@@ -202,3 +202,25 @@ pnpm skills          # 等价于 bash tools/skill/install.sh
 （Trae CN、Cursor 均已验证可发现）。加新 skill 后重跑一次即可。
 `.trae/`、`.cursor/` 已在 .gitignore，属于本机 IDE 私有目录；提交的是
 `tools/skill/` 里的真源。
+
+## 9. 外发到掘金 / V2EX
+
+由 `site-publish` skill 执行，规则也写在它的 SKILL.md 里。原则：
+
+- **首发永远在本站**：文章先合并部署到 me.shux.me，再外发。掘金按非首发处理，
+  不勾原创声明。
+- **掘金**：全文搬运但结构保留——文首 canonical 原文链接，文末系列目录与
+  GitHub 回链；通过本机 Chrome 登录态**只建草稿**，发布动作由本人手动完成。
+- **V2EX**：论坛不是博客，只发一篇导读索引帖（简介 + 篇目 + 本站/GitHub 链接），
+  不逐篇搬全文，遵守节点规则与 Anti-Flood。
+- **架构图**：外部平台嵌不了 HTML reader，用导出的静态 PNG
+  （`pnpm diagrams` 会生成 `public/architecture-assets/*.png`，PNG 入仓，
+  随站点部署，发布包自动引用线上地址）。
+
+发布包生成（产物在 gitignored 的 `.publish/`）：
+
+```bash
+pnpm diagrams   # 改了 architecture/*.json 后必跑，需要本机 Chrome
+pnpm publish:bundle -- <slug> --platform juejin
+pnpm publish:bundle -- <slug> --platform v2ex
+```
