@@ -7,7 +7,7 @@ peer-to-peer, self-hostable social network with built-in AI agents.
 - Go, distributed systems, platform infrastructure
 - Go-Micro China & Stack-RPC tutorials: [printfcoder/stack-rpc-tutorials](https://github.com/printfcoder/stack-rpc-tutorials)
 - Based in Shenzhen · [i@shux.me](mailto:i@shux.me)
-- Site: **[printfcoder.github.io/printfcoder](https://printfcoder.github.io/printfcoder/)**
+- Site: **[i.shux.me](https://i.shux.me/)**
 
 <!--
 This repository also contains the source of the personal site above (Astro +

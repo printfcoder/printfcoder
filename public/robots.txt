@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://printfcoder.github.io/printfcoder/sitemap-index.xml
+Sitemap: https://i.shux.me/sitemap-index.xml
