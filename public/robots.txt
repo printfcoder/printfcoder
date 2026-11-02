@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://i.shux.me/sitemap-index.xml
+Sitemap: https://me.shux.me/sitemap-index.xml
