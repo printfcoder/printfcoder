@@ -1,0 +1,51 @@
+---
+import { UI, type Locale } from '../lib/i18n';
+
+export interface Entry {
+  href: string;
+  title: string;
+  date: Date;
+  description?: string;
+  tag?: string;
+}
+
+interface Props {
+  entries: Entry[];
+  locale: Locale;
+}
+
+const { entries, locale } = Astro.props;
+const t = UI[locale];
+const fmt = (d: Date) =>
+  locale === 'zh'
+    ? `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`
+    : d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+{
+  entries.length === 0 ? (
+    <div class="shell">
+      <div class="empty-state">
+        <p class="empty-state__mark">{t.empty.mark}</p>
+        <p class="empty-state__text">{t.empty.text}</p>
+      </div>
+    </div>
+  ) : (
+    <div class="shell">
+      <div class="entry-list">
+        {entries.map((e) => (
+          <a class="entry-row" href={e.href}>
+            <time class="entry-row__date" datetime={e.date.toISOString()}>{fmt(e.date)}</time>
+            <span class="entry-row__main">
+              <span class="entry-row__title">{e.title}</span>
+              {e.description && (
+                <span class="entry-row__desc" style="display:block">{e.description}</span>
+              )}
+            </span>
+            {e.tag && <span class="entry-row__tag">{e.tag}</span>}
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}

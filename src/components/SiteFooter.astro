@@ -1,16 +1,21 @@
 ---
-import { SITE, withBase } from '../lib/site';
+import { SITE, UI, lpath, type Locale } from '../lib/i18n';
 
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = UI[locale];
 const year = new Date().getFullYear();
 ---
 
-<footer class="mx-auto w-full max-w-[40rem] px-6 pb-12">
-  <div class="border-t hairline pt-5 flex flex-wrap items-center justify-between gap-3">
-    <p class="meta">© {year} {SITE.name}</p>
-    <div class="flex items-center gap-5">
-      <a class="nav-link" href={`mailto:${SITE.email}`}>email</a>
-      <a class="nav-link" href={SITE.github} rel="me noopener" target="_blank">github</a>
-      <a class="nav-link" href={withBase('/rss.xml')}>rss</a>
+<footer class="site-footer">
+  <div class="shell site-footer__inner">
+    <span>© {year} {SITE.name} · {SITE.location[locale]}</span>
+    <div class="site-footer__links">
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <a href={SITE.github} rel="me noopener" target="_blank">GitHub</a>
+      <a href={lpath(locale, '/rss.xml')}>RSS</a>
     </div>
   </div>
 </footer>

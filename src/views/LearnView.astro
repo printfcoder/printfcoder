@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryList, { type Entry } from '../components/EntryList.astro';
+import { getCollection } from 'astro:content';
+import { UI, CATEGORIES, lpath, type Locale, type CategorySlug } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  category?: CategorySlug;
+}
+
+const { locale, category } = Astro.props;
+const t = UI[locale];
+
+const notes = (
+  await getCollection(
+    'notes',
+    (n) => !n.data.draft && n.data.lang === locale && (!category || n.data.category === category),
+  )
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const allNotes = await getCollection('notes', (n) => !n.data.draft && n.data.lang === locale);
+const countFor = (slug: CategorySlug) =>
+  allNotes.filter((n) => n.data.category === slug).length;
+
+const baseKey = (id: string) => id.replace(/\.(en|zh)$/, '');
+
+const entries: Entry[] = notes.map((n) => ({
+  href: lpath(locale, `/notes/${baseKey(n.id)}`),
+  title: n.data.title,
+  date: n.data.pubDate,
+  description: n.data.description,
+  tag: CATEGORIES.find((c) => c.slug === n.data.category)!.label[locale],
+}));
+
+const title = category
+  ? `${t.learn.eyebrow} · ${CATEGORIES.find((c) => c.slug === category)!.label[locale]}`
+  : `${t.learn.eyebrow} · Learning`;
+const description = category
+  ? CATEGORIES.find((c) => c.slug === category)!.description[locale]
+  : t.learn.subtitle;
+---
+
+<BaseLayout locale={locale} page="learn" title={title} description={description}>
+  <div class="shell">
+    <header class="page-head">
+      <p class="eyebrow">{locale === 'zh' ? '学习' : '学习 · Learning'}</p>
+      <h1 class="page-head__title">
+        {category
+          ? CATEGORIES.find((c) => c.slug === category)!.label[locale]
+          : t.learn.title}
+      </h1>
+      <p class="page-head__subtitle">{description}</p>
+    </header>
+
+    <nav class="chip-row" aria-label="学习分类" style="margin-bottom: 40px">
+      <a
+        class="chip"
+        href={lpath(locale, '/learn')}
+        aria-current={!category ? 'page' : undefined}
+      >
+        {t.learn.all} <span class="count">{allNotes.length}</span>
+      </a>
+      {CATEGORIES.map((c) => (
+        <a
+          class="chip"
+          href={lpath(locale, `/learn/${c.slug}`)}
+          aria-current={category === c.slug ? 'page' : undefined}
+        >
+          {c.label[locale]} <span class="count">{countFor(c.slug)}</span>
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <EntryList entries={entries} locale={locale} />
+</BaseLayout>

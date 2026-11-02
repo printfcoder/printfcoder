@@ -1,29 +1,74 @@
 ---
-import { SITE, withBase } from '../lib/site';
+import { UI, lpath, switchPath, type Locale } from '../lib/i18n';
+
+type PageKey = 'hello' | 'learn' | 'blog';
 
 interface Props {
-  path: string;
+  locale: Locale;
+  page: PageKey;
+  counterpart?: string;
 }
-const { path } = Astro.props;
-const isActive = (candidate: string) =>
-  candidate === '/' ? path === '/' : path.startsWith(candidate);
+
+const { locale, page, counterpart } = Astro.props;
+const t = UI[locale];
+
+const items = [
+  { key: 'hello' as const, href: lpath(locale, '/') },
+  { key: 'learn' as const, href: lpath(locale, '/learn') },
+  { key: 'blog' as const, href: lpath(locale, '/blog') },
+];
+
+const isActive = (key: PageKey) => {
+  if (key === 'hello') return page === 'hello';
+  return page === key;
+};
+
+const switchHref = switchPath(locale, Astro.url.pathname, counterpart);
 ---
 
-<header class="mx-auto w-full max-w-[40rem] px-6 pt-10">
-  <nav class="flex items-baseline justify-between border-b hairline pb-4">
-    <a
-      href={withBase('/')}
-      class="font-mono text-[0.95rem] tracking-tight text-paper"
-      aria-current={isActive('/') ? 'page' : undefined}
-    >
-      {SITE.handle}
-      <span class="text-amber">_</span>
+<header class="site-header">
+  <div class="shell site-header__inner">
+    <a class="brand" href={lpath(locale, '/')} aria-label="printfcoder">
+      printfcoder<em>_</em>
     </a>
-    <div class="flex items-center gap-5">
-      <a class="nav-link" href={withBase('/writing')} aria-current={isActive('/writing') ? 'page' : undefined}>
-        writing
-      </a>
-      <a class="nav-link" href={SITE.github} rel="me noopener" target="_blank">github</a>
-    </div>
-  </nav>
+    <nav class="site-nav" aria-label="Primary">
+      {items.map((item) => (
+        <a href={item.href} aria-current={isActive(item.key) ? 'page' : undefined}>
+          {t.nav[item.key]}
+        </a>
+      ))}
+    </nav>
+    <a class="lang-switch" href={switchHref} aria-label={`Switch to ${locale === 'en' ? 'Chinese' : 'English'}`}>
+      <span class:list={['lang-switch__opt', locale === 'en' && 'is-active']}>EN</span>
+      <span class:list={['lang-switch__opt', locale === 'zh' && 'is-active']}>中</span>
+    </a>
+  </div>
 </header>
+
+<style>
+  .lang-switch {
+    display: inline-grid;
+    grid-auto-flow: column;
+    padding: 3px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-hairline);
+  }
+  .lang-switch__opt {
+    display: grid;
+    place-items: center;
+    min-width: 38px;
+    height: 30px;
+    padding-inline: 10px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink-2);
+    transition: all 140ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .lang-switch__opt.is-active {
+    background: #fff;
+    color: var(--color-accent);
+    box-shadow: var(--shadow-soft);
+  }
+</style>

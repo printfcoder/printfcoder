@@ -1,0 +1,44 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Locale } from '../lib/i18n';
+
+type PageKey = 'hello' | 'learn' | 'blog';
+
+interface Props {
+  locale: Locale;
+  page: PageKey;
+  title: string;
+  description?: string;
+  pubDate: Date;
+  counterpart?: string;
+  tag?: string;
+}
+
+const { locale, page, title, description, pubDate, counterpart, tag } = Astro.props;
+const formatted =
+  locale === 'zh'
+    ? `${pubDate.getFullYear()} 年 ${pubDate.getMonth() + 1} 月 ${pubDate.getDate()} 日`
+    : pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<BaseLayout
+  locale={locale}
+  page={page}
+  title={title}
+  description={description}
+  counterpart={counterpart}
+>
+  <article class="shell article">
+    <header>
+      <p class="meta">
+        <time datetime={pubDate.toISOString()}>{formatted}</time>
+        {tag && <span style="color: var(--color-accent); font-weight: 600">· {tag}</span>}
+      </p>
+      <h1 class="article__title">{title}</h1>
+      {description && <p class="article__desc">{description}</p>}
+    </header>
+    <div class="article__body">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

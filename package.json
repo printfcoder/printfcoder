@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check:i18n": "node scripts/check-bilingual.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

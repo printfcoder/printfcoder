@@ -1,0 +1,41 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { categoryLabel, lpath, type Locale } from '../../../lib/i18n';
+import type { GetStaticPaths } from 'astro';
+
+const locale: Locale = 'zh';
+const pairKey = (id: string) => id.replace(/\.(en|zh)$/, '');
+
+export const getStaticPaths = (async () => {
+  const [zhNotes, enNotes] = await Promise.all([
+    getCollection('notes', (n) => !n.data.draft && n.data.lang === 'zh'),
+    getCollection('notes', (n) => !n.data.draft && n.data.lang === 'en'),
+  ]);
+  const enKeys = new Set(enNotes.map((n) => pairKey(n.id)));
+  return zhNotes.map((note) => ({
+    params: { slug: pairKey(note.id) },
+    props: {
+      note,
+      counterpart: enKeys.has(pairKey(note.id))
+        ? lpath('en', `/notes/${pairKey(note.id)}`)
+        : undefined,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { note, counterpart } = Astro.props;
+const { Content } = await render(note);
+---
+
+<ArticleLayout
+  locale={locale}
+  page="learn"
+  title={note.data.title}
+  description={note.data.description}
+  pubDate={note.data.pubDate}
+  counterpart={counterpart}
+  tag={categoryLabel(note.data.category, locale)}
+>
+  <Content />
+</ArticleLayout>

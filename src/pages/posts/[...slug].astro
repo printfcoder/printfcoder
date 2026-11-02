@@ -1,0 +1,40 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { lpath, type Locale } from '../../lib/i18n';
+import type { GetStaticPaths } from 'astro';
+
+const locale: Locale = 'en';
+const pairKey = (id: string) => id.replace(/\.(en|zh)$/, '');
+
+export const getStaticPaths = (async () => {
+  const [posts, zhPosts] = await Promise.all([
+    getCollection('posts', (p) => !p.data.draft && p.data.lang === 'en'),
+    getCollection('posts', (p) => !p.data.draft && p.data.lang === 'zh'),
+  ]);
+  const zhKeys = new Set(zhPosts.map((p) => pairKey(p.id)));
+  return posts.map((post) => ({
+    params: { slug: pairKey(post.id) },
+    props: {
+      post,
+      counterpart: zhKeys.has(pairKey(post.id))
+        ? lpath('zh', `/posts/${pairKey(post.id)}`)
+        : undefined,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post, counterpart } = Astro.props;
+const { Content } = await render(post);
+---
+
+<ArticleLayout
+  locale={locale}
+  page="blog"
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  counterpart={counterpart}
+>
+  <Content />
+</ArticleLayout>
