@@ -1,17 +1,29 @@
-# dependencies
+# ---- dependencies ----
 node_modules/
 
-# build output
+# ---- build output ----
 dist/
 .astro/
 
-# environment
+# ---- generated diagram readers (source of truth: architecture/*.json) ----
+public/architecture-assets/
+
+# ---- local, machine-specific (never commit) ----
+.research-sources.json
 .env
 .env.*
 !.env.example
 
-# os / editor
-.DS_Store
-*.log
+# ---- IDE / tooling (skills are symlinked from tools/skill) ----
+.trae/
+.cursor/
 .idea/
 .vscode/
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
+
+# ---- logs & temp ----
+*.log
+*.tmp
