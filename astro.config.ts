@@ -2,11 +2,10 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
-// The profile repository serves Pages from https://printfcoder.github.io/printfcoder/.
-// A custom domain or a printfcoder.github.io deployment repo only changes `site`/`base`.
+// Custom domain served from the repository root; public/CNAME binds i.shux.me.
+// Falling back to github.io would require `base: '/printfcoder'` instead.
 export default defineConfig({
-  site: 'https://printfcoder.github.io',
-  base: '/printfcoder',
+  site: 'https://i.shux.me',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
