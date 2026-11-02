@@ -32,7 +32,7 @@ export async function buildFeed(locale: Locale, context: APIContext) {
     title: `${SITE.name} — ${SITE.handle}`,
     description:
       locale === 'zh'
-        ? '后端与平台工程师，构建无云、去中心化的计算。'
+        ? '后端与平台工程师，做去中心化、点对点的系统。'
         : 'Backend and platform engineer building cloudless, decentralized computing.',
     site: context.site!,
     items,

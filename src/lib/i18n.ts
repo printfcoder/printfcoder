@@ -215,7 +215,7 @@ export const UI: Record<Locale, UIShape> = {
       eyebrow: '你好，我是',
       role: '后端 / 平台架构',
       intro:
-        '后端和平台做了十几年：服务框架、资源访问层、稳定性治理、AI Coding 基建都干过。现在把精力放在无云、去中心化的计算上——点对点的网络里，数据归用户自己，agent 跑在用户自己的节点上。',
+        '后端和平台做了十几年：服务框架、资源访问层、稳定性治理、AI Coding 基建都干过。现在做去中心化、点对点的系统——没有中心化服务器，数据归用户自己，agent 跑在用户自己的节点上。',
       now: {
         eyebrow: '现在',
         title: '手上在做的事',
@@ -253,7 +253,7 @@ export const UI: Record<Locale, UIShape> = {
         },
         {
           phase: '现在',
-          title: '无云、去中心化计算',
+          title: '去中心化、点对点的系统',
           body: [
             '主线是 Peers Touch：点对点、可自托管的社交网络，内置 AI agent，数据和社交关系不押在任何一家公司的服务器上。',
             'Go-Micro China 和 Stack-RPC 的中文教程一直在更新，写了这么多年踩过的坑，能让后来的 Go 后端少绕几个弯。',
