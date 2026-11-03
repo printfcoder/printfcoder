@@ -1,44 +1,64 @@
 ---
 import '../styles/global.css';
-import { SITE, withBase } from '../lib/site';
+import { ClientRouter } from 'astro:transitions';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { SITE, UI, lpath, type Locale } from '../lib/i18n';
+
+type PageKey = 'hello' | 'learn' | 'blog';
 
 interface Props {
+  locale: Locale;
+  page: PageKey;
   title: string;
   description?: string;
-  /** Canonical path without base, e.g. "/writing/some-post". */
-  path: string;
+  /** Explicit same-page URL in the other language (article pairs). */
+  counterpart?: string;
 }
 
-const { title, description = SITE.description, path } = Astro.props;
-const canonical = new URL(withBase(path), Astro.site!).toString();
-const ogTitle = path === '/' ? `${SITE.name} · ${SITE.handle}` : `${title} · ${SITE.handle}`;
+const { locale, page, title, description, counterpart } = Astro.props;
+const t = UI[locale];
+const ogTitle = page === 'hello' ? `${SITE.name} · ${SITE.handle}` : `${title} · ${SITE.handle}`;
+const canonical = new URL(Astro.url.pathname, Astro.site!).toString();
+const otherLocale = locale === 'en' ? 'zh' : 'en';
+const alternateHref = counterpart
+  ? counterpart
+  : Astro.url.pathname === '/'
+    ? '/zh'
+    : locale === 'zh'
+      ? Astro.url.pathname.replace(/^\/zh(?=\/|$)/, '') || '/'
+      : `/zh${Astro.url.pathname}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title={SITE.handle} href={withBase('/rss.xml')} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.handle} href={lpath(locale, '/rss.xml')} />
     <title>{ogTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={description ?? SITE.name} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={locale} href={canonical} />
+    <link rel="alternate" hreflang={otherLocale} href={new URL(alternateHref, Astro.site!).toString()} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site!).toString()} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={ogTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={description ?? SITE.name} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:locale:alternate" content={locale === 'zh' ? 'en_US' : 'zh_CN'} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={ogTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={description ?? SITE.name} />
+    <ClientRouter />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <SiteHeader path={path} />
-    <main class="mx-auto w-full max-w-[40rem] flex-1 px-6 pt-14 pb-24">
+  <body>
+    <SiteHeader locale={locale} page={page} counterpart={counterpart} />
+    <main style="flex:1">
       <slot />
     </main>
-    <SiteFooter />
+    <SiteFooter locale={locale} />
   </body>
 </html>

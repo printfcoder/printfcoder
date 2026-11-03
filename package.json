@@ -5,8 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
+    "diagrams": "node tools/render-architecture.mjs && node tools/export-diagram-images.mjs",
+    "build": "node tools/render-architecture.mjs && astro build",
+    "preview": "astro preview",
+    "check:i18n": "node scripts/check-bilingual.mjs",
+    "skills": "bash tools/skill/install.sh",
+    "publish:bundle": "node tools/publish/build-bundle.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Scope: Model, Harness, Environment",
+    "subtitle": "What this series covers — and the three boundaries every agent system is built around.",
+    "locale": "en",
+    "output": "harness-scope.en.html",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "viewBox": [1200, 600],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "frontend": { "label": "Traditional engineering around the LLM" },
+        "backend": { "visible": false },
+        "database": { "label": "Model: the probabilistic component" },
+        "cloud": { "label": "Human" },
+        "security": { "label": "New engineering created by probability" },
+        "messagebus": { "label": "Contamination belt: old module, new contract" },
+        "external": { "label": "LLM-agnostic engineering / environment" }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "human",
+      "type": "cloud",
+      "label": "Human",
+      "sublabel": "instruct · approve · interrupt",
+      "pos": [40, 250],
+      "size": [180, 96]
+    },
+    {
+      "id": "surfaces",
+      "type": "external",
+      "label": "Surfaces",
+      "sublabel": "CLI · TUI · IDE · voice",
+      "tag": "entry",
+      "pos": [300, 80],
+      "size": [190, 64]
+    },
+    {
+      "id": "gateway",
+      "type": "frontend",
+      "label": "Provider gateway",
+      "sublabel": "protocol · stream · retry",
+      "pos": [530, 80],
+      "size": [190, 64]
+    },
+    {
+      "id": "loop",
+      "type": "security",
+      "label": "Turn loop",
+      "sublabel": "driver: what to do next",
+      "tag": "probabilistic",
+      "pos": [300, 200],
+      "size": [190, 64]
+    },
+    {
+      "id": "tools",
+      "type": "messagebus",
+      "label": "Tools & sandbox",
+      "sublabel": "shell · patch · policy",
+      "tag": "contaminated",
+      "pos": [530, 200],
+      "size": [190, 64]
+    },
+    {
+      "id": "context",
+      "type": "security",
+      "label": "Context",
+      "sublabel": "assembly · budget · compaction",
+      "tag": "new domain",
+      "pos": [300, 320],
+      "size": [190, 64]
+    },
+    {
+      "id": "state",
+      "type": "frontend",
+      "label": "State & history",
+      "sublabel": "rollout · resume",
+      "pos": [530, 320],
+      "size": [190, 64]
+    },
+    {
+      "id": "model",
+      "type": "database",
+      "label": "Model",
+      "sublabel": "a stateless probabilistic function: tokens in, tokens out",
+      "tag": "owns nothing",
+      "pos": [860, 80],
+      "size": [290, 110]
+    },
+    {
+      "id": "environment",
+      "type": "external",
+      "label": "Environment",
+      "sublabel": "files · shell · network · browser · services",
+      "pos": [860, 220],
+      "size": [290, 110]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "wraps": ["surfaces", "gateway", "loop", "tools", "context", "state"],
+      "label": "Harness: the engineering shell around the model — every agent-like behavior comes from this shell",
+      "pad": 22
+    }
+  ],
+  "connections": [
+    {
+      "id": "human-surfaces",
+      "from": "human",
+      "to": "surfaces",
+      "variant": "security",
+      "label": "③ human boundary: instruct · approve · interrupt"
+    },
+    {
+      "id": "surfaces-loop",
+      "from": "surfaces",
+      "to": "loop"
+    },
+    {
+      "id": "loop-gateway",
+      "from": "loop",
+      "to": "gateway"
+    },
+    {
+      "id": "gateway-model",
+      "from": "gateway",
+      "to": "model",
+      "variant": "emphasis",
+      "label": "① inference boundary: one probabilistic round-trip"
+    },
+    {
+      "id": "context-loop",
+      "from": "context",
+      "to": "loop",
+      "label": "assembled context"
+    },
+    {
+      "id": "loop-tools",
+      "from": "loop",
+      "to": "tools",
+      "label": "tool choice"
+    },
+    {
+      "id": "tools-environment",
+      "from": "tools",
+      "to": "environment",
+      "variant": "emphasis",
+      "label": "② side-effect boundary: tools act"
+    },
+    {
+      "id": "state-loop",
+      "from": "state",
+      "to": "loop",
+      "variant": "dashed",
+      "label": "persist · resume"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Three boundaries",
+      "items": [
+        "① Inference: one token round-trip whose output cannot be assumed — the only probabilistic seam in the system.",
+        "② Side effects: tools act on the world — the only boundary that changes state outside the process.",
+        "③ Human: people instruct, approve, and interrupt. Authority is never fully delegated."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Out of scope",
+      "items": [
+        "Training, weights, inference kernels, GPU scheduling — that is the model team's world.",
+        "Nor is this a collection of prompt tricks. It is about the engineering that turns a model into a system that does real work."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "One-sentence definition",
+      "items": [
+        "The model has no files, processes, sessions, or memory. The loop, memory, tools, safety, and UI that make it look like an agent all live in the harness."
+      ]
+    }
+  ]
+}

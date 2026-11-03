@@ -1,17 +1,33 @@
-# dependencies
+# ---- dependencies ----
 node_modules/
 
-# build output
+# ---- build output ----
 dist/
 .astro/
 
-# environment
+# ---- generated diagram readers (source of truth: architecture/*.json);
+#      exported PNGs are committed for external syndication ----
+public/architecture-assets/*.html
+
+# ---- syndication bundles generated for Juejin/V2EX publishing ----
+.publish/
+
+# ---- local, machine-specific (never commit) ----
+.research-sources.json
 .env
 .env.*
 !.env.example
 
-# os / editor
-.DS_Store
-*.log
+# ---- IDE / tooling (skills are symlinked from tools/skill) ----
+.trae/
+.cursor/
 .idea/
 .vscode/
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
+
+# ---- logs & temp ----
+*.log
+*.tmp

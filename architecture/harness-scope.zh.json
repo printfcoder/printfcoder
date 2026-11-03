@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "边界：模型、Harness 与环境",
+    "subtitle": "这个系列讲什么，以及所有 agent 系统都绕不开的三条边界。",
+    "locale": "zh-CN",
+    "output": "harness-scope.zh.html",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "viewBox": [1200, 600],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "frontend": { "label": "围绕模型建的传统工程" },
+        "backend": { "visible": false },
+        "database": { "label": "模型：概率部件" },
+        "cloud": { "label": "人" },
+        "security": { "label": "概率催生的新工程" },
+        "messagebus": { "label": "污染带：老模块，新契约" },
+        "external": { "label": "与模型无关的传统工程 / 环境" }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "human",
+      "type": "cloud",
+      "label": "人",
+      "sublabel": "指令 · 审批 · 打断",
+      "pos": [40, 250],
+      "size": [180, 96]
+    },
+    {
+      "id": "surfaces",
+      "type": "external",
+      "label": "界面",
+      "sublabel": "CLI · TUI · IDE · 语音",
+      "tag": "入口",
+      "pos": [300, 80],
+      "size": [190, 64]
+    },
+    {
+      "id": "gateway",
+      "type": "frontend",
+      "label": "模型网关",
+      "sublabel": "协议 · 流式 · 重试",
+      "pos": [530, 80],
+      "size": [190, 64]
+    },
+    {
+      "id": "loop",
+      "type": "security",
+      "label": "Turn 循环",
+      "sublabel": "驱动器：下一步做什么",
+      "tag": "概率决策",
+      "pos": [300, 200],
+      "size": [190, 64]
+    },
+    {
+      "id": "tools",
+      "type": "messagebus",
+      "label": "工具与沙箱",
+      "sublabel": "shell · 补丁 · 权限",
+      "tag": "污染带",
+      "pos": [530, 200],
+      "size": [190, 64]
+    },
+    {
+      "id": "context",
+      "type": "security",
+      "label": "上下文",
+      "sublabel": "装配 · 预算 · 压缩",
+      "tag": "新工程域",
+      "pos": [300, 320],
+      "size": [190, 64]
+    },
+    {
+      "id": "state",
+      "type": "frontend",
+      "label": "状态与历史",
+      "sublabel": "rollout · 恢复",
+      "pos": [530, 320],
+      "size": [190, 64]
+    },
+    {
+      "id": "model",
+      "type": "database",
+      "label": "模型",
+      "sublabel": "无状态概率函数：token 进，token 出",
+      "tag": "不拥有任何东西",
+      "pos": [860, 80],
+      "size": [290, 110]
+    },
+    {
+      "id": "environment",
+      "type": "external",
+      "label": "环境",
+      "sublabel": "文件 · Shell · 网络 · 浏览器 · 外部服务",
+      "pos": [860, 220],
+      "size": [290, 110]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "wraps": ["surfaces", "gateway", "loop", "tools", "context", "state"],
+      "label": "Harness：包在模型外面的工程壳——agent 的一切行为都来自这层壳",
+      "pad": 22
+    }
+  ],
+  "connections": [
+    {
+      "id": "human-surfaces",
+      "from": "human",
+      "to": "surfaces",
+      "variant": "security",
+      "label": "③ 人本边界：指令 · 审批 · 打断"
+    },
+    {
+      "id": "surfaces-loop",
+      "from": "surfaces",
+      "to": "loop"
+    },
+    {
+      "id": "loop-gateway",
+      "from": "loop",
+      "to": "gateway"
+    },
+    {
+      "id": "gateway-model",
+      "from": "gateway",
+      "to": "model",
+      "variant": "emphasis",
+      "label": "① 推理边界：一次概率往返"
+    },
+    {
+      "id": "context-loop",
+      "from": "context",
+      "to": "loop",
+      "label": "装配上下文"
+    },
+    {
+      "id": "loop-tools",
+      "from": "loop",
+      "to": "tools",
+      "label": "选择工具"
+    },
+    {
+      "id": "tools-environment",
+      "from": "tools",
+      "to": "environment",
+      "variant": "emphasis",
+      "label": "② 副作用边界：工具动手"
+    },
+    {
+      "id": "state-loop",
+      "from": "state",
+      "to": "loop",
+      "variant": "dashed",
+      "label": "落盘 · 恢复"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三条边界",
+      "items": [
+        "① 推理边界：一次 token 往返，回来什么不能假设——这是系统中唯一的概率接缝。",
+        "② 副作用边界：工具作用于世界，是唯一能改变进程外部状态的地方。",
+        "③ 人本边界：人给指令、卡审批、随时打断，权力从不全部交给 agent。"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "不讲什么",
+      "items": [
+        "模型训练、权重、推理内核、GPU 调度——那是模型团队的世界。",
+        "也不是提示词偏方大全。这里只讲：把模型变成一个能干活的系统，需要哪些工程。"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "一句话定义",
+      "items": [
+        "模型没有文件、进程、会话和记忆。让它看起来像个 agent 的循环、记忆、工具、安全与界面，全部长在 Harness 这层壳里。"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "learning": { "en": "Learning", "zh": "学习" },
+  "tech": { "en": "Tech", "zh": "科技" },
+  "history": { "en": "History", "zh": "历史" },
+  "philosophy": { "en": "Philosophy", "zh": "哲学" },
+  "agent": { "en": "Agents", "zh": "Agent" },
+  "harness": { "en": "Harness", "zh": "Harness 工程" }
+}

@@ -1,0 +1,14 @@
+---
+import BlogView from '../../../views/BlogView.astro';
+import { BLOG_TAGS } from '../../../lib/i18n';
+import tagRegistry from '../../../data/tags.json';
+import type { GetStaticPaths } from 'astro';
+
+// Only registered tags get filter pages.
+export const getStaticPaths = (async () =>
+  Object.keys(tagRegistry).map((tag) => ({ params: { tag } }))) satisfies GetStaticPaths;
+
+const { tag } = Astro.params as { tag: string };
+---
+
+<BlogView locale="en" tag={tag} />

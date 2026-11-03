@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "The map: what in a harness is traditional — and what is not",
+    "subtitle": "Modules of an industrial coding agent (codex) as four color-coded pillars — grey, orange, red, cyan — classified by relationship to the model; violet is the model itself.",
+    "locale": "en",
+    "output": "harness-map.en.html",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "viewBox": [1360, 680],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "frontend": { "label": "Traditional work around the LLM" },
+        "backend": { "visible": false },
+        "database": { "label": "The model (probabilistic)" },
+        "cloud": { "visible": false },
+        "security": { "label": "Probability-born new work" },
+        "messagebus": { "label": "Contaminated: old module, new contract" },
+        "external": { "label": "LLM-agnostic engineering" }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "h-grey",
+      "type": "external",
+      "label": "Grey · LLM-agnostic",
+      "sublabel": "the 90% floor — exists without a model",
+      "pos": [36, 64],
+      "size": [184, 56]
+    },
+    {
+      "id": "surfaces",
+      "type": "external",
+      "label": "Surfaces",
+      "sublabel": "CLI · TUI · IDE",
+      "pos": [36, 150],
+      "size": [184, 64]
+    },
+    {
+      "id": "network",
+      "type": "external",
+      "label": "Network proxy",
+      "sublabel": "egress control",
+      "pos": [36, 242],
+      "size": [184, 64]
+    },
+    {
+      "id": "fs",
+      "type": "external",
+      "label": "Files / Git",
+      "sublabel": "worktree · diff",
+      "pos": [36, 334],
+      "size": [184, 64]
+    },
+    {
+      "id": "secrets",
+      "type": "external",
+      "label": "Secrets",
+      "sublabel": "keyring · env",
+      "pos": [36, 426],
+      "size": [184, 64]
+    },
+    {
+      "id": "packaging",
+      "type": "external",
+      "label": "Packaging",
+      "sublabel": "install · signed update",
+      "pos": [36, 518],
+      "size": [184, 64]
+    },
+    {
+      "id": "h-orange",
+      "type": "messagebus",
+      "label": "Orange · contamination",
+      "sublabel": "old module · new contract",
+      "pos": [236, 64],
+      "size": [184, 56]
+    },
+    {
+      "id": "exec",
+      "type": "messagebus",
+      "label": "Process exec",
+      "sublabel": "commands from the model",
+      "pos": [236, 150],
+      "size": [184, 64]
+    },
+    {
+      "id": "sandbox",
+      "type": "messagebus",
+      "label": "OS sandbox",
+      "sublabel": "defends against your own agent",
+      "pos": [236, 242],
+      "size": [184, 64]
+    },
+    {
+      "id": "config",
+      "type": "messagebus",
+      "label": "Config",
+      "sublabel": "natural language as config",
+      "pos": [236, 334],
+      "size": [184, 64]
+    },
+    {
+      "id": "telemetry",
+      "type": "messagebus",
+      "label": "Logs & metrics",
+      "sublabel": "must replay decisions",
+      "pos": [236, 426],
+      "size": [184, 64]
+    },
+    {
+      "id": "h-red",
+      "type": "security",
+      "label": "Red · born from probability",
+      "sublabel": "the 10% — no classic counterpart",
+      "pos": [520, 64],
+      "size": [384, 56]
+    },
+    {
+      "id": "instructions",
+      "type": "security",
+      "label": "Instruction layers",
+      "sublabel": "prompt · AGENTS · skills",
+      "pos": [520, 150],
+      "size": [178, 64]
+    },
+    {
+      "id": "loop",
+      "type": "security",
+      "label": "Turn loop",
+      "sublabel": "may never converge",
+      "tag": "core",
+      "pos": [726, 150],
+      "size": [178, 64]
+    },
+    {
+      "id": "context",
+      "type": "security",
+      "label": "Context engineering",
+      "sublabel": "assembly · budget · compaction",
+      "pos": [520, 242],
+      "size": [178, 64]
+    },
+    {
+      "id": "tool-loop",
+      "type": "security",
+      "label": "Tool feedback",
+      "sublabel": "results fed back in",
+      "pos": [726, 242],
+      "size": [178, 64]
+    },
+    {
+      "id": "replay",
+      "type": "security",
+      "label": "Decision replay",
+      "sublabel": "trace · evaluation",
+      "pos": [520, 334],
+      "size": [178, 64]
+    },
+    {
+      "id": "extensions",
+      "type": "security",
+      "label": "Extensions",
+      "sublabel": "MCP · hooks · plugin",
+      "pos": [726, 334],
+      "size": [178, 64]
+    },
+    {
+      "id": "h-cyan",
+      "type": "frontend",
+      "label": "Cyan · around the model",
+      "sublabel": "old craft · new posting",
+      "pos": [940, 64],
+      "size": [398, 56]
+    },
+    {
+      "id": "gateway",
+      "type": "frontend",
+      "label": "Provider gateway",
+      "sublabel": "retry · failover",
+      "pos": [940, 150],
+      "size": [186, 64]
+    },
+    {
+      "id": "protocol",
+      "type": "frontend",
+      "label": "Protocol adapters",
+      "sublabel": "responses · chat",
+      "pos": [1152, 150],
+      "size": [186, 64]
+    },
+    {
+      "id": "persistence",
+      "type": "frontend",
+      "label": "Rollout storage",
+      "sublabel": "history · attachments",
+      "pos": [940, 242],
+      "size": [186, 64]
+    },
+    {
+      "id": "kernel",
+      "type": "frontend",
+      "label": "One kernel, N faces",
+      "sublabel": "app-server protocol",
+      "pos": [1152, 242],
+      "size": [186, 64]
+    },
+    {
+      "id": "model",
+      "type": "database",
+      "label": "Model",
+      "sublabel": "a stateless probabilistic function · owns nothing",
+      "pos": [940, 334],
+      "size": [398, 84]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "wraps": ["h-grey", "surfaces", "network", "fs", "secrets", "packaging", "h-orange", "exec", "sandbox", "config", "telemetry"],
+      "label": "Traditional engineering · 90% floor",
+      "pad": 16
+    },
+    {
+      "kind": "security-group",
+      "wraps": ["h-red", "instructions", "loop", "context", "tool-loop", "replay", "extensions"],
+      "label": "Probability-born new engineering · the 10%",
+      "pad": 16
+    }
+  ],
+  "connections": [
+    {
+      "id": "surfaces-loop",
+      "from": "surfaces",
+      "to": "loop",
+      "fromSide": "top",
+      "toSide": "top",
+      "route": "orthogonal-h",
+      "via": [[128, 134], [815, 134]],
+      "label": "input",
+      "labelAt": [450, 126]
+    },
+    {
+      "id": "instructions-loop",
+      "from": "instructions",
+      "to": "loop"
+    },
+    {
+      "id": "context-loop",
+      "from": "context",
+      "to": "loop"
+    },
+    {
+      "id": "loop-tool-loop",
+      "from": "loop",
+      "to": "tool-loop"
+    },
+    {
+      "id": "toolloop-context",
+      "from": "tool-loop",
+      "to": "context",
+      "variant": "dashed"
+    },
+    {
+      "id": "extensions-toolloop",
+      "from": "extensions",
+      "to": "tool-loop",
+      "variant": "dashed"
+    },
+    {
+      "id": "toolloop-exec",
+      "from": "tool-loop",
+      "to": "exec",
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "orthogonal-h",
+      "via": [[712, 274], [712, 318], [486, 318], [486, 182]],
+      "label": "command",
+      "labelAt": [456, 252]
+    },
+    {
+      "id": "exec-sandbox",
+      "from": "exec",
+      "to": "sandbox",
+      "variant": "security",
+      "label": "isolate / approve",
+      "labelAt": [262, 230]
+    },
+    {
+      "id": "protocol-gateway",
+      "from": "protocol",
+      "to": "gateway",
+      "variant": "dashed"
+    },
+    {
+      "id": "loop-gateway",
+      "from": "loop",
+      "to": "gateway"
+    },
+    {
+      "id": "gateway-model",
+      "from": "gateway",
+      "to": "model",
+      "fromSide": "right",
+      "toSide": "top",
+      "route": "orthogonal-v",
+      "via": [[1139, 182], [1139, 334]],
+      "variant": "emphasis",
+      "label": "inference boundary",
+      "labelAt": [1210, 318]
+    },
+    {
+      "id": "loop-persistence",
+      "from": "loop",
+      "to": "persistence",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "dashed",
+      "via": [[815, 228], [1033, 228]],
+      "label": "events persisted",
+      "labelAt": [852, 232]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "slate",
+      "title": "Grey · the 90% floor",
+      "items": [
+        "UI, networking, files, secrets, installers. These exist with or without an LLM — build them with the craft you already have."
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Orange · contamination belt",
+      "items": [
+        "The sandbox defends against your own agent; the executor eats model-generated strings; config becomes natural language; logs must replay decisions. Old modules, new contracts."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Red · the ten percent",
+      "items": [
+        "A loop that may not stop; context managed like memory with budgets and paging; instructions in natural language; behavior verified only by replay. Nothing in classic software maps to these."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Cyan · old craft, new posting",
+      "items": [
+        "Gateways, protocol adapters, event stores, kernel reuse: the hard parts are rate limits, failover, and version compatibility — not probability."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Root cause in one sentence",
+      "items": [
+        "Classic control flow is enumerable; an agent hands the next move to a probabilistic function. The target shifts from 'the interface is correct' to 'safe, recoverable, and observable when misunderstood'."
+      ]
+    }
+  ]
+}

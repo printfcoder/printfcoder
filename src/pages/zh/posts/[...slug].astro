@@ -1,0 +1,82 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import type { SeriesPart } from '../../../components/SeriesNav.astro';
+import { getCollection, render } from 'astro:content';
+import { lpath, type Locale } from '../../../lib/i18n';
+import { pairKey } from '../../../lib/content';
+import seriesRegistry from '../../../data/series.json';
+import type { GetStaticPaths } from 'astro';
+
+type SeriesRegistryEntry = {
+  slug: string;
+  title: { en: string; zh: string };
+  parts?: { slug: string; title: { en: string; zh: string } }[];
+};
+
+const locale: Locale = 'zh';
+
+export const getStaticPaths = (async () => {
+  const [zhPosts, enPosts] = await Promise.all([
+    getCollection('posts', (p) => !p.data.draft && p.data.lang === 'zh'),
+    getCollection('posts', (p) => !p.data.draft && p.data.lang === 'en'),
+  ]);
+  const enKeys = new Set(enPosts.map((p) => pairKey(p.id)));
+  return zhPosts.map((post) => ({
+    params: { slug: pairKey(post.id) },
+    props: {
+      post,
+      counterpart: enKeys.has(pairKey(post.id))
+        ? lpath('en', `/posts/${pairKey(post.id)}`)
+        : undefined,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post, counterpart } = Astro.props;
+const { Content } = await render(post);
+const allPublished = await getCollection('posts', (p) => !p.data.draft && p.data.lang === 'zh');
+const publishedSlugs = new Set(allPublished.map((p) => pairKey(p.id)));
+const series = (seriesRegistry as SeriesRegistryEntry[]).find(
+  (s) => s.slug === post.data.series,
+);
+
+let seriesNav:
+  | { title: string; currentSlug: string; parts: SeriesPart[] }
+  | undefined;
+let partLabel: string | undefined;
+if (series?.parts?.length) {
+  const partIndex = series.parts.findIndex((part) => part.slug === pairKey(post.id));
+  if (partIndex >= 0) {
+    partLabel = `第 ${String(partIndex).padStart(2, '0')} 篇 · 共 ${series.parts.length} 篇`;
+  }
+  seriesNav = {
+    title: series.title.zh,
+    currentSlug: pairKey(post.id),
+    parts: series.parts.map((part) => ({
+      slug: part.slug,
+      title: part.title.zh,
+      outline: part.outline?.zh,
+      href: publishedSlugs.has(part.slug)
+        ? lpath('zh', `/posts/${part.slug}`)
+        : undefined,
+      current: part.slug === pairKey(post.id),
+    })),
+  };
+}
+---
+
+<ArticleLayout
+  locale={locale}
+  page="blog"
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  counterpart={counterpart}
+  tags={post.data.tags}
+  seriesLabel={series?.title.zh}
+  partLabel={partLabel}
+  authorship={post.data.authorship}
+  seriesNav={seriesNav}
+>
+  <Content />
+</ArticleLayout>
